@@ -1,0 +1,6 @@
+{
+  "name": "ITC Technology Consulting",
+  "description": "Trang thông tin dịch vụ, giải pháp và năng lực tư vấn công nghệ của Công ty Cổ phần Giải pháp và Tư vấn Công nghệ ITC.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
