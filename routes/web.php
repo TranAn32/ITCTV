@@ -11,16 +11,19 @@ Route::get('/projects', function () { return redirect('/'); });
 Route::get('/clients', function () { return redirect('/'); });
 Route::get('/contact', function () { return redirect('/'); });
 
-// Internal Portal Routes
-Route::prefix('noi-bo')->group(function () {
+// Public API
+Route::get('/api/banner', [NoiBoController::class, 'apiBanner']);
+
+// Admin Portal Routes
+Route::prefix('admin')->group(function () {
     Route::get('/login', [NoiBoController::class, 'login']);
     Route::post('/login', [NoiBoController::class, 'authenticate']);
     Route::post('/logout', [NoiBoController::class, 'logout']);
 
     Route::middleware([\App\Http\Middleware\NoiBoAuth::class])->group(function () {
         Route::get('/', [NoiBoController::class, 'index']);
-        Route::get('/van-ban', [NoiBoController::class, 'vanBan']);
-        Route::get('/sinh-so', [NoiBoController::class, 'sinhSo']);
+        Route::get('/banner', [NoiBoController::class, 'banner']);
+        Route::post('/banner', [NoiBoController::class, 'updateBanner']);
         Route::get('/access-code', [NoiBoController::class, 'accessCode']);
         Route::post('/access-code', [NoiBoController::class, 'updateAccessCode']);
     });

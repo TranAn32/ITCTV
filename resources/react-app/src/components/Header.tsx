@@ -77,7 +77,7 @@ export default function Header({ activePage, setActivePage }: HeaderProps) {
                 className={`relative px-4 py-2.5 text-sm font-semibold transition-colors duration-200 outline-none rounded-full cursor-pointer ${
                   isActive 
                     ? isDarkHeader 
-                      ? 'text-cyan-400 font-extrabold' 
+                      ? 'text-sky-400 font-extrabold' 
                       : 'text-brand-blue' 
                     : isDarkHeader
                       ? 'text-slate-300 hover:text-white'
@@ -89,7 +89,7 @@ export default function Header({ activePage, setActivePage }: HeaderProps) {
                     layoutId="active-pill"
                     className={`absolute inset-0 rounded-full ${
                       isDarkHeader 
-                        ? 'bg-cyan-500/10 border border-cyan-500/20' 
+                        ? 'bg-sky-500/10 border border-sky-400/20' 
                         : 'bg-brand-blue/10 border border-brand-blue/20'
                     }`}
                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
@@ -111,10 +111,10 @@ export default function Header({ activePage, setActivePage }: HeaderProps) {
                 if (element) element.scrollIntoView({ behavior: 'smooth' });
               }, 100);
             }}
-            className="group flex items-center gap-2 rounded-xl bg-gradient-to-r from-brand-blue to-teal-500 px-5 py-2.5 text-sm font-semibold text-white shadow-[0_4px_20px_rgba(37,99,235,0.3)] transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_4px_25px_rgba(0,242,254,0.4)] active:scale-[0.98] cursor-pointer"
+            className="group flex items-center gap-2 rounded-xl bg-gradient-to-r from-brand-blue to-sky-500 px-5 py-2.5 text-sm font-semibold text-white shadow-[0_4px_20px_rgba(37,99,235,0.3)] transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_4px_25px_rgba(56,189,248,0.4)] active:scale-[0.98] cursor-pointer"
             id="btn-consult-header"
           >
-            <Compass className="h-4 w-4 animate-spin-slow text-teal-200 group-hover:rotate-45 transition-transform" />
+            <Compass className="h-4 w-4 animate-spin-slow text-sky-200 group-hover:rotate-45 transition-transform" />
             <span>Liên hệ tư vấn</span>
           </button>
         </div>
@@ -167,7 +167,7 @@ export default function Header({ activePage, setActivePage }: HeaderProps) {
                     className={`flex w-full items-center justify-between rounded-xl px-4 py-3 text-base font-bold transition-colors duration-200 ${
                       isActive 
                         ? isDarkHeader
-                          ? 'bg-slate-800/65 text-cyan-400 border border-slate-700/60'
+                          ? 'bg-slate-800/65 text-sky-400 border border-slate-700/60'
                           : 'bg-slate-100 text-brand-blue border border-slate-200' 
                         : isDarkHeader
                           ? 'text-slate-300 hover:bg-slate-800/35 hover:text-white'
@@ -175,7 +175,7 @@ export default function Header({ activePage, setActivePage }: HeaderProps) {
                     }`}
                   >
                     <span>{item.label}</span>
-                    {isActive && <div className={isDarkHeader ? 'h-2 w-2 rounded-full bg-cyan-400' : 'h-2 w-2 rounded-full bg-brand-cyan'} />}
+                    {isActive && <div className={isDarkHeader ? 'h-2 w-2 rounded-full bg-sky-400' : 'h-2 w-2 rounded-full bg-brand-sky'} />}
                   </button>
                 );
               })}
@@ -189,7 +189,7 @@ export default function Header({ activePage, setActivePage }: HeaderProps) {
                       if (element) element.scrollIntoView({ behavior: 'smooth' });
                     }, 100);
                   }}
-                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-brand-blue to-teal-500 py-3.5 text-center text-base font-bold text-white shadow-lg"
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-brand-blue to-sky-500 py-3.5 text-center text-base font-bold text-white shadow-lg"
                   id="btn-mobile-cta"
                 >
                   <PhoneCall className="h-5 w-5" />

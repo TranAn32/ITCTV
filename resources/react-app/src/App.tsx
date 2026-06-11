@@ -79,7 +79,7 @@ export default function App() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             onClick={scrollToTop}
-            className="fixed bottom-6 right-6 z-40 flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-r from-brand-blue to-teal-500 shadow-lg shadow-brand-blue/30 text-white hover:scale-105 active:scale-95 transition-transform duration-200 border border-teal-300/20 cursor-pointer"
+            className="fixed bottom-6 right-6 z-40 flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-r from-brand-blue to-sky-500 shadow-lg shadow-brand-blue/30 text-white hover:scale-105 active:scale-95 transition-transform duration-200 border border-sky-300/20 cursor-pointer"
             title="Cuộn lên đầu trang"
             aria-label="Back to top"
             id="btn-back-to-top"

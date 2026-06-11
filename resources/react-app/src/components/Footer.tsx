@@ -31,8 +31,8 @@ export default function Footer({ setActivePage }: FooterProps) {
   return (
     <footer className="relative bg-[#0B1329] text-slate-300 pt-16 pb-8 border-t border-slate-800 font-sans" id="app-footer">
       
-      {/* Premium dark indigo/teal backdrop accents */}
-      <div className="absolute top-0 right-1/4 h-80 w-80 rounded-full bg-teal-500/5 blur-[120px] pointer-events-none" />
+      {/* Premium dark indigo/sky backdrop accents */}
+      <div className="absolute top-0 right-1/4 h-80 w-80 rounded-full bg-sky-500/5 blur-[120px] pointer-events-none" />
       <div className="absolute bottom-0 left-1/4 h-80 w-80 rounded-full bg-blue-500/5 blur-[120px] pointer-events-none" />
 
       <div className="relative mx-auto max-w-[1600px] px-4 sm:px-6 md:px-12 lg:px-16 xl:px-20 2xl:px-24">
@@ -102,7 +102,7 @@ export default function Footer({ setActivePage }: FooterProps) {
                   onClick={() => handleLinkClick('home')} 
                   className="hover:text-white text-slate-400 flex items-center gap-1 transition-all group cursor-pointer"
                 >
-                  <ChevronRight className="h-3 w-3 text-slate-600 group-hover:text-teal-400 group-hover:translate-x-0.5 transition-transform" />
+                  <ChevronRight className="h-3 w-3 text-slate-600 group-hover:text-sky-400 group-hover:translate-x-0.5 transition-transform" />
                   <span>Trang chủ</span>
                 </button>
               </li>
@@ -111,7 +111,7 @@ export default function Footer({ setActivePage }: FooterProps) {
                   onClick={() => handleLinkClick('services')} 
                   className="hover:text-white text-slate-400 flex items-center gap-1 transition-all group cursor-pointer"
                 >
-                  <ChevronRight className="h-3 w-3 text-slate-600 group-hover:text-teal-400 group-hover:translate-x-0.5 transition-transform" />
+                  <ChevronRight className="h-3 w-3 text-slate-600 group-hover:text-sky-400 group-hover:translate-x-0.5 transition-transform" />
                   <span>Dịch vụ tư vấn</span>
                 </button>
               </li>
@@ -120,7 +120,7 @@ export default function Footer({ setActivePage }: FooterProps) {
                   onClick={() => handleLinkClick('projects')} 
                   className="hover:text-white text-slate-400 flex items-center gap-1 transition-all group cursor-pointer"
                 >
-                  <ChevronRight className="h-3 w-3 text-slate-600 group-hover:text-teal-400 group-hover:translate-x-0.5 transition-transform" />
+                  <ChevronRight className="h-3 w-3 text-slate-600 group-hover:text-sky-400 group-hover:translate-x-0.5 transition-transform" />
                   <span>Dự án thực tế</span>
                 </button>
               </li>
@@ -129,7 +129,7 @@ export default function Footer({ setActivePage }: FooterProps) {
                   onClick={() => handleLinkClick('contact')} 
                   className="hover:text-white text-slate-400 flex items-center gap-1 transition-all group cursor-pointer"
                 >
-                  <ChevronRight className="h-3 w-3 text-slate-600 group-hover:text-teal-400 group-hover:translate-x-0.5 transition-transform" />
+                  <ChevronRight className="h-3 w-3 text-slate-600 group-hover:text-sky-400 group-hover:translate-x-0.5 transition-transform" />
                   <span>Liên hệ thầu</span>
                 </button>
               </li>
@@ -194,7 +194,7 @@ export default function Footer({ setActivePage }: FooterProps) {
               
               {/* Leader Representative Profile */}
               <div className="rounded-xl bg-slate-900/50 border border-slate-800/60 p-3 flex.col space-y-1.5" id="rep-card-footer">
-                <div className="flex items-center gap-1.5 text-teal-400 font-bold tracking-wide uppercase text-[10px]">
+                <div className="flex items-center gap-1.5 text-sky-400 font-bold tracking-wide uppercase text-[10px]">
                   <UserCheck className="h-3.5 w-3.5" />
                   <span>Đại diện pháp luật</span>
                 </div>
@@ -212,9 +212,9 @@ export default function Footer({ setActivePage }: FooterProps) {
               <div className="space-y-2.5">
                 <a 
                   href="tel:0984482789" 
-                  className="flex items-center gap-2.5 text-teal-400 hover:text-teal-350 transition-colors font-bold group select-all"
+                  className="flex items-center gap-2.5 text-sky-400 hover:text-sky-350 transition-colors font-bold group select-all"
                 >
-                  <PhoneCall className="h-4 w-4 shrink-0 text-teal-500 group-hover:scale-110 transition-transform" />
+                  <PhoneCall className="h-4 w-4 shrink-0 text-sky-500 group-hover:scale-110 transition-transform" />
                   <span className="font-sans text-xs font-bold">0984482789</span>
                 </a>
                 
@@ -230,7 +230,7 @@ export default function Footer({ setActivePage }: FooterProps) {
                   href="http://itctv.vn/"
                   target="_blank"
                   rel="noreferrer"
-                  className="flex items-center gap-2.5 text-slate-300 hover:text-teal-400 transition-colors group text-xs"
+                  className="flex items-center gap-2.5 text-slate-300 hover:text-sky-400 transition-colors group text-xs"
                 >
                   <Globe className="h-4 w-4 shrink-0 text-slate-500" />
                   <span className="underline">http://itctv.vn/</span>

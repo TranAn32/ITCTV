@@ -16,7 +16,7 @@ class NoiBoAuth
     public function handle(Request $request, Closure $next): Response
     {
         if (!session()->has('noibo_authenticated') || session('noibo_authenticated') !== true) {
-            return redirect('/noi-bo/login');
+            return redirect('/admin/login');
         }
 
         return $next($request);

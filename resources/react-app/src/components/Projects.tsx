@@ -74,7 +74,7 @@ export default function Projects() {
   const defaultImg = 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=800';
 
   return (
-    <div className="relative py-24 bg-[#FAFAF9] min-h-screen font-sans overflow-hidden" id="projects-view">
+    <div className="relative pt-12 pb-20 bg-[#FAFAF9] min-h-screen font-sans overflow-hidden" id="projects-view">
       
       {/* Decorative Natural Glows */}
       <div className="absolute top-24 left-12 h-[35rem] w-[35rem] rounded-full bg-emerald-500/5 blur-3xl pointer-events-none" />
@@ -86,8 +86,8 @@ export default function Projects() {
         {/* SECTION 1: Page Header with Natural Accent Badge */}
         {/* ======================================= */}
         <div className="max-w-3xl mb-24 space-y-5 text-left animate-fade-in" id="projects-page-header">
-          <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-[#0f766e] font-sans bg-teal-50/80 border border-teal-100/50 rounded-full px-4 py-1.5">
-            <Sparkles className="h-3.5 w-3.5 text-teal-600 animate-pulse" />
+          <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-[#2563eb] font-sans bg-blue-50/80 border border-blue-100/50 rounded-full px-4 py-1.5">
+            <Sparkles className="h-3.5 w-3.5 text-blue-600 animate-pulse" />
             <span>Kỷ yếu thành tựu ủy thác &amp; Liên minh</span>
           </span>
           <h1 className="font-display text-4xl sm:text-5xl font-extrabold tracking-tight text-[#0F172A] leading-tight">
@@ -122,7 +122,7 @@ export default function Projects() {
                   onClick={() => setFilterCategory(cat.id)}
                   className={`px-4 py-2 text-xs font-bold rounded-xl transition-all duration-250 cursor-pointer ${
                     filterCategory === cat.id
-                      ? 'bg-[#0f766e] text-white shadow-sm shadow-teal-900/10'
+                      ? 'bg-[#2563eb] text-white shadow-sm shadow-blue-900/10'
                       : 'bg-white hover:bg-slate-50 text-slate-600'
                   }`}
                 >
@@ -165,9 +165,9 @@ export default function Projects() {
                     <div className="space-y-5">
                       {/* Sub-Header info */}
                       <div className="flex items-center gap-2 text-xs font-semibold text-slate-500 font-sans">
-                        <div className="h-2 w-2 rounded-full bg-teal-500" />
+                        <div className="h-2 w-2 rounded-full bg-sky-500" />
                         <span>Chủ đầu tư:</span>
-                        <span className="text-[#0f766e] font-bold">{project.client}</span>
+                        <span className="text-[#2563eb] font-bold">{project.client}</span>
                       </div>
 
                       {/* Main Title */}
@@ -197,7 +197,7 @@ export default function Projects() {
                           {project.value && (
                             <div className="space-y-0.5">
                               <span className="text-slate-400 font-bold uppercase tracking-wider text-[10px] font-sans block">Giá trị thực hiện:</span>
-                              <span className="text-[#0f766e] font-extrabold text-xs sm:text-sm">{project.value}</span>
+                              <span className="text-[#2563eb] font-extrabold text-xs sm:text-sm">{project.value}</span>
                             </div>
                           )}
                         </div>
@@ -212,7 +212,7 @@ export default function Projects() {
                           <ul className="space-y-2">
                             {project.details.map((detail, dIdx) => (
                               <li key={dIdx} className="flex gap-2.5 items-start text-xs sm:text-sm text-slate-600 font-medium font-sans leading-relaxed">
-                                <CheckCircle2 className="h-4 w-4 text-teal-600 shrink-0 mt-0.5" />
+                                <CheckCircle2 className="h-4 w-4 text-blue-600 shrink-0 mt-0.5" />
                                 <span>{detail}</span>
                               </li>
                             ))}
@@ -236,7 +236,7 @@ export default function Projects() {
         <div className="mt-32 pt-24 border-t border-slate-100 space-y-10" id="strategic-partners-grid-block">
           
           <div className="max-w-2xl text-left space-y-2">
-                            <span className="text-xs font-bold uppercase tracking-widest text-[#0f766e] font-sans bg-teal-50/80 px-3 py-1 rounded-full border border-teal-100/50">
+                            <span className="text-xs font-bold uppercase tracking-widest text-[#2563eb] font-sans bg-blue-50/80 px-3 py-1 rounded-full border border-blue-100/50">
               Mạng lưới tháp tùng
             </span>
             <h2 className="font-display text-2xl sm:text-3xl font-extrabold text-[#0F172A] tracking-tight">
@@ -262,7 +262,7 @@ export default function Projects() {
                     <span className="text-[9px] font-sans font-bold text-slate-350 tracking-wider">
                       ITC-PARTNER
                     </span>
-                    <PartnerIcon className="h-4.5 w-4.5 text-slate-300 group-hover:text-teal-600 transition-colors" />
+                    <PartnerIcon className="h-4.5 w-4.5 text-slate-300 group-hover:text-blue-600 transition-colors" />
                   </div>
                   
                   <div className="pt-4 space-y-1">

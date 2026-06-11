@@ -37,7 +37,7 @@ export default function Services({ setActivePage }: ServicesProps) {
       summary: 'Khảo sát và đánh giá thực tế một cách độc lập, chi tiết, tạo cơ sở dữ liệu xác thực cho toàn bộ các bước triển khai kỹ thuật tiếp theo.',
       icon: Search,
       tag: 'Chuẩn bị đầu tư',
-      colorTheme: 'teal',
+      colorTheme: 'blue',
       items: [
         { text: 'Khảo sát đánh giá hiện trạng và các kế hoạch ứng dụng công nghệ thông tin phục vụ các hoạt động của tổ chức.' },
         { text: 'Khảo sát số liệu hiện trạng hồ sơ của Đơn vị phục vụ cho việc lập dự án đầu tư/ đề cương dự toán chi tiết.' },
@@ -138,18 +138,18 @@ export default function Services({ setActivePage }: ServicesProps) {
   ];
 
   return (
-    <div className="relative py-12 md:py-20 bg-[#FAFAF9] min-h-screen font-sans overflow-hidden flex flex-col justify-between" id="services-view">
+    <div className="relative pt-10 pb-16 md:pt-12 md:pb-20 bg-[#FAFAF9] min-h-screen font-sans overflow-hidden flex flex-col justify-between" id="services-view">
       
       {/* Background Soft Gradients */}
-      <div className="absolute top-0 right-0 h-[30rem] w-[30rem] rounded-full bg-teal-500/5 blur-3xl pointer-events-none" />
+      <div className="absolute top-0 right-0 h-[30rem] w-[30rem] rounded-full bg-sky-500/5 blur-3xl pointer-events-none" />
       <div className="absolute bottom-10 left-10 h-[30rem] w-[30rem] rounded-full bg-blue-500/5 blur-3xl pointer-events-none" />
 
       <div className="relative mx-auto max-w-[1600px] w-full px-4 sm:px-6 md:px-12 lg:px-16 xl:px-20 2xl:px-24 space-y-12">
         
         {/* Top Header - Compact, modern, high-contrast */}
         <div className="max-w-3xl space-y-3 text-left" id="services-page-header">
-          <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-[#0f766e] font-sans bg-teal-50 border border-teal-100/50 rounded-full px-3 py-1">
-            <Sparkles className="h-3 w-3 text-teal-600 animate-pulse" />
+          <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-[#2563eb] font-sans bg-blue-50 border border-blue-100/50 rounded-full px-3 py-1">
+            <Sparkles className="h-3 w-3 text-blue-600 animate-pulse" />
             <span>Năng lực độc lập &amp; Am hiểu quy chuẩn thầu</span>
           </span>
           <h1 className="font-display text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 leading-tight">
@@ -178,7 +178,7 @@ export default function Services({ setActivePage }: ServicesProps) {
               const isActive = activeTab === service.id;
               
               // Alternating color highlights based on state and index
-              const borderAccentClass = idx % 2 === 0 ? 'border-l-4 border-l-teal-600' : 'border-l-4 border-l-sky-500';
+              const borderAccentClass = idx % 2 === 0 ? 'border-l-4 border-l-blue-600' : 'border-l-4 border-l-sky-500';
               
               return (
                 <button
@@ -186,7 +186,7 @@ export default function Services({ setActivePage }: ServicesProps) {
                   onClick={() => setActiveTab(service.id)}
                   className={`w-full text-left p-4 rounded-2xl border transition-all duration-300 flex items-start gap-4 cursor-pointer relative overflow-hidden group select-none ${
                     isActive 
-                      ? 'bg-white border-teal-600 shadow-[0_10px_30px_rgba(15,118,110,0.06)] scale-[1.01]' 
+                      ? 'bg-white border-blue-600 shadow-[0_10px_30px_rgba(15,118,110,0.06)] scale-[1.01]' 
                       : 'bg-white/70 hover:bg-white border-slate-100 hover:border-slate-200 shadow-3xs'
                   }`}
                   id={`side-item-${service.id}`}
@@ -194,7 +194,7 @@ export default function Services({ setActivePage }: ServicesProps) {
                   {/* Subtle alternating status layout inside menu */}
                   <div className={`p-2.5 rounded-xl shrink-0 transition-transform duration-300 group-hover:scale-110 ${
                     isActive 
-                      ? 'bg-teal-50 text-teal-700' 
+                      ? 'bg-blue-50 text-blue-700' 
                       : idx % 2 === 0 ? 'bg-slate-50 text-slate-500' : 'bg-[#FAF9F6] text-slate-500'
                   }`}>
                     <ServiceIcon className="h-5 w-5 stroke-[1.8]" />
@@ -204,7 +204,7 @@ export default function Services({ setActivePage }: ServicesProps) {
                     <div className="flex items-center gap-2">
                       <span className={`text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${
                         isActive 
-                          ? 'bg-teal-100/50 text-teal-800' 
+                          ? 'bg-blue-100/50 text-blue-800' 
                           : 'bg-slate-100 text-slate-500'
                       }`}>
                         {service.tag}
@@ -222,14 +222,14 @@ export default function Services({ setActivePage }: ServicesProps) {
 
                   {/* Elegant floating arrow link */}
                   <div className={`absolute right-4 top-1/2 -translate-y-1/2 transition-all duration-300 ${
-                    isActive ? 'opacity-100 translate-x-0 text-teal-600' : 'opacity-0 -translate-x-2'
+                    isActive ? 'opacity-100 translate-x-0 text-blue-600' : 'opacity-0 -translate-x-2'
                   }`}>
                     <ArrowUpRight className="h-4 w-4" />
                   </div>
 
                   {/* Alternating left focus indicators */}
                   {isActive && (
-                    <div className="absolute top-0 left-0 bottom-0 w-1 bg-teal-600" />
+                    <div className="absolute top-0 left-0 bottom-0 w-1 bg-blue-600" />
                   )}
                 </button>
               );
@@ -245,7 +245,7 @@ export default function Services({ setActivePage }: ServicesProps) {
                 
                 // Color mapping logic for premium bespoke feel per service
                 const bubbleColor = 
-                  service.colorTheme === 'teal' ? 'bg-teal-50/70 border-teal-100/60 text-teal-800' :
+                  service.colorTheme === 'blue' ? 'bg-blue-50/70 border-blue-100/60 text-blue-800' :
                   service.colorTheme === 'sky' ? 'bg-sky-50/70 border-sky-100/60 text-sky-850' :
                   service.colorTheme === 'emerald' ? 'bg-emerald-50/70 border-emerald-100/60 text-emerald-850' :
                   service.colorTheme === 'blue' ? 'bg-blue-50/70 border-blue-100/60 text-blue-850' :
@@ -254,7 +254,7 @@ export default function Services({ setActivePage }: ServicesProps) {
                   'bg-amber-50/70 border-amber-100/60 text-amber-850';
 
                 const badgeBg = 
-                  service.colorTheme === 'teal' ? 'bg-teal-600' :
+                  service.colorTheme === 'blue' ? 'bg-blue-600' :
                   service.colorTheme === 'sky' ? 'bg-sky-500' :
                   service.colorTheme === 'emerald' ? 'bg-emerald-600' :
                   service.colorTheme === 'blue' ? 'bg-blue-600' :
@@ -302,7 +302,7 @@ export default function Services({ setActivePage }: ServicesProps) {
 
                       {/* STAGGERED CHECKLIST items - shown with alternating layouts */}
                       <div className="space-y-3 pt-2">
-                        <h4 className="text-[10px] font-sans font-bold uppercase tracking-widest text-[#0f766e]">
+                        <h4 className="text-[10px] font-sans font-bold uppercase tracking-widest text-[#2563eb]">
                           Nội dung phụng sự chi tiết:
                         </h4>
                         
@@ -332,7 +332,7 @@ export default function Services({ setActivePage }: ServicesProps) {
                     {/* Bottom action panel with direct connection to contact page */}
                     <div className="pt-6 mt-6 border-t border-slate-100/70 flex flex-col sm:flex-row items-center justify-between gap-4 relative z-10">
                       <div className="flex items-center gap-2">
-                        <Award className="h-4 w-4 text-teal-600 shrink-0" />
+                        <Award className="h-4 w-4 text-blue-600 shrink-0" />
                         <span className="text-[10px] font-sans font-bold text-slate-500 uppercase tracking-wider">
                           Độc lập • Minh bạch • Chuẩn chỉ
                         </span>
@@ -364,7 +364,7 @@ export default function Services({ setActivePage }: ServicesProps) {
         {/* Dynamic bottom bento badge grid summarizing quality metrics */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4" id="services-bottom-bento-metrics">
           <div className="bg-white rounded-2xl p-4 border border-slate-100 shadow-3xs flex items-center gap-3">
-            <div className="p-2 bg-teal-50 text-teal-700 rounded-xl">
+            <div className="p-2 bg-blue-50 text-blue-700 rounded-xl">
               <ClipboardCheck className="h-5 w-5" />
             </div>
             <div>

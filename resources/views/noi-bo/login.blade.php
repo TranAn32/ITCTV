@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng nhập Nội bộ - ITC Company</title>
+    <title>Đăng nhập Quản trị - ITC Company</title>
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -51,11 +51,11 @@
             outline: none;
             transition: border-color 0.15s;
         }
-        input:focus { border-color: #5dcaa5; }
+        input:focus { border-color: #2563EB; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
         .btn {
             width: 100%;
             padding: 12px;
-            background: #0f6e56;
+            background: #2563EB;
             color: #fff;
             border: none;
             border-radius: 8px;
@@ -64,7 +64,7 @@
             cursor: pointer;
             transition: background 0.15s;
         }
-        .btn:hover { background: #0a5c46; }
+        .btn:hover { background: #1E3A8A; }
         .error { color: #a32d2d; font-size: 13px; margin-bottom: 16px; background: #fcebeb; padding: 10px; border-radius: 8px; }
     </style>
 </head>
@@ -121,14 +121,14 @@
             <span style="font-size: 9px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 4px;">Technology Consulting</span>
         </div>
     </div>
-    <h1>Cổng Nội bộ</h1>
+    <h1>Quản trị Website</h1>
     <p>Vui lòng nhập mã truy cập để tiếp tục</p>
 
     @if($errors->any())
         <div class="error">{{ $errors->first() }}</div>
     @endif
 
-    <form method="POST" action="/noi-bo/login">
+    <form method="POST" action="/admin/login">
         @csrf
         <div class="form-group">
             <label>Mã truy cập</label>

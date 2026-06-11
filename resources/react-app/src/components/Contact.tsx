@@ -72,18 +72,18 @@ export default function Contact() {
   };
 
   return (
-    <div className="relative py-12 md:py-16 bg-[#FAFAF9] min-h-screen font-sans overflow-hidden flex items-center" id="contact-view">
+    <div className="relative pt-8 pb-12 md:pt-10 md:pb-16 bg-[#FAFAF9] min-h-screen font-sans overflow-hidden flex items-center" id="contact-view">
       
       {/* Decorative Warm Accent Ambient Orbs */}
-      <div className="absolute top-20 right-10 h-[30rem] w-[30rem] rounded-full bg-teal-500/5 blur-3xl pointer-events-none" />
+      <div className="absolute top-20 right-10 h-[30rem] w-[30rem] rounded-full bg-sky-500/5 blur-3xl pointer-events-none" />
       <div className="absolute bottom-20 left-10 h-[30rem] w-[30rem] rounded-full bg-slate-400/5 blur-3xl pointer-events-none" />
 
       <div className="relative mx-auto max-w-[1600px] w-full px-4 sm:px-6 md:px-12 lg:px-16 xl:px-20 2xl:px-24">
         
         {/* Page Header (Clean, super compact, aligned with single-screen view) */}
         <div className="max-w-3xl mb-8 space-y-2 text-left" id="contact-page-header">
-          <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-[#0f766e] font-sans bg-teal-50/80 border border-teal-100/50 rounded-full px-3 py-1">
-            <Sparkles className="h-3 w-3 text-teal-600 animate-pulse" />
+          <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-[#2563eb] font-sans bg-blue-50/80 border border-blue-100/50 rounded-full px-3 py-1">
+            <Sparkles className="h-3 w-3 text-blue-600 animate-pulse" />
             <span>Kết nối chuyên đường kỹ nghệ thầu</span>
           </span>
           <h1 className="font-display text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
@@ -97,8 +97,8 @@ export default function Contact() {
         {/* Dynamic Compact Split Layout fitted for single screen */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch" id="contact-split-grid">
           
-          {/* Left Block: Ultra Clean & Compact Form card */}
-          <div className="lg:col-span-7 bg-white rounded-[1.8rem] p-6 sm:p-8 shadow-[0_15px_50px_rgba(203,213,225,0.12)] flex flex-col justify-center border border-slate-100" id="contact-form-section">
+          {/* Left Block: Premium Spacious Form card */}
+          <div className="lg:col-span-7 bg-white rounded-[1.8rem] p-8 sm:p-12 shadow-[0_15px_50px_rgba(203,213,225,0.12)] flex flex-col justify-center border border-slate-100" id="contact-form-section">
             <AnimatePresence mode="wait">
               {isSubmitted ? (
                 
@@ -107,26 +107,26 @@ export default function Contact() {
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0 }}
-                  className="py-10 text-center space-y-4 flex flex-col items-center justify-center min-h-[350px]" 
+                  className="py-10 text-center space-y-6 flex flex-col items-center justify-center min-h-[350px]" 
                   id="submit-success-panel"
                 >
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-teal-50 text-teal-600 shadow-3xs">
-                    <CheckCircle2 className="h-6 w-6 stroke-[1.8]" />
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 shadow-3xs">
+                    <CheckCircle2 className="h-7 w-7 stroke-[1.8]" />
                   </div>
                   
-                  <div className="space-y-2 max-w-md">
-                    <h3 className="font-display text-xl font-extrabold text-slate-900 tracking-tight">
+                  <div className="space-y-3 max-w-md">
+                    <h3 className="font-display text-2xl font-extrabold text-slate-900 tracking-tight">
                       Gửi yêu cầu thành công
                     </h3>
-                    <p className="text-xs text-slate-500 leading-relaxed">
-                      ITC đã nhận được thông tin đăng ký thầu. Bản chuyên sự của chúng tôi sẽ chủ động liên hệ trực tiếp đến số điện thoại <span className="font-sans text-[#0f766e] font-extrabold">{formData.phone}</span> để hỗ trợ Quý đơn vị một cách bảo mật nhất.
+                    <p className="text-sm text-slate-500 leading-relaxed font-sans">
+                      ITC đã nhận được thông tin đăng ký thầu. Bản chuyên sự của chúng tôi sẽ chủ động liên hệ trực tiếp đến số điện thoại <span className="font-sans text-[#2563eb] font-extrabold">{formData.phone}</span> để hỗ trợ Quý đơn vị một cách bảo mật nhất.
                     </p>
                   </div>
 
                   <div className="pt-4">
                     <button
                       onClick={handleReset}
-                      className="rounded-xl border border-slate-100 hover:bg-slate-50 text-slate-705 font-bold text-xs uppercase tracking-wider px-5 py-2.5 transition-colors cursor-pointer shadow-3xs"
+                      className="rounded-xl border border-slate-150 hover:bg-slate-50 text-slate-705 font-bold text-xs uppercase tracking-wider px-6 py-3 transition-colors cursor-pointer shadow-3xs"
                     >
                       Bản khảo sát mới
                     </button>
@@ -135,24 +135,24 @@ export default function Contact() {
 
               ) : (
                 
-                /* Compact Form with 2-Column Responsive Layout */
-                <form onSubmit={handleSubmit} className="space-y-4" id="consultation-form">
-                  <div className="space-y-1">
-                    <h3 className="font-display text-base sm:text-lg font-bold text-slate-900 tracking-tight">
+                /* Spacious Form with 2-Column Responsive Layout */
+                <form onSubmit={handleSubmit} className="space-y-6" id="consultation-form">
+                  <div className="space-y-2">
+                    <h3 className="font-display text-lg sm:text-xl font-bold text-slate-900 tracking-tight">
                       Để lại lời mời hợp tác
                     </h3>
-                    <p className="text-[11px] text-slate-400 font-sans">
+                    <p className="text-xs text-slate-400 font-sans">
                       Xin vui lòng cập nhật các hạng mục nhu cầu dưới đây để ITC chuẩn bị hồ sơ thấu tháo.
                     </p>
                   </div>
 
-                  <div className="space-y-4">
+                  <div className="space-y-5">
                     
                     {/* Row 1: Full Name & Phone Call Side-by-Side */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                       {/* Full Name Input */}
-                      <div className="space-y-1">
-                        <label className="text-[11px] font-semibold text-slate-600 tracking-wide font-sans" htmlFor="input-fullName">
+                      <div className="space-y-2">
+                        <label className="text-xs font-bold text-slate-700 tracking-wide font-sans block" htmlFor="input-fullName">
                           Họ &amp; Tên Người đại diện <span className="text-red-500 font-sans font-bold">*</span>
                         </label>
                         <input
@@ -160,19 +160,19 @@ export default function Contact() {
                           id="input-fullName"
                           value={formData.fullName}
                           onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                          className="w-full rounded-xl border-none bg-slate-50/70 focus:bg-white px-4 py-2.5 text-xs text-slate-800 placeholder-slate-405 focus:ring-2 focus:ring-[#14b8a6]/20 focus:outline-none transition-all"
+                          className="w-full rounded-xl border-none bg-slate-50/70 focus:bg-white px-5 py-3.5 text-sm text-slate-800 placeholder-slate-405 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition-all font-sans"
                           placeholder="Ví dụ: Nguyễn Văn A"
                         />
                         {errors.fullName && (
-                          <p className="text-[10px] text-rose-650 flex items-center gap-1 font-medium mt-0.5">
-                            <AlertTriangle className="h-3 w-3" /> <span>{errors.fullName}</span>
+                          <p className="text-xs text-rose-650 flex items-center gap-1 font-semibold mt-1">
+                            <AlertTriangle className="h-3.5 w-3.5" /> <span>{errors.fullName}</span>
                           </p>
                         )}
                       </div>
 
                       {/* Phone Contact */}
-                      <div className="space-y-1">
-                        <label className="text-[11px] font-semibold text-slate-600 tracking-wide font-sans" htmlFor="input-phone">
+                      <div className="space-y-2">
+                        <label className="text-xs font-bold text-slate-700 tracking-wide font-sans block" htmlFor="input-phone">
                           Hotline hỗ trợ thầu <span className="text-red-500 font-sans font-bold">*</span>
                         </label>
                         <input
@@ -180,22 +180,22 @@ export default function Contact() {
                           id="input-phone"
                           value={formData.phone}
                           onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                          className="w-full rounded-xl border-none bg-slate-50/70 focus:bg-white px-4 py-2.5 text-xs text-slate-800 placeholder-slate-405 focus:ring-2 focus:ring-[#14b8a6]/20 focus:outline-none transition-all"
+                          className="w-full rounded-xl border-none bg-slate-50/70 focus:bg-white px-5 py-3.5 text-sm text-slate-800 placeholder-slate-405 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition-all font-sans"
                           placeholder="Số di động / Zalo..."
                         />
                         {errors.phone && (
-                          <p className="text-[10px] text-rose-650 flex items-center gap-1 font-semibold mt-0.5">
-                            <AlertTriangle className="h-3 w-3" /> <span>{errors.phone}</span>
+                          <p className="text-xs text-rose-650 flex items-center gap-1 font-semibold mt-1">
+                            <AlertTriangle className="h-3.5 w-3.5" /> <span>{errors.phone}</span>
                           </p>
                         )}
                       </div>
                     </div>
 
                     {/* Row 2: Organization Name & Email Side-by-Side */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                       {/* Organization Input */}
-                      <div className="space-y-1">
-                        <label className="text-[11px] font-semibold text-slate-600 tracking-wide font-sans" htmlFor="input-organization">
+                      <div className="space-y-2">
+                        <label className="text-xs font-bold text-slate-700 tracking-wide font-sans block" htmlFor="input-organization">
                           Tên Đơn vị / Cơ quan chủ thầu <span className="text-red-500 font-sans font-bold">*</span>
                         </label>
                         <input
@@ -203,19 +203,19 @@ export default function Contact() {
                           id="input-organization"
                           value={formData.organization}
                           onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
-                          className="w-full rounded-xl border-none bg-slate-50/70 focus:bg-white px-4 py-2.5 text-xs text-slate-800 placeholder-slate-405 focus:ring-2 focus:ring-[#14b8a6]/20 focus:outline-none transition-all"
+                          className="w-full rounded-xl border-none bg-slate-50/70 focus:bg-white px-5 py-3.5 text-sm text-slate-800 placeholder-slate-405 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition-all font-sans"
                           placeholder="Tên doanh nghiệp / cơ quan..."
                         />
                         {errors.organization && (
-                          <p className="text-[10px] text-rose-650 flex items-center gap-1 font-semibold mt-0.5">
-                            <AlertTriangle className="h-3 w-3" /> <span>{errors.organization}</span>
+                          <p className="text-xs text-rose-650 flex items-center gap-1 font-semibold mt-1">
+                            <AlertTriangle className="h-3.5 w-3.5" /> <span>{errors.organization}</span>
                           </p>
                         )}
                       </div>
 
                       {/* Email Address */}
-                      <div className="space-y-1">
-                        <label className="text-[11px] font-semibold text-slate-600 tracking-wide font-sans" htmlFor="input-email">
+                      <div className="space-y-2">
+                        <label className="text-xs font-bold text-slate-700 tracking-wide font-sans block" htmlFor="input-email">
                           Thư điện tử công vụ <span className="text-red-500 font-sans font-bold">*</span>
                         </label>
                         <input
@@ -223,20 +223,20 @@ export default function Contact() {
                           id="input-email"
                           value={formData.email}
                           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                          className="w-full rounded-xl border-none bg-slate-50/70 focus:bg-white px-4 py-2.5 text-xs text-slate-800 placeholder-slate-405 focus:ring-2 focus:ring-[#14b8a6]/20 focus:outline-none transition-all"
+                          className="w-full rounded-xl border-none bg-slate-50/70 focus:bg-white px-5 py-3.5 text-sm text-slate-800 placeholder-slate-405 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition-all font-sans"
                           placeholder="coquan@ongty.vn"
                         />
                         {errors.email && (
-                          <p className="text-[10px] text-rose-650 flex items-center gap-1 font-semibold mt-0.5">
-                            <AlertTriangle className="h-3 w-3" /> <span>{errors.email}</span>
+                          <p className="text-xs text-rose-650 flex items-center gap-1 font-semibold mt-1">
+                            <AlertTriangle className="h-3.5 w-3.5" /> <span>{errors.email}</span>
                           </p>
                         )}
                       </div>
                     </div>
 
                     {/* Service Field Selector */}
-                    <div className="space-y-1">
-                      <label className="text-[11px] font-semibold text-slate-600 tracking-wide font-sans" htmlFor="input-serviceField">
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold text-slate-700 tracking-wide font-sans block" htmlFor="input-serviceField">
                         Hạng mục Dự án đề nghị tư vấn
                       </label>
                       <div className="relative">
@@ -244,7 +244,7 @@ export default function Contact() {
                           id="input-serviceField"
                           value={formData.serviceField}
                           onChange={(e) => setFormData({ ...formData, serviceField: e.target.value })}
-                          className="w-full rounded-xl border-none bg-slate-50/70 focus:bg-white px-4 py-2.5 text-xs text-slate-800 focus:ring-2 focus:ring-[#14b8a6]/20 focus:outline-none transition-all appearance-none cursor-pointer"
+                          className="w-full rounded-xl border-none bg-slate-50/70 focus:bg-white px-5 py-3.5 text-sm text-slate-800 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition-all appearance-none cursor-pointer font-sans"
                         >
                           <option value="khao-sat-cntt">Tư vấn khảo sát đề xuất dự án CNTT</option>
                           <option value="lap-du-an-thiet-ke">Lập dự án &amp; Thiết kế bản vẽ thi công</option>
@@ -252,39 +252,39 @@ export default function Contact() {
                           <option value="giam-sat-kiem-thu">Giám sát độc lập &amp; Đánh giá kiểm thử phần mềm</option>
                           <option value="quan-ly-du-an">Tư vấn quản trị dự án &amp; Hạ tầng Máy chủ, an toàn máy chủ</option>
                         </select>
-                        <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none text-slate-400 text-[10px]">
+                        <div className="absolute inset-y-0 right-5 flex items-center pointer-events-none text-slate-400 text-xs">
                           ▼
                         </div>
                       </div>
                     </div>
 
                     {/* Message Box */}
-                    <div className="space-y-1">
-                      <label className="text-[11px] font-semibold text-slate-600 tracking-wide font-sans" htmlFor="input-message">
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold text-slate-700 tracking-wide font-sans block" htmlFor="input-message">
                         Tóm tắt yêu cầu chuyên gia của ITC <span className="text-red-500 font-sans font-bold">*</span>
                       </label>
                       <textarea
                         id="input-message"
-                        rows={2}
+                        rows={5}
                         value={formData.message}
                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                        className="w-full rounded-xl border-none bg-slate-50/70 focus:bg-white px-4 py-2 text-xs text-slate-800 placeholder-slate-405 focus:ring-2 focus:ring-[#14b8a6]/20 focus:outline-none transition-all resize-none"
+                        className="w-full rounded-xl border-none bg-slate-50/70 focus:bg-white px-5 py-3.5 text-sm text-slate-800 placeholder-slate-405 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition-all resize-none font-sans"
                         placeholder="Nêu tóm tắt hiện trạng thầu..."
                       />
                       {errors.message && (
-                        <p className="text-[10px] text-rose-650 flex items-center gap-1 font-semibold mt-0.5">
-                          <AlertTriangle className="h-3 w-3" /> <span>{errors.message}</span>
+                        <p className="text-xs text-rose-650 flex items-center gap-1 font-semibold mt-1">
+                          <AlertTriangle className="h-3.5 w-3.5" /> <span>{errors.message}</span>
                         </p>
                       )}
                     </div>
                   </div>
 
                   {/* Submission Button */}
-                  <div className="pt-2">
+                  <div className="pt-4">
                     <button
                       type="submit"
                       disabled={submitting}
-                      className="group flex w-full items-center justify-center gap-2 rounded-xl bg-teal-700 hover:bg-teal-650 py-3.5 text-xs font-bold uppercase tracking-widest text-white shadow-md shadow-teal-950/10 hover:scale-[1.005] active:scale-[0.995] disabled:opacity-60 transition-all cursor-pointer"
+                      className="group flex w-full items-center justify-center gap-2 rounded-xl bg-blue-700 hover:bg-blue-550 py-4.5 text-xs font-bold uppercase tracking-widest text-white shadow-md shadow-blue-950/10 hover:scale-[1.005] active:scale-[0.995] disabled:opacity-60 transition-all cursor-pointer"
                     >
                       {submitting ? (
                         <>
@@ -294,7 +294,7 @@ export default function Contact() {
                       ) : (
                         <>
                           <Send className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                          <span className="font-semibold text-[11px]">ĐĂNG KÝ HỒ SƠ YÊU CẦU</span>
+                          <span className="font-semibold text-xs tracking-wider">ĐĂNG KÝ HỒ SƠ YÊU CẦU</span>
                         </>
                       )}
                     </button>
@@ -376,7 +376,7 @@ export default function Contact() {
                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest font-sans block">
                     ĐIỆN THOẠI
                   </span>
-                  <p className="text-sm font-extrabold font-sans text-[#0f766e] tracking-wide select-all">
+                  <p className="text-sm font-extrabold font-sans text-[#2563eb] tracking-wide select-all">
                     0984482789
                   </p>
                 </div>
@@ -400,7 +400,7 @@ export default function Contact() {
                     href="http://itctv.vn/"
                     target="_blank"
                     rel="noreferrer"
-                    className="text-xs font-bold text-teal-600 hover:text-teal-750 transition-colors underline font-sans"
+                    className="text-xs font-bold text-blue-600 hover:text-blue-750 transition-colors underline font-sans"
                   >
                     http://itctv.vn/
                   </a>

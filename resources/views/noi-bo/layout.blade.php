@@ -3,111 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Cổng Nội Bộ - ITC Company')</title>
+    <title>@yield('title', 'Quản trị - ITC Company')</title>
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Be Vietnam Pro', sans-serif;
-            background: #f5f6f8;
-            color: #111827;
+            background: #f8fafc;
+            color: #1e293b;
             display: flex;
-            flex-direction: column;
-            min-height: 100vh;
+            flex-direction: row;
+            height: 100vh;
             margin: 0;
-            overflow: hidden; /* Main apps handle their own scroll */
+            overflow: hidden;
         }
         .global-nav {
-            height: 56px;
+            width: 260px;
+            height: 100%;
             background: #ffffff;
-            border-bottom: 1px solid #e2e4e8;
+            border-right: 1px solid #e2e8f0;
             display: flex;
-            align-items: center;
-            padding: 0 20px;
+            flex-direction: column;
+            padding: 24px 16px;
             flex-shrink: 0;
             z-index: 1000;
+            box-shadow: 4px 0 24px rgba(15, 23, 42, 0.02);
         }
         .global-nav-brand {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-right: 30px;
+            gap: 12px;
+            margin-bottom: 32px;
             text-decoration: none;
-            color: #111827;
+            color: #0f172a;
+            padding: 0 8px;
         }
         .global-nav-logo {
-            width: 32px;
-            height: 32px;
-            background: #0f6e56;
+            width: 36px;
+            height: 36px;
+            background: #2563EB;
             color: #fff;
-            border-radius: 8px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
         .global-nav-title {
-            font-size: 15px;
-            font-weight: 600;
+            font-size: 16px;
+            font-weight: 800;
         }
         .global-nav-links {
             display: flex;
-            align-items: center;
-            height: 100%;
+            flex-direction: column;
+            gap: 8px;
+            flex: 1;
         }
         .global-nav-link {
-            padding: 0 16px;
-            height: 100%;
+            padding: 12px 16px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             font-size: 14px;
-            color: #6b7280;
+            color: #475569;
             text-decoration: none;
-            border-bottom: 2px solid transparent;
             transition: all 0.2s;
-            font-weight: 500;
-            gap: 6px;
+            font-weight: 600;
+            gap: 10px;
+            border-left: 3px solid transparent;
         }
         .global-nav-link:hover {
-            color: #111827;
-            background: #f9fafb;
+            color: #0f172a;
+            background: #f1f5f9;
         }
         .global-nav-link.active {
-            color: #0f6e56;
-            border-bottom-color: #0f6e56;
+            color: #2563EB;
+            background: #eff6ff;
+            border-left-color: #2563EB;
         }
         .global-nav-link svg {
-            width: 16px;
-            height: 16px;
+            width: 18px;
+            height: 18px;
         }
         .global-nav-right {
-            margin-left: auto;
+            margin-top: auto;
+            padding-top: 16px;
+            border-top: 1px solid #e2e8f0;
             display: flex;
-            align-items: center;
+            flex-direction: column;
             gap: 12px;
         }
         .btn-logout {
-            padding: 6px 12px;
+            padding: 10px;
             background: #fff;
-            border: 1px solid #e2e4e8;
-            border-radius: 6px;
-            color: #a32d2d;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            color: #dc2626;
             text-decoration: none;
-            font-size: 12px;
-            font-weight: 500;
-            transition: 0.2s;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s;
             cursor: pointer;
-            display: inline-flex;
+            display: flex;
             align-items: center;
-            gap: 4px;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
         }
-        .btn-logout:hover { background: #fcebeb; border-color: #fca5a5; }
+        .btn-logout:hover { 
+            background: #fef2f2; 
+            border-color: #fee2e2; 
+        }
         .global-main {
             flex: 1;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            height: calc(100vh - 56px);
+            height: 100%;
+            overflow-y: auto;
             position: relative;
+            background: #f8fafc;
         }
     </style>
     @yield('styles')
@@ -115,7 +126,7 @@
 <body>
 
 <div class="global-nav">
-    <a href="/noi-bo/van-ban" class="global-nav-brand">
+    <a href="/admin/banner" class="global-nav-brand">
         <svg width="34" height="34" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
           <defs>
             <radialGradient id="sphereGrad" cx="32%" cy="32%" r="68%">
@@ -167,22 +178,18 @@
     </a>
     
     <div class="global-nav-links">
-        <a href="/noi-bo/van-ban" class="global-nav-link {{ request()->is('noi-bo/van-ban') || request()->is('noi-bo') ? 'active' : '' }}">
-            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-            Quản lý Văn bản
+        <a href="/admin/banner" class="global-nav-link {{ request()->is('admin/banner') || request()->is('admin') ? 'active' : '' }}">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            Quản lý Banner
         </a>
-        <a href="/noi-bo/sinh-so" class="global-nav-link {{ request()->is('noi-bo/sinh-so') ? 'active' : '' }}">
-            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"/></svg>
-            Sinh Số Hồ Sơ
-        </a>
-        <a href="/noi-bo/access-code" class="global-nav-link {{ request()->is('noi-bo/access-code') ? 'active' : '' }}">
+        <a href="/admin/access-code" class="global-nav-link {{ request()->is('admin/access-code') ? 'active' : '' }}">
             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
             Mã Truy Cập
         </a>
     </div>
 
     <div class="global-nav-right">
-        <form method="POST" action="/noi-bo/logout" style="margin: 0">
+        <form method="POST" action="/admin/logout" style="margin: 0">
             @csrf
             <button type="submit" class="btn-logout">
                 <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>

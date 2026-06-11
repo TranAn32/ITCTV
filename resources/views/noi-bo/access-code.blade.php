@@ -44,13 +44,13 @@
         transition: border-color 0.2s;
     }
     .form-group input:focus {
-        border-color: #0f6e56;
-        box-shadow: 0 0 0 3px rgba(15, 110, 86, 0.1);
+        border-color: #2563EB;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
     }
     .btn-submit {
         width: 100%;
         padding: 12px;
-        background: #0f6e56;
+        background: #2563EB;
         color: #fff;
         border: none;
         border-radius: 8px;
@@ -60,7 +60,7 @@
         transition: background 0.2s;
     }
     .btn-submit:hover {
-        background: #0a5c46;
+        background: #1E3A8A;
     }
     .alert {
         padding: 12px 16px;
@@ -69,9 +69,9 @@
         margin-bottom: 20px;
     }
     .alert-success {
-        background: #e1f5ee;
-        color: #085041;
-        border: 1px solid #5dcaa5;
+        background: #eff6ff;
+        color: #1e40af;
+        border: 1px solid #93c5fd;
     }
     .alert-danger {
         background: #fcebeb;
@@ -106,7 +106,7 @@
             </div>
         @endif
 
-        <form method="POST" action="/noi-bo/access-code">
+        <form method="POST" action="/admin/access-code">
             @csrf
             <div class="form-group">
                 <label for="current_code">Mã truy cập hiện tại</label>
