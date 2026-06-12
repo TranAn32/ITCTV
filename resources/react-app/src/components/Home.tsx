@@ -11,7 +11,10 @@ import {
   Send,
   Award,
   Calendar,
-  Briefcase
+  Briefcase,
+  Lock,
+  Clock,
+  Cpu
 } from 'lucide-react';
 import { ActivePage } from '../types';
 import { motion, AnimatePresence } from 'motion/react';
@@ -35,12 +38,119 @@ const getCategoryLabel = (category: string) => {
   }
 };
 
+const getIconComponent = (iconName: string) => {
+  switch (iconName) {
+    case 'Shield':
+      return Shield;
+    case 'Lock':
+      return Lock;
+    case 'Layers':
+      return Layers;
+    case 'Clock':
+      return Clock;
+    case 'Cpu':
+      return Cpu;
+    case 'Briefcase':
+      return Briefcase;
+    case 'Award':
+      return Award;
+    default:
+      return CheckCircle2;
+  }
+};
+
+interface HomeProjectItem {
+  id: string;
+  category: string;
+  client: string;
+  verticalLabel: string;
+  horizontalLabel: string;
+  verticalTitle: string;
+  horizontalTitle: string;
+  scope: string;
+  value: string;
+  packageValue: string | null;
+  features: { text: string; icon: string }[];
+}
+
+const HOME_PROJECTS: HomeProjectItem[] = [
+  {
+    id: 'project-gtvt-tthc',
+    category: 'gov',
+    client: 'Trung tâm Công nghệ thông tin – Bộ Giao thông Vận tải',
+    verticalLabel: 'BỘ NGÀNH TW',
+    horizontalLabel: 'BỘ NGÀNH TRUNG ƯƠNG',
+    verticalTitle: 'Tư vấn phần mềm',
+    horizontalTitle: 'Tư vấn phần mềm – Xây dựng nền tảng hệ thống TTHC (Thủ tục hành chính)',
+    scope: 'Tư vấn xây dựng nền tảng hệ thống TTHC hợp nhất, tích hợp Cơ sở dữ liệu Quốc gia về dân cư và xác thực một lần (SSO) qua nền tảng liên thông LGSP.',
+    value: '151.000.000 đồng',
+    packageValue: null,
+    features: [
+      { text: 'Tích hợp CSDL Quốc gia về dân cư', icon: 'Shield' },
+      { text: 'Xác thực một lần (SSO) tập trung', icon: 'Lock' },
+      { text: 'Liên thông qua nền tảng LGSP', icon: 'Layers' }
+    ]
+  },
+  {
+    id: 'project-khcn-kiemthu',
+    category: 'gov',
+    client: 'Trung tâm Công nghệ thông tin – Bộ Khoa học và Công nghệ',
+    verticalLabel: 'BỘ NGÀNH TW',
+    horizontalLabel: 'BỘ NGÀNH TRUNG ƯƠNG',
+    verticalTitle: 'Thuê dịch vụ kiểm thử',
+    horizontalTitle: 'Thuê dịch vụ kiểm thử phần mềm',
+    scope: 'Cung cấp dịch vụ kiểm thử độc lập chất lượng cao, rà soát lỗ hổng bảo mật và kiểm duyệt quy trình kết nối Cơ sở dữ liệu Quốc gia về dân cư.',
+    value: '368.000.000 đồng',
+    packageValue: null,
+    features: [
+      { text: 'Kiểm thử hiệu năng & Tải hệ thống', icon: 'Clock' },
+      { text: 'Đánh giá an toàn thông tin (PenTest)', icon: 'Shield' },
+      { text: 'Kiểm thử tự động & Tích hợp API', icon: 'Cpu' }
+    ]
+  },
+  {
+    id: 'project-backan-truyxuat',
+    category: 'province',
+    client: 'Sở Khoa học và Công nghệ tỉnh Bắc Kạn',
+    verticalLabel: 'SỞ / TỈNH THÀNH',
+    horizontalLabel: 'SỞ / TỈNH THÀNH',
+    verticalTitle: 'Tư vấn lập đề cương',
+    horizontalTitle: "Tư vấn lập đề cương và dự toán chi tiết nhiệm vụ 'Xây dựng hệ thống truy xuất nguồn gốc sản phẩm hàng hóa trên địa bàn tỉnh Bắc Kạn'",
+    scope: 'Tư vấn lập đề cương kinh tế - kỹ thuật và lập dự toán chi tiết bám sát Nghị định 73/2019/NĐ-CP cho hệ thống truy xuất nguồn gốc cấp tỉnh.',
+    value: '76.000.000 đồng',
+    packageValue: '4 tỷ đồng',
+    features: [
+      { text: 'Đạt chuẩn Nghị định 73/2019/NĐ-CP', icon: 'Briefcase' },
+      { text: 'Truy xuất nguồn gốc sản phẩm', icon: 'Award' },
+      { text: 'Dự toán chi tiết định mức tối ưu', icon: 'Layers' }
+    ]
+  },
+  {
+    id: 'project-tuyenquang-lgsp',
+    category: 'province',
+    client: 'Sở Thông tin và Truyền thông tỉnh Tuyên Quang',
+    verticalLabel: 'SỞ / TỈNH THÀNH',
+    horizontalLabel: 'SỞ / TỈNH THÀNH',
+    verticalTitle: 'Tư vấn lập đề cương',
+    horizontalTitle: "Tư vấn lập đề cương và dự toán chi tiết nhiệm vụ 'Nâng cấp và xây dựng bổ sung nền tảng chung tích hợp chia sẻ các hệ thống thông tin quy mô cấp tỉnh LGSP'",
+    scope: 'Lập đề cương kỹ thuật chuẩn định mức bám sát thông số LGSP và dự toán chi tiết phục vụ nâng cấp hệ thống liên thông tích hợp dữ liệu cấp tỉnh.',
+    value: '66.000.000 đồng',
+    packageValue: '4.150.000.000 đồng',
+    features: [
+      { text: 'Thiết kế kiến trúc LGSP cấp tỉnh', icon: 'Cpu' },
+      { text: 'Tích hợp & chia sẻ dữ liệu liên thông', icon: 'Layers' },
+      { text: 'Định mức kinh tế - kỹ thuật chuyên ngành', icon: 'Briefcase' }
+    ]
+  }
+];
+
 interface HomeProps {
   setActivePage: (page: ActivePage) => void;
 }
 
 export default function Home({ setActivePage }: HomeProps) {
   const [bannerUrl, setBannerUrl] = useState<string>('/uploads/banners/default-banner.png');
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(0);
 
   useEffect(() => {
     fetch('/api/banner')
@@ -131,33 +241,17 @@ export default function Home({ setActivePage }: HomeProps) {
                   <span>Liên hệ tư vấn</span>
                 </button>
               </div>
-
-              {/* Credentials metrics to fill space and look premium */}
-              <div className="grid grid-cols-3 gap-6 pt-8 border-t border-white/15 mt-8 max-w-lg">
-                <div>
-                  <div className="text-xl sm:text-2xl font-black text-sky-400 font-display">10+</div>
-                  <div className="text-[10px] text-slate-350 font-bold uppercase tracking-wider mt-0.5">Năm kinh nghiệm</div>
-                </div>
-                <div>
-                  <div className="text-xl sm:text-2xl font-black text-sky-400 font-display">500+</div>
-                  <div className="text-[10px] text-slate-350 font-bold uppercase tracking-wider mt-0.5">Dự án ủy thác</div>
-                </div>
-                <div>
-                  <div className="text-xl sm:text-2xl font-black text-sky-400 font-display">100%</div>
-                  <div className="text-[10px] text-slate-350 font-bold uppercase tracking-wider mt-0.5">Độc lập khách quan</div>
-                </div>
-              </div>
             </motion.div>
 
           </div>
         </div>
 
         {/* Bottom edge gradient fade - Soft transition to content */}
-        <div className="absolute bottom-0 left-0 right-0 h-40 md:h-56 bg-gradient-to-t from-[#F8FAFC] via-[#F8FAFC]/50 to-transparent z-10" />
+        
       </section>
 
       {/* 2. CORE SERVICES AREA - 3 Simple flat white columns with Minimalist Line Icons */}
-      <section className="py-24 bg-gradient-to-b from-[#F8FAFC] via-white to-slate-50 relative overflow-hidden" id="core-services-section">
+      <section className="py-12 bg-gradient-to-b from-[#F8FAFC] via-white to-slate-50 relative overflow-hidden" id="core-services-section">
         {/* Soft background glow circles to soften the boundary */}
         <div className="absolute top-0 left-1/4 h-80 w-80 rounded-full bg-blue-50/30 blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 right-1/4 h-80 w-80 rounded-full bg-sky-50/20 blur-3xl pointer-events-none" />
@@ -165,26 +259,23 @@ export default function Home({ setActivePage }: HomeProps) {
         <div className="relative mx-auto max-w-[1600px] px-4 sm:px-6 md:px-12 lg:px-16 xl:px-20 2xl:px-24">
           
           <motion.div 
-            className="max-w-3xl text-left mb-16 space-y-3"
+            className="max-w-3xl text-left mb-12 space-y-3"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <span className="text-xs font-bold uppercase tracking-widest text-blue-600 font-sans">DỊCH VỤ CỐT LÕI</span>
-            <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-[#0F172A] tracking-tight">
-              Tuyển tập 3 mảng hoạt động chiến lược
+            <span className="text-xs font-bold uppercase tracking-widest text-blue-600 font-sans">ITC Services</span>
+            <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-[#0F172A] tracking-tight font-semibold">
+              DỊCH VỤ CỐT LÕI
             </h2>
-            <p className="text-sm sm:text-base text-slate-500 max-w-2xl leading-relaxed">
-              Chúng tôi đi thẳng vào vấn đề cốt lõi của đầu tư số. Rõ ràng, minh bạch, tuân thủ chặt chẽ pháp lý và tối ưu dòng tài chính thầu.
-            </p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8" id="three-services-columns">
             
             {/* Column 1: Khảo sát & Quy hoạch */}
             <motion.div 
-              className="rounded-2xl border border-slate-200/80 bg-white p-8 hover:border-blue-600/30 transition-all flex flex-col justify-between group cursor-pointer shadow-3xs hover:shadow-md hover:-translate-y-1 duration-300"
+              className="rounded-xl border border-slate-200/80 bg-white p-8 hover:border-blue-600/30 transition-all flex flex-col justify-between group cursor-pointer shadow-3xs hover:shadow-md hover:-translate-y-1 duration-300"
               onClick={() => { setActivePage('services'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
               id="home-service-1"
               initial={{ opacity: 0, y: 30 }}
@@ -213,7 +304,7 @@ export default function Home({ setActivePage }: HomeProps) {
 
             {/* Column 2: Thiết kế & Khái toán */}
             <motion.div 
-              className="rounded-2xl border border-slate-200/80 bg-white p-8 hover:border-blue-500/30 transition-all flex flex-col justify-between group cursor-pointer shadow-3xs hover:shadow-md hover:-translate-y-1 duration-300"
+              className="rounded-xl border border-slate-200/80 bg-white p-8 hover:border-blue-500/30 transition-all flex flex-col justify-between group cursor-pointer shadow-3xs hover:shadow-md hover:-translate-y-1 duration-300"
               onClick={() => { setActivePage('services'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
               id="home-service-2"
               initial={{ opacity: 0, y: 30 }}
@@ -242,7 +333,7 @@ export default function Home({ setActivePage }: HomeProps) {
 
             {/* Column 3: Giám sát & Kiểm thử */}
             <motion.div 
-              className="rounded-2xl border border-slate-200/80 bg-white p-8 hover:border-brand-navy/30 transition-all flex flex-col justify-between group cursor-pointer shadow-3xs hover:shadow-md hover:-translate-y-1 duration-300"
+              className="rounded-xl border border-slate-200/80 bg-white p-8 hover:border-brand-navy/30 transition-all flex flex-col justify-between group cursor-pointer shadow-3xs hover:shadow-md hover:-translate-y-1 duration-300"
               onClick={() => { setActivePage('services'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
               id="home-service-3"
               initial={{ opacity: 0, y: 30 }}
@@ -275,90 +366,167 @@ export default function Home({ setActivePage }: HomeProps) {
       </section>
 
       {/* 2.5 FEATURED PROJECTS SECTION - Expanding Hover Cards */}
-      <section className="py-24 bg-white relative overflow-hidden" id="featured-projects-section">
+      <section className="py-12 bg-white relative overflow-hidden" id="featured-projects-section">
         <div className="absolute top-0 right-1/4 h-80 w-80 rounded-full bg-blue-50/40 blur-3xl pointer-events-none" />
         
         <div className="relative mx-auto max-w-[1600px] px-4 sm:px-6 md:px-12 lg:px-16 xl:px-20 2xl:px-24">
           <motion.div 
-            className="max-w-3xl text-left mb-16 space-y-3"
+            className="max-w-3xl text-left mb-12 space-y-3"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <span className="text-xs font-bold uppercase tracking-widest text-blue-600 font-sans">DỰ ÁN NỔI BẬT</span>
-            <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-[#0F172A] tracking-tight">
-              Công trình ủy thác tiêu biểu
+            <span className="text-xs font-bold uppercase tracking-widest text-blue-600 font-sans">ITC Projects</span>
+            <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-[#0F172A] tracking-tight font-semibold">
+              DỰ ÁN NỔI BẬT
             </h2>
-            <p className="text-sm sm:text-base text-slate-500 max-w-2xl leading-relaxed">
-              Các dự án chuyển đổi số quy mô lớn được ITC khẳng định năng lực thông qua giám sát và thẩm tra độc lập.
-            </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="homepage-featured-projects-grid">
-            {PROJECTS_DATA.slice(0, 4).map((project) => {
+          <div 
+            className="flex flex-row justify-center items-stretch gap-1 sm:gap-1.5 md:gap-2 w-full h-[480px] md:h-[510px]" 
+            id="homepage-featured-projects-grid"
+            onMouseLeave={() => setHoveredIndex(0)}
+          >
+            {HOME_PROJECTS.map((project, index) => {
               const imgUrl = projectImages[project.id] || 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=800';
+              const isExpanded = hoveredIndex === index;
+              
+              const widthClass = isExpanded
+                ? 'w-[55%] sm:w-[58%] md:w-[480px] lg:w-[550px] flex-grow'
+                : 'w-[15%] sm:w-[14%] md:w-[100px] lg:w-[110px]';
+
               return (
                 <motion.div
                   key={project.id}
-                  className="relative h-[420px] rounded-3xl overflow-hidden group shadow-[0_10px_30px_rgba(203,213,225,0.1)] border border-slate-100/50 cursor-pointer flex flex-col justify-end bg-slate-900"
+                  className={`relative h-[480px] rounded-lg overflow-hidden shadow-[0_10px_30px_rgba(203,213,225,0.08)] border border-transparent cursor-pointer flex flex-col justify-end bg-slate-950 transition-all duration-700 ease-out ${widthClass}`}
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.5 }}
-                  onClick={() => { setActivePage('projects'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  onMouseEnter={() => setHoveredIndex(index)}
+                  onClick={(e) => {
+                    if (hoveredIndex !== index) {
+                      e.stopPropagation();
+                      setHoveredIndex(index);
+                    } else {
+                      setActivePage('projects');
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                  }}
                 >
                   {/* Background Image */}
                   <div className="absolute inset-0 z-0">
                     <img
                       src={imgUrl}
-                      alt={project.title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 ease-out"
+                      alt={project.horizontalTitle}
+                      className="w-full h-full object-cover transition-transform duration-1000 ease-out"
+                      style={{
+                        transform: isExpanded ? 'scale(1.05)' : 'scale(1.0)',
+                      }}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/60 to-slate-900/10 transition-opacity duration-300 group-hover:opacity-95" />
+                    <div 
+                      className={`absolute inset-0 transition-all duration-700 ${
+                        isExpanded 
+                          ? 'bg-gradient-to-t from-slate-950 via-slate-950/85 to-transparent opacity-95' 
+                          : 'bg-slate-950/75'
+                      }`} 
+                    />
                   </div>
 
-                  {/* Card Content Wrapper */}
-                  <div className="relative z-10 p-6 flex flex-col justify-end h-full">
+                  {/* 1. COMPRESSED VERTICAL STATE CONTAINER */}
+                  <div 
+                    className={`absolute inset-0 z-10 flex flex-col items-center justify-between py-6 px-1 text-center select-none pointer-events-none transition-all duration-500 ${
+                      isExpanded ? 'opacity-0 scale-95 translate-y-4' : 'opacity-100'
+                    }`}
+                  >
+                    {/* Top: Category Icon */}
+                    <div className="flex flex-col items-center gap-2">
+                      <div className="w-8 h-8 rounded-full bg-blue-500/20 border border-blue-400/30 flex items-center justify-center text-sky-400 shadow-[0_0_15px_rgba(56,189,248,0.15)]">
+                        {React.createElement(getIconComponent(project.features[0]?.icon || 'Shield'), { className: 'h-4 w-4' })}
+                      </div>
+                      <span 
+                        className="text-[8px] font-extrabold text-sky-400 tracking-widest uppercase whitespace-nowrap block"
+                        style={{ writingMode: 'vertical-rl' }}
+                      >
+                        {project.verticalLabel}
+                      </span>
+                    </div>
+
+                    {/* Middle/Bottom: Vertical condensed title */}
+                    <div className="flex items-center justify-center flex-grow pt-4">
+                      <h3 
+                        className="text-[11px] sm:text-xs font-bold text-white/90 uppercase tracking-wider whitespace-nowrap rotate-180 font-sans"
+                        style={{ writingMode: 'vertical-rl' }}
+                      >
+                        {project.verticalTitle}
+                      </h3>
+                    </div>
+                  </div>
+
+                  {/* 2. EXPANDED HORIZONTAL STATE CONTAINER */}
+                  <div 
+                    className={`relative z-10 p-6 md:p-8 flex flex-col justify-end h-full w-full transition-all duration-500 text-left ${
+                      isExpanded 
+                        ? 'opacity-100 scale-100 translate-y-0 duration-700 delay-100' 
+                        : 'opacity-0 pointer-events-none translate-y-4'
+                    }`}
+                  >
                     {/* Category tag */}
-                    <span className="self-start bg-blue-500/80 backdrop-blur-xs text-white font-sans text-[9px] font-bold uppercase tracking-wider rounded-full px-3 py-1 mb-3">
-                      {getCategoryLabel(project.category)}
+                    <span className="self-start bg-blue-600/90 backdrop-blur-xs text-white font-sans text-[9px] font-bold uppercase tracking-wider rounded-full px-3 py-1 mb-3 shadow-md">
+                      {project.horizontalLabel}
                     </span>
 
                     {/* Client Name */}
-                    <span className="text-[10px] font-bold text-sky-400 font-sans tracking-wide block uppercase mb-1">
+                    <span className="text-[10px] md:text-[11px] font-extrabold text-sky-400 font-sans tracking-widest block uppercase mb-1.5">
                       {project.client}
                     </span>
 
                     {/* Title */}
-                    <h3 className="font-display text-base font-extrabold text-white leading-snug group-hover:text-sky-300 transition-colors duration-300">
-                      {project.title}
+                    <h3 className="font-display text-base md:text-xl font-extrabold text-white leading-snug mb-3">
+                      {project.horizontalTitle}
                     </h3>
 
-                    {/* Expanding details on hover */}
-                    <div className="max-h-0 opacity-0 group-hover:max-h-[160px] group-hover:opacity-100 overflow-hidden transition-all duration-500 ease-in-out mt-0 group-hover:mt-3 pt-0 group-hover:pt-3 border-t border-white/10 text-xs text-slate-350 space-y-2.5">
-                      <p className="line-clamp-3 leading-relaxed text-slate-400 font-medium">
-                        {project.scope}
-                      </p>
-                      
-                      <div className="flex flex-col gap-1 text-[11px] pt-1">
-                        {project.packageValue && (
-                          <div className="flex justify-between">
-                            <span className="text-slate-500 font-semibold">Quy mô gói:</span>
-                            <span className="text-slate-300 font-bold">{project.packageValue}</span>
+                    {/* Scope description */}
+                    <p className="text-xs md:text-sm text-slate-350 font-medium leading-relaxed max-w-2xl mb-4">
+                      {project.scope}
+                    </p>
+
+                    {/* Features checklist with individual icons */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-w-2xl border-t border-white/10 pt-4 mb-4">
+                      {project.features.map((feat, fIdx) => {
+                        const Icon = getIconComponent(feat.icon);
+                        return (
+                          <div key={fIdx} className="flex items-center gap-2 text-xs text-slate-200">
+                            <div className="p-1 rounded bg-blue-500/20 text-sky-300 flex-shrink-0">
+                              <Icon className="h-3.5 w-3.5" />
+                            </div>
+                            <span className="font-semibold">{feat.text}</span>
                           </div>
-                        )}
-                        <div className="flex justify-between">
-                          <span className="text-slate-500 font-semibold">Thực hiện:</span>
-                          <span className="text-sky-300 font-bold">{project.value.split(' ')[0]} {project.value.split(' ')[1] || ''}</span>
-                        </div>
-                      </div>
+                        );
+                      })}
                     </div>
 
-                    {/* Visual Hover arrow */}
-                    <div className="flex items-center gap-1 text-[10px] font-bold text-sky-400 mt-3 opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
-                      <span>Xem hồ sơ chi tiết</span>
-                      <ArrowRight className="h-3.5 w-3.5" />
+                    {/* Value Metrics and Action Link */}
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-t border-white/10 pt-4 mt-2">
+                      <div className="flex gap-5 text-[11px] md:text-xs">
+                        {project.packageValue && (
+                          <div className="flex flex-col">
+                            <span className="text-slate-500 font-semibold uppercase tracking-wider text-[9px]">Quy mô gói:</span>
+                            <span className="text-slate-200 font-bold text-sm mt-0.5">{project.packageValue}</span>
+                          </div>
+                        )}
+                        <div className="flex flex-col">
+                          <span className="text-slate-500 font-semibold uppercase tracking-wider text-[9px]">Thực hiện:</span>
+                          <span className="text-sky-300 font-bold text-sm mt-0.5">{project.value}</span>
+                        </div>
+                      </div>
+
+                      {/* Visual Hover arrow */}
+                      <div className="flex items-center gap-1.5 text-xs font-bold text-sky-400 group/link cursor-pointer hover:text-sky-300 transition-colors self-end sm:self-center">
+                        <span>Xem hồ sơ chi tiết</span>
+                        <ArrowRight className="h-4 w-4 transition-transform group-hover/link:translate-x-1" />
+                      </div>
                     </div>
 
                   </div>
@@ -370,34 +538,40 @@ export default function Home({ setActivePage }: HomeProps) {
       </section>
 
       {/* 4. PARTNERS MARQUEE SLIDESHOW */}
-      <section className="py-16 bg-white border-y border-slate-100 overflow-hidden relative" id="partners-slideshow-section">
+      <section className="py-12 bg-white border-y border-slate-100 overflow-hidden relative" id="partners-slideshow-section">
         {/* Soft side gradient shields to mask cutoffs */}
         <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
         <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
 
         <div className="text-center mb-8">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 font-sans block mb-1">MẠNG LƯỚI KHÁCH HÀNG &amp; ĐỐI TÁC</span>
+          <span className="text-[10px] font-bold uppercase tracking-widest text-blue-600 font-sans block mb-1">ITC Network</span>
           <h3 className="font-display text-xl font-bold text-slate-800">
-            Tin cậy đồng hành cùng các đơn vị hàng đầu
+            MẠNG LƯỚI KHÁCH HÀNG &amp; ĐỐI TÁC
           </h3>
         </div>
 
         {/* Sliding horizontal track - slowed down to animate-scroll-left-very-slow */}
-        <div className="flex overflow-hidden whitespace-nowrap py-4">
+        <div className="flex overflow-hidden whitespace-nowrap py-8">
           <div className="flex animate-scroll-left-very-slow hover:[animation-play-state:paused] cursor-grab active:cursor-grabbing">
             {/* Double the list to make the loop seamless */}
             {[...PARTNERS_DATA, ...PARTNERS_DATA, ...PARTNERS_DATA].map((partner, index) => {
               return (
                 <div
                   key={index}
-                  className="inline-flex items-center gap-2.5 bg-slate-50 border border-slate-100/80 px-6 py-4.5 rounded-2xl mx-3.5 shadow-[0_4px_12px_rgba(241,245,249,0.5)] hover:border-blue-500/20 hover:bg-white hover:shadow-md transition-all duration-300"
+                  className="group inline-flex items-center justify-center bg-white border border-slate-100/80 w-64 h-32 px-6 py-5 rounded-3xl mx-4 shadow-[0_4px_12px_rgba(241,245,249,0.5)] hover:border-blue-500/20 hover:shadow-md transition-all duration-300 cursor-pointer"
+                  title={partner.name}
                 >
-                  <div className="h-6 w-6 rounded-lg bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 shrink-0">
-                    <Award className="h-3.5 w-3.5" />
-                  </div>
-                  <span className="font-sans text-xs font-bold text-slate-700">
-                    {partner.name}
-                  </span>
+                  {partner.logo ? (
+                    <img
+                      src={partner.logo}
+                      alt={partner.name}
+                      className="max-h-full max-w-full object-contain"
+                    />
+                  ) : (
+                    <span className="font-sans text-sm font-bold text-slate-700 text-center line-clamp-2 whitespace-normal leading-snug">
+                      {partner.name}
+                    </span>
+                  )}
                 </div>
               );
             })}
@@ -406,7 +580,7 @@ export default function Home({ setActivePage }: HomeProps) {
       </section>
 
       {/* 5. NEWS GRID - Full Width */}
-      <section className="py-24 bg-gradient-to-b from-[#F8FAFC] to-slate-50 relative overflow-hidden" id="news-section">
+      <section className="py-12 bg-gradient-to-b from-[#F8FAFC] to-slate-50 relative overflow-hidden" id="news-section">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[35rem] w-[35rem] rounded-full bg-blue-500/3 blur-[120px] pointer-events-none" />
         
         <div className="relative mx-auto max-w-[1600px] px-4 sm:px-6 md:px-12 lg:px-16 xl:px-20 2xl:px-24">
@@ -414,88 +588,129 @@ export default function Home({ setActivePage }: HomeProps) {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
             
             {/* News Grid (spans full-width: lg:col-span-12) */}
-            <div className="lg:col-span-12 flex flex-col justify-between space-y-8">
-              <div className="space-y-2">
-                <span className="text-xs font-bold uppercase tracking-widest text-blue-600 font-sans">TIN TỨC &amp; SỰ KIỆN</span>
-                <h3 className="font-display text-2xl sm:text-3xl font-extrabold text-[#0F172A] tracking-tight">
-                  Cập nhật chuyển đổi số cùng ITC
+            <div className="lg:col-span-12 flex flex-col justify-between">
+              <div className="text-center mb-4">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-blue-600 font-sans block mb-1">ITC News</span>
+                <h3 className="font-display text-xl font-bold text-slate-800">
+                  TIN TỨC &amp; SỰ KIỆN
                 </h3>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 
                 {/* News Card 1 */}
-                <div className="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-3xs hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col h-full group">
-                  <div className="h-36 overflow-hidden relative bg-slate-100">
+                <div className="bg-white rounded-xl border border-slate-100 overflow-hidden shadow-3xs hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col h-full group">
+                  <div className="h-44 overflow-hidden relative bg-slate-100">
                     <img 
                       src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=600" 
                       alt="Kiểm định số" 
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                   </div>
-                  <div className="p-4 flex-grow flex flex-col justify-between space-y-3">
-                    <div className="space-y-1">
+                  <div className="p-4 flex-grow flex flex-col justify-between space-y-4">
+                    <div className="space-y-2">
                       <div className="flex items-center gap-1.5 text-[10px] text-slate-400 font-bold font-sans">
                         <Calendar className="h-3.5 w-3.5" />
                         <span>10/06/2026</span>
                       </div>
-                      <h4 className="text-xs font-bold text-slate-800 line-clamp-2 group-hover:text-blue-600 transition-colors">
+                      <h4 className="text-sm font-bold text-slate-800 line-clamp-2 group-hover:text-blue-600 transition-colors">
                         ITC hỗ trợ Cục Đăng kiểm Việt Nam tối ưu hóa quy trình kiểm định số
                       </h4>
+                      <p className="text-xs text-slate-500 line-clamp-3 leading-relaxed font-semibold font-sans">
+                        Giám sát chất lượng và kiểm thử độc lập nền tảng tích hợp dịch vụ hành chính công liên kết Cơ sở dữ liệu Quốc gia.
+                      </p>
                     </div>
-                    <p className="text-[11px] text-slate-500 line-clamp-3 leading-relaxed font-semibold font-sans">
-                      Giám sát chất lượng và kiểm thử độc lập nền tảng tích hợp dịch vụ hành chính công liên kết Cơ sở dữ liệu Quốc gia.
-                    </p>
+                    <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-blue-600 mt-auto">
+                      <span>Tìm hiểu ngay</span>
+                      <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+                    </div>
                   </div>
                 </div>
 
                 {/* News Card 2 */}
-                <div className="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-3xs hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col h-full group">
-                  <div className="h-36 overflow-hidden relative bg-slate-100">
+                <div className="bg-white rounded-xl border border-slate-100 overflow-hidden shadow-3xs hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col h-full group">
+                  <div className="h-44 overflow-hidden relative bg-slate-100">
                     <img 
                       src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=600" 
                       alt="Định mức CNTT" 
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                   </div>
-                  <div className="p-4 flex-grow flex flex-col justify-between space-y-3">
-                    <div className="space-y-1">
+                  <div className="p-4 flex-grow flex flex-col justify-between space-y-4">
+                    <div className="space-y-2">
                       <div className="flex items-center gap-1.5 text-[10px] text-slate-400 font-bold font-sans">
                         <Calendar className="h-3.5 w-3.5" />
                         <span>05/06/2026</span>
                       </div>
-                      <h4 className="text-xs font-bold text-slate-800 line-clamp-2 group-hover:text-blue-600 transition-colors">
+                      <h4 className="text-sm font-bold text-slate-800 line-clamp-2 group-hover:text-blue-600 transition-colors">
                         Định mức kinh tế kỹ thuật trong lập dự toán CNTT theo Nghị định 73
                       </h4>
+                      <p className="text-xs text-slate-500 line-clamp-3 leading-relaxed font-semibold font-sans">
+                        Phân tích quy trình thẩm tra dự toán chi tiết giúp tối ưu hóa ngân sách và tránh rủi ro tài khóa cho chủ đầu tư.
+                      </p>
                     </div>
-                    <p className="text-[11px] text-slate-500 line-clamp-3 leading-relaxed font-semibold font-sans">
-                      Phân tích quy trình thẩm tra dự toán chi tiết giúp tối ưu hóa ngân sách và tránh rủi ro tài khóa cho chủ đầu tư.
-                    </p>
+                    <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-blue-600 mt-auto">
+                      <span>Tìm hiểu ngay</span>
+                      <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+                    </div>
                   </div>
                 </div>
 
                 {/* News Card 3 */}
-                <div className="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-3xs hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col h-full group">
-                  <div className="h-36 overflow-hidden relative bg-slate-100">
+                <div className="bg-white rounded-xl border border-slate-100 overflow-hidden shadow-3xs hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col h-full group">
+                  <div className="h-44 overflow-hidden relative bg-slate-100">
                     <img 
                       src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=600" 
                       alt="Phòng Server" 
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                   </div>
-                  <div className="p-4 flex-grow flex flex-col justify-between space-y-3">
-                    <div className="space-y-1">
+                  <div className="p-4 flex-grow flex flex-col justify-between space-y-4">
+                    <div className="space-y-2">
                       <div className="flex items-center gap-1.5 text-[10px] text-slate-400 font-bold font-sans">
                         <Calendar className="h-3.5 w-3.5" />
                         <span>28/05/2026</span>
                       </div>
-                      <h4 className="text-xs font-bold text-slate-800 line-clamp-2 group-hover:text-blue-600 transition-colors">
+                      <h4 className="text-sm font-bold text-slate-800 line-clamp-2 group-hover:text-blue-600 transition-colors">
                         Quy chuẩn an toàn thông tin TIA-942 cho Trung tâm dữ liệu hiện đại
                       </h4>
+                      <p className="text-xs text-slate-500 line-clamp-3 leading-relaxed font-semibold font-sans">
+                        Quy trình khảo sát, thiết kế và giám sát lắp đặt hạ tầng mạng máy chủ đạt tiêu chuẩn bảo mật dữ liệu cấp cao.
+                      </p>
                     </div>
-                    <p className="text-[11px] text-slate-500 line-clamp-3 leading-relaxed font-semibold font-sans">
-                      Quy trình khảo sát, thiết kế và giám sát lắp đặt hạ tầng mạng máy chủ đạt tiêu chuẩn bảo mật dữ liệu cấp cao.
-                    </p>
+                    <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-blue-600 mt-auto">
+                      <span>Tìm hiểu ngay</span>
+                      <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+                    </div>
+                  </div>
+                </div>
+
+                {/* News Card 4 */}
+                <div className="bg-white rounded-xl border border-slate-100 overflow-hidden shadow-3xs hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col h-full group">
+                  <div className="h-44 overflow-hidden relative bg-slate-100">
+                    <img 
+                      src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=600" 
+                      alt="Đội ngũ kỹ thuật" 
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  </div>
+                  <div className="p-4 flex-grow flex flex-col justify-between space-y-4">
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-1.5 text-[10px] text-slate-400 font-bold font-sans">
+                        <Calendar className="h-3.5 w-3.5" />
+                        <span>20/05/2026</span>
+                      </div>
+                      <h4 className="text-sm font-bold text-slate-800 line-clamp-2 group-hover:text-blue-600 transition-colors">
+                        ITC tổ chức khóa tập huấn nâng cao năng lực giám sát CNTT cho đối tác
+                      </h4>
+                      <p className="text-xs text-slate-500 line-clamp-3 leading-relaxed font-semibold font-sans">
+                        Chương trình đào tạo chuyên sâu về quy trình kiểm thử hệ thống và đánh giá rủi ro an toàn thông tin theo chuẩn quốc tế.
+                      </p>
+                    </div>
+                    <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-blue-600 mt-auto">
+                      <span>Tìm hiểu ngay</span>
+                      <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+                    </div>
                   </div>
                 </div>
 
@@ -508,7 +723,7 @@ export default function Home({ setActivePage }: HomeProps) {
       </section>
 
       {/* 6. TRUST BANNER - Action Philosophy moved to the very bottom */}
-      <section className="py-24 bg-gradient-to-b from-[#FAFAF9] to-white relative overflow-hidden border-t border-slate-100" id="trust-banner-section">
+      <section className="pt-12 py-24 bg-gradient-to-b from-[#FAFAF9] to-white relative overflow-hidden border-t border-slate-100" id="trust-banner-section">
         {/* Soft background radial mask */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(37,99,235,0.02),transparent_70%)] pointer-events-none" />
 

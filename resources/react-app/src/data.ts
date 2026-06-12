@@ -1,5 +1,17 @@
 import { ServiceItem, PartnerItem, ProjectItem, TestimonialItem } from './types';
 
+import logoBaoNhanDan from '../assets/images-networks/kh-baonhandan.png';
+import logoBoGiaothongvantai from '../assets/images-networks/kh-bogiaothongvantai.png';
+import logoBoGtvt from '../assets/images-networks/kh-bogtvt.png';
+import logoBoKhcn from '../assets/images-networks/kh-bokhcn.png';
+import logoBoKhvacn from '../assets/images-networks/kh-bokhvacn.png';
+import logoDulichninhbinh from '../assets/images-networks/kh-dulichninhbinh.png';
+import logoHiephoibhvn from '../assets/images-networks/kh-hiephoibhvn.png';
+import logoNinhbinh from '../assets/images-networks/kh-ninhbinh.png';
+import logoSokhcnbackan from '../assets/images-networks/kh-sokhcnbackan.png';
+import logoSotttttuyenquang from '../assets/images-networks/kh-sotttttuyenquang.png';
+import logoSovhbacgiang from '../assets/images-networks/kh-sovhbacgiang.png';
+
 export const SERVICES_DATA: ServiceItem[] = [
   {
     id: 'khao-sat-cntt',
@@ -99,29 +111,17 @@ export const SERVICES_DATA: ServiceItem[] = [
 ];
 
 export const PARTNERS_DATA: PartnerItem[] = [
-  // Khối nhà nước
-  { name: 'Bộ Khoa học và Công nghệ', group: 'gov' },
-  { name: 'Bộ Giao thông Vận tải', group: 'gov' },
-  { name: 'Cục Đăng kiểm Việt Nam', group: 'gov' },
-  { name: 'Sở TNMT Vĩnh Phúc', group: 'gov' },
-  { name: 'Tổng cục Thuế', group: 'gov' },
-  { name: 'UBND Hà Nội', group: 'gov' },
-  { name: 'Kho bạc Nhà nước', group: 'gov' },
-  // Khối tài chính, y tế, giáo dục
-  { name: 'Agribank', group: 'finance' },
-  { name: 'Hiệp hội Bảo hiểm VN', group: 'finance' },
-  { name: 'CĐ Y Dược Cộng đồng', group: 'finance' },
-  { name: 'CĐ Y tế Hà Nội', group: 'finance' },
-  { name: 'Vietcombank', group: 'finance' },
-  { name: 'Vietinbank', group: 'finance' },
-  { name: 'BIDV', group: 'finance' },
-  { name: 'VPBank', group: 'finance' },
-  // Khối truyền thông
-  { name: 'Báo Nhân dân', group: 'media' },
-  { name: 'Báo Ninh Bình', group: 'media' },
-  { name: 'Du lịch Ninh Bình', group: 'media' },
-  { name: 'FPT Telecom', group: 'media' },
-  { name: 'Viettel Group', group: 'media' }
+  { name: 'Bộ Khoa học và Công nghệ', group: 'gov', logo: logoBoKhcn },
+  { name: 'Bộ Giao thông Vận tải (Cục Đăng kiểm)', group: 'gov', logo: logoBoGiaothongvantai },
+  { name: 'Bộ Giao thông Vận tải', group: 'gov', logo: logoBoGtvt },
+  { name: 'Bộ Khoa học và Công nghệ (Văn phòng)', group: 'gov', logo: logoBoKhvacn },
+  { name: 'Sở KH&CN Bắc Kạn', group: 'gov', logo: logoSokhcnbackan },
+  { name: 'Sở TTTT Tuyên Quang', group: 'gov', logo: logoSotttttuyenquang },
+  { name: 'Sở VHTT&DL Bắc Giang', group: 'gov', logo: logoSovhbacgiang },
+  { name: 'Hiệp hội Bảo hiểm Việt Nam', group: 'finance', logo: logoHiephoibhvn },
+  { name: 'Du lịch Ninh Bình', group: 'media', logo: logoDulichninhbinh },
+  { name: 'Báo Ninh Bình', group: 'media', logo: logoNinhbinh },
+  { name: 'Báo Nhân dân', group: 'media', logo: logoBaoNhanDan }
 ];
 
 export const PROJECTS_DATA: ProjectItem[] = [

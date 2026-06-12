@@ -11,6 +11,7 @@ export interface ServiceItem {
 export interface PartnerItem {
   name: string;
   group: 'gov' | 'finance' | 'media';
+  logo?: string;
   logoPlaceholder?: string;
 }
 

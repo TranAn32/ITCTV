@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Search, 
   Layers, 
@@ -27,6 +27,55 @@ interface ServicesProps {
 
 export default function Services({ setActivePage }: ServicesProps) {
   const [activeTab, setActiveTab] = useState<string>('khao-sat-cntt');
+  const [connectorPath, setConnectorPath] = useState<{ x1: number; y1: number; x2: number; y2: number } | null>(null);
+
+  useEffect(() => {
+    let active = true;
+    const updateConnector = () => {
+      if (!active) return;
+      const parentEl = document.getElementById('services-checkerboard-interactive');
+      const tabEl = document.getElementById(`side-item-${activeTab}`);
+      const frameEl = document.getElementById('services-viewer-frame');
+      const cardEl = document.getElementById(`active-pane-${activeTab}`);
+      
+      if (parentEl && tabEl && frameEl) {
+        const parentRect = parentEl.getBoundingClientRect();
+        const tabRect = tabEl.getBoundingClientRect();
+        const frameRect = frameEl.getBoundingClientRect();
+        const cardRect = cardEl ? cardEl.getBoundingClientRect() : frameRect;
+        
+        // Compute relative positions inside the parent grid layout
+        const x1 = tabRect.right - parentRect.left;
+        const y1 = tabRect.top - parentRect.top + tabRect.height / 2;
+        
+        // Target frame boundary horizontally, and active card top boundary vertically
+        const x2 = frameRect.left - parentRect.left;
+        const y2 = cardRect.top - parentRect.top + 46; 
+        
+        setConnectorPath({ x1, y1, x2, y2 });
+      }
+    };
+
+    // Run measurement inside requestAnimationFrame for stable paint alignment
+    const frameHandle = requestAnimationFrame(updateConnector);
+    
+    // Multiple timeouts to handle layout changes during slide transition
+    const t1 = setTimeout(updateConnector, 50);
+    const t2 = setTimeout(updateConnector, 150);
+    const t3 = setTimeout(updateConnector, 300);
+    const t4 = setTimeout(updateConnector, 500);
+    
+    window.addEventListener('resize', updateConnector);
+    return () => {
+      active = false;
+      cancelAnimationFrame(frameHandle);
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+      clearTimeout(t4);
+      window.removeEventListener('resize', updateConnector);
+    };
+  }, [activeTab]);
 
   // Exact 7 services from user requirements with precise details
   const servicesList = [
@@ -138,24 +187,24 @@ export default function Services({ setActivePage }: ServicesProps) {
   ];
 
   return (
-    <div className="relative pt-10 pb-16 md:pt-12 md:pb-20 bg-[#FAFAF9] min-h-screen font-sans overflow-hidden flex flex-col justify-between" id="services-view">
+    <div className="relative pt-10 pb-16 md:pt-12 md:pb-20 bg-[#FDFDFD] min-h-screen font-sans overflow-hidden flex flex-col justify-between" id="services-view">
       
-      {/* Background Soft Gradients */}
-      <div className="absolute top-0 right-0 h-[30rem] w-[30rem] rounded-full bg-sky-500/5 blur-3xl pointer-events-none" />
-      <div className="absolute bottom-10 left-10 h-[30rem] w-[30rem] rounded-full bg-blue-500/5 blur-3xl pointer-events-none" />
+      {/* Background Soft Natural Gradients */}
+      <div className="absolute top-0 right-0 h-[30rem] w-[30rem] rounded-full bg-blue-500/5 blur-3xl pointer-events-none" />
+      <div className="absolute bottom-10 left-10 h-[30rem] w-[30rem] rounded-full bg-sky-500/5 blur-3xl pointer-events-none" />
 
       <div className="relative mx-auto max-w-[1600px] w-full px-4 sm:px-6 md:px-12 lg:px-16 xl:px-20 2xl:px-24 space-y-12">
         
         {/* Top Header - Compact, modern, high-contrast */}
-        <div className="max-w-3xl space-y-3 text-left" id="services-page-header">
-          <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-[#2563eb] font-sans bg-blue-50 border border-blue-100/50 rounded-full px-3 py-1">
-            <Sparkles className="h-3 w-3 text-blue-600 animate-pulse" />
+        <div className="max-w-3xl space-y-3.5 text-left" id="services-page-header">
+          <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-[#2563eb] font-sans bg-blue-50/80 border border-blue-100/50 rounded px-3.5 py-1.5">
+            <Sparkles className="h-3.5 w-3.5 text-blue-600 animate-pulse" />
             <span>Năng lực độc lập &amp; Am hiểu quy chuẩn thầu</span>
           </span>
-          <h1 className="font-display text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 leading-tight">
+          <h1 className="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 leading-tight">
             Giải pháp &amp; Dịch vụ Cốt lõi
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 max-w-3xl leading-normal font-medium">
+          <p className="text-sm text-slate-500 max-w-3xl leading-relaxed font-medium">
             ITC hân hạnh mang tới gói tư vấn thiết lập hồ sơ độc lập, bảo vệ tối đa lợi ích kinh tế &amp; tính tương thích hạ tầng của Chủ đầu tư qua sơ đồ dịch vụ xen kẽ hiện đại.
           </p>
         </div>
@@ -165,10 +214,27 @@ export default function Services({ setActivePage }: ServicesProps) {
           Left Side: Alternating beautiful menu options.
           Right Side: Dynamically loaded details panel with staggered design.
         */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch" id="services-checkerboard-interactive">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch relative" id="services-checkerboard-interactive">
+          {/* Static right-angled (orthogonal) connector wire with clear endpoints */}
+          {connectorPath && (
+            <svg className="hidden lg:block absolute inset-0 w-full h-full pointer-events-none z-20">
+              <defs>
+                <linearGradient id="connectorGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#2563eb" stopOpacity="0.9" />
+                  <stop offset="100%" stopColor="#3b82f6" stopOpacity="0.9" />
+                </linearGradient>
+              </defs>
+              <path
+                d={`M ${connectorPath.x1} ${connectorPath.y1} H ${connectorPath.x1 + (connectorPath.x2 - connectorPath.x1) * 0.45} V ${connectorPath.y2} H ${connectorPath.x2}`}
+                fill="none"
+                stroke="url(#connectorGradient)"
+                strokeWidth="2"
+              />
+            </svg>
+          )}
           
           {/* LEFT PANEL: The Alternating Menu Blocks (Grid layout, very lively styled) */}
-          <div className="lg:col-span-5 flex flex-col gap-3.5" id="services-side-accordion">
+          <div className="lg:col-span-4 flex flex-col gap-3" id="services-side-accordion">
             <div className="text-[10px] font-bold uppercase tracking-widest text-slate-400 font-sans mb-1 pl-2">
               Danh mục nhóm dịch vụ
             </div>
@@ -177,43 +243,50 @@ export default function Services({ setActivePage }: ServicesProps) {
               const ServiceIcon = service.icon;
               const isActive = activeTab === service.id;
               
-              // Alternating color highlights based on state and index
-              const borderAccentClass = idx % 2 === 0 ? 'border-l-4 border-l-blue-600' : 'border-l-4 border-l-sky-500';
-              
               return (
                 <button
                   key={service.id}
                   onClick={() => setActiveTab(service.id)}
-                  className={`w-full text-left p-4 rounded-2xl border transition-all duration-300 flex items-start gap-4 cursor-pointer relative overflow-hidden group select-none ${
+                  className={`w-full text-left p-4 rounded-lg border transition-all duration-300 flex items-start gap-4 cursor-pointer relative group select-none ${
                     isActive 
-                      ? 'bg-white border-blue-600 shadow-[0_10px_30px_rgba(15,118,110,0.06)] scale-[1.01]' 
-                      : 'bg-white/70 hover:bg-white border-slate-100 hover:border-slate-200 shadow-3xs'
+                      ? 'bg-white border-blue-600 shadow-[0_4px_15px_rgba(37,99,235,0.05)] scale-[1.01]' 
+                      : 'bg-white/70 hover:bg-white border-slate-200/60 shadow-3xs'
                   }`}
                   id={`side-item-${service.id}`}
                 >
-                  {/* Subtle alternating status layout inside menu */}
-                  <div className={`p-2.5 rounded-xl shrink-0 transition-transform duration-300 group-hover:scale-110 ${
+                  {/* Glowing starting dot on the right-center edge of the active tab */}
+                  {isActive && (
+                    <div className="hidden lg:block absolute right-0 top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-blue-600 border-2 border-white ring-4 ring-blue-500/20 translate-x-1.25 z-25 pointer-events-none" />
+                  )}
+
+                  {/* Clean vertical left indicator stripe */}
+                  {isActive && (
+                    <div className="absolute top-0 bottom-0 left-0 w-1 bg-blue-600" />
+                  )}
+
+                  {/* Duotone Glowing Icon Container */}
+                  <div className={`p-2.5 rounded-lg shrink-0 transition-all duration-300 group-hover:scale-105 ${
                     isActive 
-                      ? 'bg-blue-50 text-blue-700' 
-                      : idx % 2 === 0 ? 'bg-slate-50 text-slate-500' : 'bg-[#FAF9F6] text-slate-500'
+                      ? 'bg-blue-50 text-blue-600 border border-blue-100/30' 
+                      : 'bg-slate-100/70 text-slate-500'
                   }`}>
                     <ServiceIcon className="h-5 w-5 stroke-[1.8]" />
                   </div>
 
-                  <div className="space-y-1 pr-6">
-                    <div className="flex items-center gap-2">
-                      <span className={`text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${
+                  <div className="space-y-1 pr-6 flex-grow">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className={`text-[9px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded ${
                         isActive 
-                          ? 'bg-blue-100/50 text-blue-800' 
+                          ? 'bg-blue-500/10 text-blue-800 border border-blue-200/30' 
                           : 'bg-slate-100 text-slate-500'
                       }`}>
                         {service.tag}
                       </span>
-                      <span className="font-sans text-[11px] text-slate-400 font-bold">
+                      <span className="font-mono text-xs text-slate-400 font-bold tracking-wider">
                         0{idx + 1}
                       </span>
                     </div>
-                    <h3 className={`text-xs font-bold leading-snug font-sans transition-colors ${
+                    <h3 className={`text-xs sm:text-sm font-bold leading-snug font-sans transition-colors ${
                       isActive ? 'text-slate-900' : 'text-slate-700 group-hover:text-slate-900'
                     }`}>
                       {service.shortTitle}
@@ -226,54 +299,37 @@ export default function Services({ setActivePage }: ServicesProps) {
                   }`}>
                     <ArrowUpRight className="h-4 w-4" />
                   </div>
-
-                  {/* Alternating left focus indicators */}
-                  {isActive && (
-                    <div className="absolute top-0 left-0 bottom-0 w-1 bg-blue-600" />
-                  )}
                 </button>
               );
             })}
           </div>
 
           {/* RIGHT PANEL: Loaded content styled super premium with alternating/staggered block layouts */}
-          <div className="lg:col-span-7 flex flex-col justify-between" id="services-viewer-frame">
+          <div className="lg:col-span-8 flex flex-col justify-between" id="services-viewer-frame">
             <AnimatePresence mode="wait">
               {servicesList.map((service, idx) => {
                 if (service.id !== activeTab) return null;
-                const ServiceIcon = service.icon;
                 
                 // Color mapping logic for premium bespoke feel per service
                 const bubbleColor = 
                   service.colorTheme === 'blue' ? 'bg-blue-50/70 border-blue-100/60 text-blue-800' :
                   service.colorTheme === 'sky' ? 'bg-sky-50/70 border-sky-100/60 text-sky-850' :
                   service.colorTheme === 'emerald' ? 'bg-emerald-50/70 border-emerald-100/60 text-emerald-850' :
-                  service.colorTheme === 'blue' ? 'bg-blue-50/70 border-blue-100/60 text-blue-850' :
                   service.colorTheme === 'indigo' ? 'bg-indigo-50/70 border-indigo-100/60 text-indigo-850' :
                   service.colorTheme === 'rose' ? 'bg-rose-50/70 border-rose-100/60 text-rose-850' :
                   'bg-amber-50/70 border-amber-100/60 text-amber-850';
 
-                const badgeBg = 
-                  service.colorTheme === 'blue' ? 'bg-blue-600' :
-                  service.colorTheme === 'sky' ? 'bg-sky-500' :
-                  service.colorTheme === 'emerald' ? 'bg-emerald-600' :
-                  service.colorTheme === 'blue' ? 'bg-blue-600' :
-                  service.colorTheme === 'indigo' ? 'bg-indigo-600' :
-                  service.colorTheme === 'rose' ? 'bg-rose-500' :
-                  'bg-amber-500';
-
                 return (
-                  <motion.div
+                  <div
                     key={service.id}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    transition={{ duration: 0.35, ease: "easeInOut" }}
-                    className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-100 shadow-[0_20px_50px_rgba(203,213,225,0.18)] flex flex-col justify-between h-full min-h-[460px] relative overflow-hidden"
+                    className="bg-white rounded-lg p-6 sm:p-8 border border-blue-500 shadow-[0_10px_35px_-10px_rgba(37,99,235,0.06)] flex flex-col justify-between h-full min-h-[460px] relative overflow-hidden"
                     id={`active-pane-${service.id}`}
                   >
+                    {/* Connection receiving dot on the left edge, 40px from the top */}
+                    <div className="hidden lg:block absolute left-0 top-[40px] w-3 h-3 rounded-full bg-blue-600 border-2 border-white ring-4 ring-blue-500/20 -translate-x-1.5 z-20 pointer-events-none" />
+
                     {/* Background faint card watermark matching active menu item index */}
-                    <div className="absolute -bottom-6 -right-6 font-mono text-[9rem] font-black text-slate-50 select-none pointer-events-none">
+                    <div className="absolute -bottom-6 -right-6 font-mono text-[9rem] font-bold text-slate-100/70 select-none pointer-events-none">
                       {idx + 1}
                     </div>
 
@@ -282,44 +338,40 @@ export default function Services({ setActivePage }: ServicesProps) {
                       {/* Top Header Row */}
                       <div className="space-y-3">
                         <div className="flex items-center gap-2.5">
-                          <span className={`text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full border ${bubbleColor}`}>
+                          <span className={`text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded border ${bubbleColor}`}>
                             {service.tag}
                           </span>
-                          <span className="text-[10px] font-bold uppercase text-slate-400 font-sans">
+                          <span className="text-[10px] font-bold uppercase text-slate-400 font-sans tracking-wide">
                             Quy chuẩn quốc gia
                           </span>
                         </div>
                         
-                        <h2 className="font-display text-lg sm:text-xl font-extrabold text-slate-900 tracking-tight leading-snug">
+                        <h2 className="font-display text-xl sm:text-2xl font-bold text-slate-900 tracking-tight leading-snug">
                           {service.title}
                         </h2>
                       </div>
 
-                      {/* Brief introduction card - styled like an alternating highlighted quotes space */}
-                      <div className="p-4 rounded-2xl bg-slate-50/80 border border-slate-100 font-sans text-xs sm:text-sm text-slate-600 leading-relaxed italic font-medium">
-                        &quot;{service.summary}&quot;
+                      {/* Callout box summary */}
+                      <div className="p-4 rounded-lg bg-blue-50/40 border-l-4 border-blue-600 font-sans text-xs sm:text-sm text-slate-700 leading-relaxed font-semibold">
+                        {service.summary}
                       </div>
 
                       {/* STAGGERED CHECKLIST items - shown with alternating layouts */}
-                      <div className="space-y-3 pt-2">
+                      <div className="space-y-2 pt-2">
                         <h4 className="text-[10px] font-sans font-bold uppercase tracking-widest text-[#2563eb]">
                           Nội dung phụng sự chi tiết:
                         </h4>
                         
-                        <div className="grid grid-cols-1 gap-3">
+                        <div className="grid grid-cols-1 gap-1">
                           {service.items.map((item, itemIdx) => (
                             <div 
                               key={itemIdx}
-                              className={`flex items-start gap-3 p-3 rounded-xl transition-all duration-300 ${
-                                itemIdx % 2 === 0 
-                                  ? 'bg-white border border-slate-50 shadow-3xs' 
-                                  : 'bg-[#FAF9F6]/50 border border-transparent'
-                              }`}
+                              className="flex items-start gap-3 py-2 transition-all duration-300 text-left"
                             >
-                              <div className={`h-5 w-5 rounded-md shrink-0 flex items-center justify-center text-white ${badgeBg}`}>
-                                <Check className="h-3 w-3 stroke-[3]" />
+                              <div className="h-5 w-5 rounded shrink-0 flex items-center justify-center text-blue-600 bg-blue-50">
+                                <ChevronRight className="h-3.5 w-3.5 stroke-[2.5]" />
                               </div>
-                              <p className="text-xs text-slate-700 font-medium leading-relaxed font-sans">
+                              <p className="text-xs sm:text-sm text-slate-700 font-medium leading-relaxed font-sans">
                                 {item.text}
                               </p>
                             </div>
@@ -330,9 +382,9 @@ export default function Services({ setActivePage }: ServicesProps) {
                     </div>
 
                     {/* Bottom action panel with direct connection to contact page */}
-                    <div className="pt-6 mt-6 border-t border-slate-100/70 flex flex-col sm:flex-row items-center justify-between gap-4 relative z-10">
+                    <div className="pt-4 mt-4 flex flex-col sm:flex-row items-center justify-between gap-4 relative z-10">
                       <div className="flex items-center gap-2">
-                        <Award className="h-4 w-4 text-blue-600 shrink-0" />
+                        <Award className="h-4.5 w-4.5 text-blue-600 shrink-0" />
                         <span className="text-[10px] font-sans font-bold text-slate-500 uppercase tracking-wider">
                           Độc lập • Minh bạch • Chuẩn chỉ
                         </span>
@@ -346,14 +398,14 @@ export default function Services({ setActivePage }: ServicesProps) {
                             if (element) element.scrollIntoView({ behavior: 'smooth' });
                           }, 150);
                         }}
-                        className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-[11px] font-bold uppercase tracking-wider px-4.5 py-2.5 transition-colors cursor-pointer shadow-3xs"
+                        className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-bold uppercase tracking-wider px-5 py-3 transition-all cursor-pointer shadow-md shadow-blue-500/10 hover:shadow-lg hover:shadow-blue-500/20 duration-300 transform hover:-translate-y-0.5"
                       >
                         <span>Yêu cầu tư vấn này</span>
-                        <ArrowRight className="h-3.5 w-3.5" />
+                        <ArrowRight className="h-4 w-4" />
                       </button>
                     </div>
 
-                  </motion.div>
+                  </div>
                 );
               })}
             </AnimatePresence>
@@ -363,32 +415,32 @@ export default function Services({ setActivePage }: ServicesProps) {
 
         {/* Dynamic bottom bento badge grid summarizing quality metrics */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4" id="services-bottom-bento-metrics">
-          <div className="bg-white rounded-2xl p-4 border border-slate-100 shadow-3xs flex items-center gap-3">
-            <div className="p-2 bg-blue-50 text-blue-700 rounded-xl">
+          <div className="bg-white rounded-lg p-4 border border-slate-200/60 shadow-sm flex items-center gap-3">
+            <div className="p-2.5 bg-blue-50 text-blue-700 rounded">
               <ClipboardCheck className="h-5 w-5" />
             </div>
             <div>
-              <h4 className="text-xs font-bold text-slate-800">Cam Kết Chất Lượng</h4>
+              <h4 className="text-xs sm:text-sm font-bold text-slate-800">Cam Kết Chất Lượng</h4>
               <p className="text-[10px] text-slate-450">Bám sát 100% Nghị định số 73/2019/NĐ-CP</p>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl p-4 border border-slate-100 shadow-3xs flex items-center gap-3">
-            <div className="p-2 bg-sky-50 text-sky-600 rounded-xl">
+          <div className="bg-white rounded-lg p-4 border border-slate-200/60 shadow-sm flex items-center gap-3">
+            <div className="p-2.5 bg-sky-50 text-sky-600 rounded">
               <ShieldCheck className="h-5 w-5" />
             </div>
             <div>
-              <h4 className="text-xs font-bold text-slate-800">Tối Ưu Ngân Sách</h4>
+              <h4 className="text-xs sm:text-sm font-bold text-slate-800">Tối Ưu Ngân Sách</h4>
               <p className="text-[10px] text-slate-450">Thẩm tra bóc tách dự toán kỹ lưỡng, tiết kiệm</p>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl p-4 border border-slate-100 shadow-3xs flex items-center gap-3">
-            <div className="p-2 bg-emerald-50 text-emerald-700 rounded-xl">
+          <div className="bg-white rounded-lg p-4 border border-slate-200/60 shadow-sm flex items-center gap-3">
+            <div className="p-2.5 bg-emerald-50 text-emerald-700 rounded">
               <Zap className="h-5 w-5 animate-pulse" />
             </div>
             <div>
-              <h4 className="text-xs font-bold text-slate-800">Tốc Độ Phản Hồi</h4>
+              <h4 className="text-xs sm:text-sm font-bold text-slate-800">Tốc Độ Phản Hồi</h4>
               <p className="text-[10px] text-slate-450">Bàn giao hồ sơ sơ bộ trong vòng 48h làm việc</p>
             </div>
           </div>

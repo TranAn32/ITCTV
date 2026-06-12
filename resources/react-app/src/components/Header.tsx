@@ -41,9 +41,9 @@ export default function Header({ activePage, setActivePage }: HeaderProps) {
       }`}
     >
       <div 
-        className={`mx-auto flex h-20 max-w-[1600px] items-center justify-between transition-all duration-300 ${
+        className={`mx-auto flex h-17 max-w-[1600px] items-center justify-between transition-all duration-300 ${
           isScrolled 
-            ? 'rounded-3xl md:rounded-full bg-white/80 backdrop-blur-xl shadow-lg shadow-slate-100/50 px-6 sm:px-10' 
+            ? 'rounded-3xl md:rounded-[3.5rem] bg-white/80 backdrop-blur-xl shadow-lg shadow-slate-100/50 px-6 sm:px-10' 
             : 'px-4 sm:px-6 md:px-12 lg:px-16 xl:px-20 2xl:px-24'
         }`}
       >

@@ -72,7 +72,7 @@ export default function Contact() {
   };
 
   return (
-    <div className="relative pt-8 pb-12 md:pt-10 md:pb-16 bg-[#FAFAF9] min-h-screen font-sans overflow-hidden flex items-center" id="contact-view">
+    <div className="relative pt-6 pb-8 md:pt-8 md:pb-10 bg-[#FAFAF9] min-h-screen font-sans overflow-hidden flex items-center" id="contact-view">
       
       {/* Decorative Warm Accent Ambient Orbs */}
       <div className="absolute top-20 right-10 h-[30rem] w-[30rem] rounded-full bg-sky-500/5 blur-3xl pointer-events-none" />
@@ -81,24 +81,22 @@ export default function Contact() {
       <div className="relative mx-auto max-w-[1600px] w-full px-4 sm:px-6 md:px-12 lg:px-16 xl:px-20 2xl:px-24">
         
         {/* Page Header (Clean, super compact, aligned with single-screen view) */}
-        <div className="max-w-3xl mb-8 space-y-2 text-left" id="contact-page-header">
+        <div className="max-w-3xl mb-5 space-y-1 text-left" id="contact-page-header">
           <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-[#2563eb] font-sans bg-blue-50/80 border border-blue-100/50 rounded-full px-3 py-1">
             <Sparkles className="h-3 w-3 text-blue-600 animate-pulse" />
-            <span>Kết nối chuyên đường kỹ nghệ thầu</span>
+            <span>Nhận thức từ tâm — Nâng tầm tư vấn — Vững bước thành công</span>
           </span>
-          <h1 className="font-display text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
-            Liên hệ quy hoạch &amp; Cố vấn
+          <h1 className="font-display text-xl sm:text-2xl font-extrabold tracking-tight text-slate-900">
+            Liên hệ với chúng tôi
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 leading-relaxed font-sans font-medium max-w-xl">
-            Mọi yêu cầu lập đề cương, thẩm tra tổng mức dự toán thiết kế xây dựng hoặc rà duyệt an toàn cơ sở dữ liệu sẽ được ITC phản hồi sớm nhất.
-          </p>
+          
         </div>
 
         {/* Dynamic Compact Split Layout fitted for single screen */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch" id="contact-split-grid">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch" id="contact-split-grid">
           
           {/* Left Block: Premium Spacious Form card */}
-          <div className="lg:col-span-7 bg-white rounded-[1.8rem] p-8 sm:p-12 shadow-[0_15px_50px_rgba(203,213,225,0.12)] flex flex-col justify-center border border-slate-100" id="contact-form-section">
+          <div className="lg:col-span-7 bg-white rounded-lg p-5 sm:p-7 shadow-[0_15px_50px_rgba(203,213,225,0.12)] flex flex-col justify-center border border-slate-100" id="contact-form-section">
             <AnimatePresence mode="wait">
               {isSubmitted ? (
                 
@@ -110,15 +108,15 @@ export default function Contact() {
                   className="py-10 text-center space-y-6 flex flex-col items-center justify-center min-h-[350px]" 
                   id="submit-success-panel"
                 >
-                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 shadow-3xs">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-lg bg-blue-50 text-blue-600 shadow-3xs">
                     <CheckCircle2 className="h-7 w-7 stroke-[1.8]" />
                   </div>
                   
                   <div className="space-y-3 max-w-md">
-                    <h3 className="font-display text-2xl font-extrabold text-slate-900 tracking-tight">
+                    <h3 className="font-display text-xl font-extrabold text-slate-900 tracking-tight">
                       Gửi yêu cầu thành công
                     </h3>
-                    <p className="text-sm text-slate-500 leading-relaxed font-sans">
+                    <p className="text-xs text-slate-500 leading-relaxed font-sans">
                       ITC đã nhận được thông tin đăng ký thầu. Bản chuyên sự của chúng tôi sẽ chủ động liên hệ trực tiếp đến số điện thoại <span className="font-sans text-[#2563eb] font-extrabold">{formData.phone}</span> để hỗ trợ Quý đơn vị một cách bảo mật nhất.
                     </p>
                   </div>
@@ -126,7 +124,7 @@ export default function Contact() {
                   <div className="pt-4">
                     <button
                       onClick={handleReset}
-                      className="rounded-xl border border-slate-150 hover:bg-slate-50 text-slate-705 font-bold text-xs uppercase tracking-wider px-6 py-3 transition-colors cursor-pointer shadow-3xs"
+                      className="rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-705 font-bold text-xs uppercase tracking-wider px-6 py-3 transition-colors cursor-pointer shadow-3xs"
                     >
                       Bản khảo sát mới
                     </button>
@@ -136,23 +134,23 @@ export default function Contact() {
               ) : (
                 
                 /* Spacious Form with 2-Column Responsive Layout */
-                <form onSubmit={handleSubmit} className="space-y-6" id="consultation-form">
-                  <div className="space-y-2">
-                    <h3 className="font-display text-lg sm:text-xl font-bold text-slate-900 tracking-tight">
+                <form onSubmit={handleSubmit} className="space-y-4" id="consultation-form">
+                  <div className="space-y-1">
+                    <h3 className="font-display text-base sm:text-lg font-bold text-slate-900 tracking-tight">
                       Để lại lời mời hợp tác
                     </h3>
-                    <p className="text-xs text-slate-400 font-sans">
+                    <p className="text-[11px] text-slate-400 font-sans">
                       Xin vui lòng cập nhật các hạng mục nhu cầu dưới đây để ITC chuẩn bị hồ sơ thấu tháo.
                     </p>
                   </div>
 
-                  <div className="space-y-5">
+                  <div className="space-y-4">
                     
                     {/* Row 1: Full Name & Phone Call Side-by-Side */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       {/* Full Name Input */}
-                      <div className="space-y-2">
-                        <label className="text-xs font-bold text-slate-700 tracking-wide font-sans block" htmlFor="input-fullName">
+                      <div className="space-y-1.5">
+                        <label className="text-[11px] font-bold text-slate-700 tracking-wide font-sans block" htmlFor="input-fullName">
                           Họ &amp; Tên Người đại diện <span className="text-red-500 font-sans font-bold">*</span>
                         </label>
                         <input
@@ -160,19 +158,19 @@ export default function Contact() {
                           id="input-fullName"
                           value={formData.fullName}
                           onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                          className="w-full rounded-xl border-none bg-slate-50/70 focus:bg-white px-5 py-3.5 text-sm text-slate-800 placeholder-slate-405 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition-all font-sans"
+                          className="w-full rounded-lg border-none bg-slate-50/70 focus:bg-white px-4 py-2.5 text-xs text-slate-800 placeholder-slate-405 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition-all font-sans"
                           placeholder="Ví dụ: Nguyễn Văn A"
                         />
                         {errors.fullName && (
-                          <p className="text-xs text-rose-650 flex items-center gap-1 font-semibold mt-1">
-                            <AlertTriangle className="h-3.5 w-3.5" /> <span>{errors.fullName}</span>
+                          <p className="text-[10px] text-rose-650 flex items-center gap-1 font-semibold mt-1">
+                            <AlertTriangle className="h-3 w-3" /> <span>{errors.fullName}</span>
                           </p>
                         )}
                       </div>
 
                       {/* Phone Contact */}
-                      <div className="space-y-2">
-                        <label className="text-xs font-bold text-slate-700 tracking-wide font-sans block" htmlFor="input-phone">
+                      <div className="space-y-1.5">
+                        <label className="text-[11px] font-bold text-slate-700 tracking-wide font-sans block" htmlFor="input-phone">
                           Hotline hỗ trợ thầu <span className="text-red-500 font-sans font-bold">*</span>
                         </label>
                         <input
@@ -180,22 +178,22 @@ export default function Contact() {
                           id="input-phone"
                           value={formData.phone}
                           onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                          className="w-full rounded-xl border-none bg-slate-50/70 focus:bg-white px-5 py-3.5 text-sm text-slate-800 placeholder-slate-405 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition-all font-sans"
+                          className="w-full rounded-lg border-none bg-slate-50/70 focus:bg-white px-4 py-2.5 text-xs text-slate-800 placeholder-slate-405 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition-all font-sans"
                           placeholder="Số di động / Zalo..."
                         />
                         {errors.phone && (
-                          <p className="text-xs text-rose-650 flex items-center gap-1 font-semibold mt-1">
-                            <AlertTriangle className="h-3.5 w-3.5" /> <span>{errors.phone}</span>
+                          <p className="text-[10px] text-rose-650 flex items-center gap-1 font-semibold mt-1">
+                            <AlertTriangle className="h-3 w-3" /> <span>{errors.phone}</span>
                           </p>
                         )}
                       </div>
                     </div>
 
                     {/* Row 2: Organization Name & Email Side-by-Side */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       {/* Organization Input */}
-                      <div className="space-y-2">
-                        <label className="text-xs font-bold text-slate-700 tracking-wide font-sans block" htmlFor="input-organization">
+                      <div className="space-y-1.5">
+                        <label className="text-[11px] font-bold text-slate-700 tracking-wide font-sans block" htmlFor="input-organization">
                           Tên Đơn vị / Cơ quan chủ thầu <span className="text-red-500 font-sans font-bold">*</span>
                         </label>
                         <input
@@ -203,19 +201,19 @@ export default function Contact() {
                           id="input-organization"
                           value={formData.organization}
                           onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
-                          className="w-full rounded-xl border-none bg-slate-50/70 focus:bg-white px-5 py-3.5 text-sm text-slate-800 placeholder-slate-405 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition-all font-sans"
+                          className="w-full rounded-lg border-none bg-slate-50/70 focus:bg-white px-4 py-2.5 text-xs text-slate-800 placeholder-slate-405 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition-all font-sans"
                           placeholder="Tên doanh nghiệp / cơ quan..."
                         />
                         {errors.organization && (
-                          <p className="text-xs text-rose-650 flex items-center gap-1 font-semibold mt-1">
-                            <AlertTriangle className="h-3.5 w-3.5" /> <span>{errors.organization}</span>
+                          <p className="text-[10px] text-rose-650 flex items-center gap-1 font-semibold mt-1">
+                            <AlertTriangle className="h-3 w-3" /> <span>{errors.organization}</span>
                           </p>
                         )}
                       </div>
 
                       {/* Email Address */}
-                      <div className="space-y-2">
-                        <label className="text-xs font-bold text-slate-700 tracking-wide font-sans block" htmlFor="input-email">
+                      <div className="space-y-1.5">
+                        <label className="text-[11px] font-bold text-slate-700 tracking-wide font-sans block" htmlFor="input-email">
                           Thư điện tử công vụ <span className="text-red-500 font-sans font-bold">*</span>
                         </label>
                         <input
@@ -223,20 +221,20 @@ export default function Contact() {
                           id="input-email"
                           value={formData.email}
                           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                          className="w-full rounded-xl border-none bg-slate-50/70 focus:bg-white px-5 py-3.5 text-sm text-slate-800 placeholder-slate-405 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition-all font-sans"
+                          className="w-full rounded-lg border-none bg-slate-50/70 focus:bg-white px-4 py-2.5 text-xs text-slate-800 placeholder-slate-405 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition-all font-sans"
                           placeholder="coquan@ongty.vn"
                         />
                         {errors.email && (
-                          <p className="text-xs text-rose-650 flex items-center gap-1 font-semibold mt-1">
-                            <AlertTriangle className="h-3.5 w-3.5" /> <span>{errors.email}</span>
+                          <p className="text-[10px] text-rose-650 flex items-center gap-1 font-semibold mt-1">
+                            <AlertTriangle className="h-3 w-3" /> <span>{errors.email}</span>
                           </p>
                         )}
                       </div>
                     </div>
 
                     {/* Service Field Selector */}
-                    <div className="space-y-2">
-                      <label className="text-xs font-bold text-slate-700 tracking-wide font-sans block" htmlFor="input-serviceField">
+                    <div className="space-y-1.5">
+                      <label className="text-[11px] font-bold text-slate-700 tracking-wide font-sans block" htmlFor="input-serviceField">
                         Hạng mục Dự án đề nghị tư vấn
                       </label>
                       <div className="relative">
@@ -244,7 +242,7 @@ export default function Contact() {
                           id="input-serviceField"
                           value={formData.serviceField}
                           onChange={(e) => setFormData({ ...formData, serviceField: e.target.value })}
-                          className="w-full rounded-xl border-none bg-slate-50/70 focus:bg-white px-5 py-3.5 text-sm text-slate-800 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition-all appearance-none cursor-pointer font-sans"
+                          className="w-full rounded-lg border-none bg-slate-50/70 focus:bg-white px-4 py-2.5 text-xs text-slate-800 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition-all appearance-none cursor-pointer font-sans"
                         >
                           <option value="khao-sat-cntt">Tư vấn khảo sát đề xuất dự án CNTT</option>
                           <option value="lap-du-an-thiet-ke">Lập dự án &amp; Thiết kế bản vẽ thi công</option>
@@ -252,49 +250,49 @@ export default function Contact() {
                           <option value="giam-sat-kiem-thu">Giám sát độc lập &amp; Đánh giá kiểm thử phần mềm</option>
                           <option value="quan-ly-du-an">Tư vấn quản trị dự án &amp; Hạ tầng Máy chủ, an toàn máy chủ</option>
                         </select>
-                        <div className="absolute inset-y-0 right-5 flex items-center pointer-events-none text-slate-400 text-xs">
+                        <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none text-slate-400 text-xs">
                           ▼
                         </div>
                       </div>
                     </div>
 
                     {/* Message Box */}
-                    <div className="space-y-2">
-                      <label className="text-xs font-bold text-slate-700 tracking-wide font-sans block" htmlFor="input-message">
+                    <div className="space-y-1.5">
+                      <label className="text-[11px] font-bold text-slate-700 tracking-wide font-sans block" htmlFor="input-message">
                         Tóm tắt yêu cầu chuyên gia của ITC <span className="text-red-500 font-sans font-bold">*</span>
                       </label>
                       <textarea
                         id="input-message"
-                        rows={5}
+                        rows={3}
                         value={formData.message}
                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                        className="w-full rounded-xl border-none bg-slate-50/70 focus:bg-white px-5 py-3.5 text-sm text-slate-800 placeholder-slate-405 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition-all resize-none font-sans"
+                        className="w-full rounded-lg border-none bg-slate-50/70 focus:bg-white px-4 py-2.5 text-xs text-slate-800 placeholder-slate-405 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition-all resize-none font-sans"
                         placeholder="Nêu tóm tắt hiện trạng thầu..."
                       />
                       {errors.message && (
-                        <p className="text-xs text-rose-650 flex items-center gap-1 font-semibold mt-1">
-                          <AlertTriangle className="h-3.5 w-3.5" /> <span>{errors.message}</span>
+                        <p className="text-[10px] text-rose-650 flex items-center gap-1 font-semibold mt-1">
+                          <AlertTriangle className="h-3 w-3" /> <span>{errors.message}</span>
                         </p>
                       )}
                     </div>
                   </div>
 
                   {/* Submission Button */}
-                  <div className="pt-4">
+                  <div className="pt-2">
                     <button
                       type="submit"
                       disabled={submitting}
-                      className="group flex w-full items-center justify-center gap-2 rounded-xl bg-blue-700 hover:bg-blue-550 py-4.5 text-xs font-bold uppercase tracking-widest text-white shadow-md shadow-blue-950/10 hover:scale-[1.005] active:scale-[0.995] disabled:opacity-60 transition-all cursor-pointer"
+                      className="group flex w-full items-center justify-center gap-2 rounded-lg bg-blue-700 hover:bg-blue-550 py-3 text-[11px] font-bold uppercase tracking-widest text-white shadow-md shadow-blue-950/10 hover:scale-[1.002] active:scale-[0.998] disabled:opacity-60 transition-all cursor-pointer"
                     >
                       {submitting ? (
                         <>
-                          <div className="h-3.5 w-3.5 rounded-full border-2 border-white border-t-transparent animate-spin" />
+                          <div className="h-3 w-3 rounded-full border-2 border-white border-t-transparent animate-spin" />
                           <span>Đang lập đường truyền an toàn...</span>
                         </>
                       ) : (
                         <>
-                          <Send className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                          <span className="font-semibold text-xs tracking-wider">ĐĂNG KÝ HỒ SƠ YÊU CẦU</span>
+                          <Send className="h-3 w-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                          <span className="font-semibold tracking-wider">ĐĂNG KÝ HỒ SƠ YÊU CẦU</span>
                         </>
                       )}
                     </button>
@@ -305,120 +303,133 @@ export default function Contact() {
           </div>
 
           {/* Right Block: Pure corporate registry details matched exactly to the provided screenshot layout */}
-          <div className="lg:col-span-5 flex flex-col gap-6" id="contact-credentials-sidebar">
+          <div className="lg:col-span-5 flex flex-col gap-4" id="contact-credentials-sidebar">
             
             {/* The exactly matched "THÔNG TIN CÔNG TY" Card block */}
-            <div className="bg-white rounded-[1.8rem] overflow-hidden border border-slate-100 shadow-[0_15px_50px_rgba(203,213,225,0.12)]" id="corporate-registry-card">
+            <div className="bg-white rounded-lg overflow-hidden border border-slate-100 shadow-[0_15px_50px_rgba(203,213,225,0.12)]" id="corporate-registry-card">
               
               {/* Header Box in Soft light-slate/off-white background as shown in image */}
-              <div className="bg-[#FAF9F6]/80 px-6 py-5 border-b border-slate-100">
-                <h2 className="font-sans text-2xl font-extrabold tracking-wide text-[#38BDF8] uppercase leading-none">
+              <div className="bg-[#FAF9F6]/80 px-5 py-3 border-b border-slate-100">
+                <h2 className="font-sans text-lg font-extrabold tracking-wide text-[#38BDF8] uppercase leading-none">
                   THÔNG TIN<br />
                   <span className="text-[#0ea5e9]">CÔNG TY</span>
                 </h2>
               </div>
 
-              {/* Company Details Body with precise fields from image with tighter spacing */}
-              <div className="p-6 space-y-4">
+              {/* Company Details Body with precise fields in 2-column grid */}
+              <div className="p-4 grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2.5">
                 
                 {/* 1. TÊN CÔNG TY */}
-                <div className="space-y-0.5">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest font-sans block">
+                <div className="sm:col-span-2 space-y-0.5">
+                  <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest font-sans block">
                     TÊN CÔNG TY
                   </span>
-                  <p className="text-xs font-bold text-slate-800 leading-normal font-sans">
+                  <p className="text-[11px] font-bold text-slate-800 leading-normal font-sans">
                     CÔNG TY CỔ PHẦN GIẢI PHÁP VÀ TƯ VẤN CÔNG NGHỆ ITC
                   </p>
                 </div>
 
                 {/* 2. TÊN TIẾNG ANH */}
-                <div className="space-y-0.5">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest font-sans block">
+                <div className="sm:col-span-2 space-y-0.5">
+                  <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest font-sans block">
                     TÊN TIẾNG ANH
                   </span>
-                  <p className="text-[11px] font-bold text-slate-800 leading-snug font-sans uppercase">
+                  <p className="text-[10px] font-bold text-slate-800 leading-snug font-sans uppercase">
                     ITC SOLUTIONS AND TECHNOLOGY CONSULTING JOINT STOCK COMPANY
                   </p>
                 </div>
 
-                {/* 3. ĐĂNG KÝ KINH DOANH - MÃ SỐ THUẾ */}
-                <div className="space-y-0.5">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest font-sans block">
-                    ĐĂNG KÝ KINH DOANH - MÃ SỐ THUẾ
+                {/* 4. ĐỊA CHỈ TRỤ SỞ */}
+                <div className="sm:col-span-2 space-y-0.5">
+                  <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest font-sans block">
+                    ĐỊA CHỈ TRỤ SỞ
                   </span>
-                  <p className="text-xs font-extrabold font-sans text-slate-900 tracking-wider">
+                  <p className="text-[11px] font-bold text-slate-800 leading-normal font-sans">
+                    10 Ng. 337 P. Định Công, Hoàng Mai, Hà Nội
+                  </p>
+                </div>
+
+                {/* 9. ĐẠI DIỆN PHÁP LUẬT */}
+                <div className="col-span-1 space-y-0.5">
+                  <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest font-sans block">
+                    ĐẠI DIỆN PHÁP LUẬT
+                  </span>
+                  <p className="text-[11px] font-bold text-slate-800 leading-normal font-sans">
+                    Đàm Thị Kim Anh - Tổng Giám đốc
+                  </p>
+                </div>
+
+                {/* 3. ĐĂNG KÝ KINH DOANH - MÃ SỐ THUẾ */}
+                <div className="col-span-1 space-y-0.5">
+                  <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest font-sans block">
+                    MÃ SỐ THUẾ / ĐKKD
+                  </span>
+                  <p className="text-[11px] font-extrabold font-sans text-slate-900 tracking-wider">
                     0108165977
                   </p>
                 </div>
 
-                {/* 4. ĐỊA CHỈ TRỤ SỞ */}
-                <div className="space-y-0.5">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest font-sans block">
-                    ĐỊA CHỈ TRỤ SỞ
-                  </span>
-                  <p className="text-xs font-bold text-slate-800 leading-normal font-sans">
-                    Nhà số 10 ngõ 337, phố Định Công, Phường Định Công, Quận Hoàng Mai, TP Hà Nội
-                  </p>
-                </div>
-
                 {/* 5. VỐN ĐIỀU LỆ */}
-                <div className="space-y-0.5">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest font-sans block">
+                <div className="col-span-1 space-y-0.5">
+                  <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest font-sans block">
                     VỐN ĐIỀU LỆ
                   </span>
-                  <p className="text-xs font-bold text-slate-700 leading-relaxed font-sans">
-                    10.000.000.000 đồng (Bằng chữ: Mười tỷ đồng)
+                  <p className="text-[11px] font-bold text-slate-700 leading-relaxed font-sans">
+                    10 tỷ đồng
                   </p>
                 </div>
 
                 {/* 6. ĐIỆN THOẠI */}
-                <div className="space-y-0.5">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest font-sans block">
+                <div className="col-span-1 space-y-0.5">
+                  <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest font-sans block">
                     ĐIỆN THOẠI
                   </span>
-                  <p className="text-sm font-extrabold font-sans text-[#2563eb] tracking-wide select-all">
+                  <p className="text-xs font-extrabold font-sans text-[#2563eb] tracking-wide select-all">
                     0984482789
                   </p>
                 </div>
 
                 {/* 7. EMAIL */}
-                <div className="space-y-0.5">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest font-sans block">
+                <div className="col-span-1 space-y-0.5">
+                  <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest font-sans block">
                     EMAIL
                   </span>
-                  <p className="text-xs font-bold text-slate-800 font-sans select-all">
+                  <p className="text-[11px] font-bold text-slate-800 font-sans select-all truncate">
                     tvitc.info@gmail.com
                   </p>
                 </div>
 
                 {/* 8. WEBSITE */}
-                <div className="space-y-0.5">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest font-sans block">
+                <div className="col-span-1 space-y-0.5">
+                  <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest font-sans block">
                     WEBSITE
                   </span>
                   <a 
                     href="http://itctv.vn/"
                     target="_blank"
                     rel="noreferrer"
-                    className="text-xs font-bold text-blue-600 hover:text-blue-750 transition-colors underline font-sans"
+                    className="text-[11px] font-bold text-blue-600 hover:text-blue-750 transition-colors underline font-sans block truncate"
                   >
                     http://itctv.vn/
                   </a>
                 </div>
-
-                {/* 9. ĐẠI DIỆN PHÁP LUẬT */}
-                <div className="space-y-0.5">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest font-sans block">
-                    ĐẠI DIỆN PHÁP LUẬT
-                  </span>
-                  <p className="text-xs font-bold text-slate-800 leading-normal font-sans">
-                    Đàm Thị Kim Anh - Tổng Giám đốc
-                  </p>
-                </div>
-
               </div>
 
             </div>
+
+            {/* Google Map Card */}
+            <div className="bg-white rounded-lg overflow-hidden border border-slate-100 shadow-[0_15px_50px_rgba(203,213,225,0.12)] flex-1 min-h-[220px]" id="corporate-map-card">
+              <iframe
+                title="Bản đồ vị trí ITC"
+                src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1862.6508637779298!2d105.82970862903267!3d20.980538931848525!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ac5f3097b025%3A0x78bb03ffe7c94aea!2zMTAgTmcuIDMzNyBQLiDEkOG7i25oIEPDtG5nLCDEkOG7i25oIEPDtG5nIEjhuqEsIMSQ4buLbmggQ8O0bmcsIEjDoCBO4buZaSwgVmlldG5hbQ!5e0!3m2!1sen!2sus!4v1781280401314!5m2!1sen!2sus"
+                width="100%"
+                height="100%"
+                className="border-none w-full h-full min-h-[220px]"
+                allowFullScreen
+                loading="lazy"
+              />
+            </div>
+           
 
           </div>
 
