@@ -6,11 +6,14 @@ import Home from './components/Home';
 import Services from './components/Services';
 import Projects from './components/Projects';
 import Contact from './components/Contact';
+import News from './components/News';
+import NewsDetail from './components/NewsDetail';
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowUp, ShieldAlert, Award, Compass } from 'lucide-react';
+import { ArrowUp } from 'lucide-react';
 
 export default function App() {
   const [activePage, setActivePage] = useState<ActivePage>('home');
+  const [selectedNewsId, setSelectedNewsId] = useState<number | null>(null);
   const [showScrollTop, setShowScrollTop] = useState(false);
 
   // Monitor scroll height to conditionally reveal back-to-top button
@@ -35,15 +38,27 @@ export default function App() {
   const renderPage = () => {
     switch (activePage) {
       case 'home':
-        return <Home setActivePage={setActivePage} />;
+        return <Home setActivePage={setActivePage} setSelectedNewsId={setSelectedNewsId} />;
       case 'services':
         return <Services setActivePage={setActivePage} />;
       case 'projects':
         return <Projects />;
+      case 'news':
+        return <News setActivePage={setActivePage} setSelectedNewsId={setSelectedNewsId} />;
+      case 'news-detail':
+        return selectedNewsId !== null ? (
+          <NewsDetail 
+            newsId={selectedNewsId} 
+            setActivePage={setActivePage} 
+            setSelectedNewsId={setSelectedNewsId} 
+          />
+        ) : (
+          <News setActivePage={setActivePage} setSelectedNewsId={setSelectedNewsId} />
+        );
       case 'contact':
         return <Contact />;
       default:
-        return <Home setActivePage={setActivePage} />;
+        return <Home setActivePage={setActivePage} setSelectedNewsId={setSelectedNewsId} />;
     }
   };
 

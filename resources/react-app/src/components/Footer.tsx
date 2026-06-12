@@ -157,6 +157,15 @@ export default function Footer({ setActivePage }: FooterProps) {
               </li>
               <li>
                 <button 
+                  onClick={() => handleLinkClick('news')} 
+                  className="text-slate-300 hover:text-white flex items-center gap-1 transition-all group cursor-pointer"
+                >
+                  <ChevronRight className="h-3.5 w-3.5 text-slate-500 group-hover:text-sky-400 group-hover:translate-x-0.5 transition-transform" />
+                  <span>Tin tức doanh nghiệp</span>
+                </button>
+              </li>
+              <li>
+                <button 
                   onClick={() => handleLinkClick('contact')} 
                   className="text-slate-300 hover:text-white flex items-center gap-1 transition-all group cursor-pointer"
                 >

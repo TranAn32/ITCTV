@@ -52,10 +52,29 @@ export default function Contact() {
     if (!validate()) return;
 
     setSubmitting(true);
-    setTimeout(() => {
-      setSubmitting(false);
-      setIsSubmitted(true);
-    }, 1000);
+    fetch('/api/contact', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    })
+      .then(async (response) => {
+        const data = await response.json();
+        if (response.ok && data.success) {
+          setIsSubmitted(true);
+        } else {
+          setErrors({ submit: data.message || 'Có lỗi xảy ra khi gửi yêu cầu. Vui lòng thử lại.' });
+        }
+      })
+      .catch((error) => {
+        console.error('Error submitting contact form:', error);
+        setErrors({ submit: 'Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng.' });
+      })
+      .finally(() => {
+        setSubmitting(false);
+      });
   };
 
   const handleReset = () => {
@@ -276,6 +295,13 @@ export default function Contact() {
                       )}
                     </div>
                   </div>
+
+                  {errors.submit && (
+                    <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-[11px] text-rose-650 flex items-center gap-2 font-semibold">
+                      <AlertTriangle className="h-4 w-4 shrink-0" />
+                      <span>{errors.submit}</span>
+                    </div>
+                  )}
 
                   {/* Submission Button */}
                   <div className="pt-2">

@@ -89,8 +89,8 @@ export default function Projects() {
             <Sparkles className="h-3.5 w-3.5 text-blue-600 animate-pulse" />
             <span>Liên Minh Đối Tác & Dấu Ấn Dự Án</span>
           </span>
-          <h1 className="font-display text-4xl sm:text-5xl font-extrabold tracking-tight text-[#0F172A] leading-tight">
-            Dự án tiêu biểu &amp; Đối tác
+          <h1 className="font-display text-4xl sm:text-4xl font-extrabold text-[#0F172A] tracking-tight">
+            DỰ ÁN TIÊU BIỂU
           </h1>
         </div>
 

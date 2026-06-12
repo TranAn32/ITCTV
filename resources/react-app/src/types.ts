@@ -36,4 +36,14 @@ export interface TestimonialItem {
   rating: number;
 }
 
-export type ActivePage = 'home' | 'services' | 'projects' | 'contact';
+export interface NewsItem {
+  id: number;
+  title: string;
+  summary: string;
+  content: string;
+  image_path: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export type ActivePage = 'home' | 'services' | 'projects' | 'news' | 'news-detail' | 'contact';

@@ -19,6 +19,10 @@ Route::get('/api/banner-image/{filename}', function ($filename) {
     return response()->file($path);
 })->where('filename', '.*');
 
+Route::get('/api/news', [NoiBoController::class, 'apiNewsIndex']);
+Route::get('/api/news/{id}', [NoiBoController::class, 'apiNewsDetail']);
+Route::post('/api/contact', [NoiBoController::class, 'apiContactStore']);
+
 // Admin Portal Routes
 Route::prefix('admin')->group(function () {
     Route::get('/login', [NoiBoController::class, 'login']);
@@ -31,7 +35,16 @@ Route::prefix('admin')->group(function () {
         Route::post('/banner', [NoiBoController::class, 'updateBanner']);
         Route::post('/banner/activate', [NoiBoController::class, 'activateBanner']);
         Route::post('/banner/delete', [NoiBoController::class, 'deleteBanner']);
-        Route::get('/access-code', [NoiBoController::class, 'accessCode']);
-        Route::post('/access-code', [NoiBoController::class, 'updateAccessCode']);
+        Route::get('/settings', [NoiBoController::class, 'settings']);
+        Route::post('/settings', [NoiBoController::class, 'updateSettings']);
+        
+        // News Management Routes
+        Route::get('/news', [NoiBoController::class, 'newsIndex']);
+        Route::get('/news/create', [NoiBoController::class, 'newsCreate']);
+        Route::post('/news', [NoiBoController::class, 'newsStore']);
+        Route::get('/news/{id}/edit', [NoiBoController::class, 'newsEdit']);
+        Route::post('/news/{id}/edit', [NoiBoController::class, 'newsUpdate']);
+        Route::post('/news/toggle-status', [NoiBoController::class, 'newsToggleStatus']);
+        Route::post('/news/delete', [NoiBoController::class, 'newsDelete']);
     });
 });

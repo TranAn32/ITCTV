@@ -202,7 +202,7 @@ export default function Services({ setActivePage }: ServicesProps) {
             <span>Năng lực độc lập &amp; Am hiểu quy chuẩn thầu</span>
           </span>
           <h1 className="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 leading-tight">
-            Giải pháp &amp; Dịch vụ Cốt lõi
+            DỊCH VỤ CỐT LÕI
           </h1>
           <p className="text-sm text-slate-500 max-w-3xl leading-relaxed font-medium">
             ITC hân hạnh mang tới gói tư vấn thiết lập hồ sơ độc lập, bảo vệ tối đa lợi ích kinh tế &amp; tính tương thích hạ tầng của Chủ đầu tư qua sơ đồ dịch vụ xen kẽ hiện đại.

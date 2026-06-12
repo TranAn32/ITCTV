@@ -25,6 +25,7 @@ export default function Header({ activePage, setActivePage }: HeaderProps) {
     { id: 'home', label: 'Trang chủ' },
     { id: 'services', label: 'Dịch vụ' },
     { id: 'projects', label: 'Dự án & Đối tác' },
+    { id: 'news', label: 'Tin tức' },
     { id: 'contact', label: 'Liên hệ' }
   ] as const;
 
@@ -65,7 +66,7 @@ export default function Header({ activePage, setActivePage }: HeaderProps) {
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-1" id="hdr-nav">
           {menuItems.map((item) => {
-            const isActive = activePage === item.id;
+            const isActive = activePage === item.id || (item.id === 'news' && activePage === 'news-detail');
             return (
               <button
                 key={item.id}
@@ -81,7 +82,7 @@ export default function Header({ activePage, setActivePage }: HeaderProps) {
                       : 'text-brand-blue' 
                     : isDarkHeader
                       ? 'text-slate-300 hover:text-white'
-                      : 'text-slate-600 hover:text-slate-900'
+                      : 'text-slate-650 hover:text-slate-900'
                 }`}
               >
                 {isActive && (
@@ -154,7 +155,7 @@ export default function Header({ activePage, setActivePage }: HeaderProps) {
           >
             <div className="space-y-1.5">
               {menuItems.map((item) => {
-                const isActive = activePage === item.id;
+                const isActive = activePage === item.id || (item.id === 'news' && activePage === 'news-detail');
                 return (
                   <button
                     key={item.id}
