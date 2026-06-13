@@ -25,6 +25,7 @@ export interface ProjectItem {
   value?: string;          // Giá trị hợp đồng thực hiện / Giá trị thực hiện
   packageValue?: string;   // Giá trị dự toán gói thầu (nếu có)
   details?: string[];     // Danh sách nội dung công việc chi tiết
+  image_path?: string;
 }
 
 export interface TestimonialItem {

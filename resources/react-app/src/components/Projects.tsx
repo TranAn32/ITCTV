@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Briefcase, 
   Layers, 
@@ -13,10 +13,48 @@ import {
   Handshake
 } from 'lucide-react';
 import { PROJECTS_DATA, PARTNERS_DATA } from '../data';
+import { ProjectItem, PartnerItem } from '../types';
 import { motion } from 'motion/react';
 
 export default function Projects() {
   const [filterCategory, setFilterCategory] = useState<string>('all');
+  const [projects, setProjects] = useState<ProjectItem[]>([]);
+  const [partners, setPartners] = useState<PartnerItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProjects = fetch('/api/projects')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          setProjects(data);
+        } else {
+          setProjects(PROJECTS_DATA);
+        }
+      })
+      .catch(err => {
+        console.error('Lỗi khi tải dự án:', err);
+        setProjects(PROJECTS_DATA);
+      });
+
+    const fetchPartners = fetch('/api/partners')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          setPartners(data);
+        } else {
+          setPartners(PARTNERS_DATA);
+        }
+      })
+      .catch(err => {
+        console.error('Lỗi khi tải đối tác:', err);
+        setPartners(PARTNERS_DATA);
+      });
+
+    Promise.all([fetchProjects, fetchPartners]).finally(() => {
+      setLoading(false);
+    });
+  }, []);
 
   const categories = [
     { id: 'all', label: 'Tất cả dự án' },
@@ -25,8 +63,8 @@ export default function Projects() {
   ];
 
   const filteredProjects = filterCategory === 'all' 
-    ? PROJECTS_DATA 
-    : PROJECTS_DATA.filter(p => p.category === filterCategory);
+    ? projects 
+    : projects.filter(p => p.category === filterCategory);
 
   // Sector icon selector for partners
   const getSectorIcon = (group: string) => {
@@ -63,14 +101,25 @@ export default function Projects() {
   };
 
   // High-performance technology & IT systems image mapping
-  const projectImages: Record<string, string> = {
-    'project-gtvt-tthc': 'https://images.unsplash.com/photo-1531403009284-440f080d1e12?q=80&w=800', 
-    'project-khcn-kiemthu': 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800', 
-    'project-backan-truyxuat': 'https://images.unsplash.com/photo-1616401784845-180882ba9ba8?q=80&w=800', 
-    'project-tuyenquang-lgsp': 'https://images.unsplash.com/photo-1597852074816-d933c7d2b988?q=80&w=800'  
-  };
+  // const projectImages: Record<string, string> = {
+  //   'project-gtvt-tthc': 'https://images.unsplash.com/photo-1531403009284-440f080d1e12?q=80&w=800', 
+  //   'project-khcn-kiemthu': 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800', 
+  //   'project-backan-truyxuat': 'https://images.unsplash.com/photo-1616401784845-180882ba9ba8?q=80&w=800', 
+  //   'project-tuyenquang-lgsp': 'https://images.unsplash.com/photo-1597852074816-d933c7d2b988?q=80&w=800'  
+  // };
 
   const defaultImg = 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=800';
+
+  if (loading) {
+    return (
+      <div className="flex min-h-[60vh] items-center justify-center bg-[#FDFDFD]">
+        <div className="flex flex-col items-center gap-4">
+          <div className="h-12 w-12 animate-spin rounded-full border-4 border-blue-600 border-t-transparent" />
+          <p className="text-sm font-semibold text-slate-500">Đang tải dự án...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative pt-8 pb-20 bg-[#FDFDFD] min-h-screen font-sans overflow-hidden" id="projects-view">
@@ -128,7 +177,7 @@ export default function Projects() {
           {/* Vertical Stack of Beautiful soft-rounded projects cards */}
           <div className="space-y-12 sm:space-y-16" id="projects-yearbook-stack">
             {filteredProjects.map((project, idx) => {
-              const imgUrl = projectImages[project.id] || defaultImg;
+              const imgUrl = project.image_path || projectImages[project.id] || defaultImg;
               
               return (
                 <div 
@@ -242,7 +291,7 @@ export default function Projects() {
 
           {/* Spacious partners layout using plain white cards and soft color transitions */}
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4" id="partners-minimal-logos-grid">
-            {PARTNERS_DATA.map((partner, index) => {
+            {partners.map((partner, index) => {
               const PartnerIcon = getSectorIcon(partner.group);
               
               return (

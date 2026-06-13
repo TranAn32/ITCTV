@@ -18,6 +18,7 @@ import {
   BookOpen,
   ArrowUpRight
 } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
 import { ActivePage } from '../types';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -28,8 +29,142 @@ interface ServicesProps {
 export default function Services({ setActivePage }: ServicesProps) {
   const [activeTab, setActiveTab] = useState<string>('khao-sat-cntt');
   const [connectorPath, setConnectorPath] = useState<{ x1: number; y1: number; x2: number; y2: number } | null>(null);
+  const [services, setServices] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  // Exact 7 services from user requirements with precise details as fallback
+  const fallbackServices = [
+    {
+      id: 'khao-sat-cntt',
+      title: 'Tư vấn khảo sát dự án Công nghệ thông tin',
+      shortTitle: 'Tư vấn khảo sát',
+      summary: 'Khảo sát và đánh giá thực tế một cách độc lập, chi tiết, tạo cơ sở dữ liệu xác thực cho toàn bộ các bước triển khai kỹ thuật tiếp theo.',
+      icon: 'Search',
+      tag: 'Chuẩn bị đầu tư',
+      colorTheme: 'blue',
+      items: [
+        { text: 'Khảo sát đánh giá hiện trạng và các kế hoạch ứng dụng công nghệ thông tin phục vụ các hoạt động của tổ chức.' },
+        { text: 'Khảo sát số liệu hiện trạng hồ sơ của Đơn vị phục vụ cho việc lập dự án đầu tư/ đề cương dự toán chi tiết.' },
+        { text: 'Lập Nhiệm vụ khảo sát pháp lý chuẩn chỉnh (nếu có yêu cầu từ phía Chủ đầu tư).' },
+        { text: 'Xây dựng Báo cáo kết quả khảo sát bảo đảm khoa học, chuẩn xác theo quy định hiện hành.' }
+      ]
+    },
+    {
+      id: 'lap-du-an-khao-thi',
+      title: 'Tư vấn lập dự án / báo cáo nghiên cứu khả thi / thiết kế thi công / đề cương dự toán chi tiết',
+      shortTitle: 'Lập báo cáo khả thi',
+      summary: 'Đồng hành xây dựng các hồ sơ quy hoạch, dự thảo giải pháp công nghệ kỹ lưỡng tạo bệ phóng an toàn nâng cao hiệu suất thầu.',
+      icon: 'Layers',
+      tag: 'Lập & Hoạch định',
+      colorTheme: 'sky',
+      items: [
+        { text: 'Đánh giá hiện trạng hạ tầng và chứng minh, luận chứng sự cần thiết phải tiến hành đầu tư.' },
+        { text: 'Xác định rõ ràng mục tiêu, quy mô và phạm vi đầu tư tối ưu nhất cho phía Chủ đầu tư.' },
+        { text: 'Phân tích kỹ lưỡng các phương án công nghệ và lựa chọn giải pháp kỹ thuật phù hợp nhất.' },
+        { text: 'Phân tích hiệu quả đầu tư dự án (hiệu quả tài chính, hiệu quả kinh tế - xã hội, hiệu quả nghiệp vụ).' },
+        { text: 'Lập Thiết kế sơ bộ ban đầu trực quan, đồng bộ và đạt chuẩn kiểm duyệt.' },
+        { text: 'Lập Tổng mức đầu tư dự toán tài chính chuẩn xác theo đơn giá thị trường.' }
+      ]
+    },
+    {
+      id: 'thiet-ke-tong-du-toan',
+      title: 'Tư vấn lập Thiết kế thi công và Tổng dự toán',
+      shortTitle: 'Thiết kế thi công',
+      summary: 'Nghiên cứu tài liệu khảo sát, khảo sát bổ sung và chuẩn hóa chi tiết từng bản vẽ thi công kèm dự tính kinh tế chuẩn tắc.',
+      icon: 'Calculator',
+      tag: 'Kỹ thuật chuyên sâu',
+      colorTheme: 'emerald',
+      items: [
+        { text: 'Nghiên cứu kỹ lưỡng các tài liệu pháp lý đã có của dự án trong giai đoạn chuẩn bị đầu tư.' },
+        { text: 'Nghiên cứu Thiết kế sơ bộ của dự án đã được phê duyệt làm cơ sở định hướng thiết kế.' },
+        { text: 'Tiến hành khảo sát đo kiểm bổ sung thực tế tại hiện trường để đảm bảo độ chính xác tuyệt đối.' },
+        { text: 'Lập Thiết kế thi công bám sát chính xác theo Thiết kế sơ bộ đã được cấp có thẩm quyền phê duyệt.' },
+        { text: 'Nghiên cứu các nội dung chi phí liên quan đến Thiết kế thi công, từ đó xác định chuẩn xác Tổng dự toán của Dự án.' },
+        { text: 'Hoàn thiện hồ sơ Thiết kế thi công và tổng dự toán của Dự án chuẩn chỉ đủ năng lực trình duyệt.' }
+      ]
+    },
+    {
+      id: 'de-cuong-du-toan-chi-tiet',
+      title: 'Tư vấn lập Đề cương và dự toán chi tiết',
+      shortTitle: 'Lập Đề cương chi tiết',
+      summary: 'Hiệu chỉnh nội dung chi tiêu ứng dụng CNTT đảm bảo thiết thực, chuẩn mực, tiết kiệm ngân sách và đủ thuyết minh định mức.',
+      icon: 'ClipboardList',
+      tag: 'Tối ưu ngân sách',
+      colorTheme: 'blue',
+      items: [
+        { text: 'Bảo đảm phù hợp hoàn toàn với yêu cầu triển khai hoạt động ứng dụng công nghệ thông tin đã được phê duyệt.' },
+        { text: 'Bảo đảm tuân thủ các quy chuẩn, tiêu chuẩn kỹ thuật công nghệ thông tin áp dụng đối với nội dung chi nêu trong đề cương.' },
+        { text: 'Bảo đảm thuyết minh của đề cương và dự toán chi tiết rõ ràng, minh bạch, làm rõ được các số liệu biểu mẫu tính toán.' }
+      ]
+    },
+    {
+      id: 'tham-tra-du-an',
+      title: 'Tư vấn Thẩm tra độc lập',
+      shortTitle: 'Phản biện & Thẩm tra',
+      summary: 'Hội đồng chuyên môn phản biện độc lập độc vị rủi ro dự toán, quy chuẩn chất lượng, kết cấu hệ thống trước cấp có thẩm quyền phê duyệt.',
+      icon: 'ShieldCheck',
+      tag: 'Bảo chứng pháp lý',
+      colorTheme: 'indigo',
+      items: [
+        { text: 'Thẩm tra Báo cáo nghiên cứu khả thi dự án CNTT (bóc tách tính hợp lý của công nghệ, kiến trúc và giải pháp đề xuất).' },
+        { text: 'Thẩm tra Thiết kế thi công và tổng dự toán (rà soát tính chính xác của khối lượng, định mức kinh tế kỹ thuật áp dụng).' }
+      ]
+    },
+    {
+      id: 'giam-sat-kiem-thu',
+      title: 'Tư vấn giám sát / kiểm thử các dự án CNTT',
+      shortTitle: 'Giám sát & Kiểm thử',
+      summary: 'Bảo chứng chất lượng thi công, hỗ trợ tháo gỡ điểm nghẽn và kiểm định phần mềm một cách hoàn toàn khách quan, minh bạch.',
+      icon: 'Eye',
+      tag: 'Kiểm soát chất lượng',
+      colorTheme: 'rose',
+      items: [
+        { text: 'Hỗ trợ chủ đầu tư quản lý dự án CNTT toàn diện trong suốt quá trình triển khai thầu thực địa.' },
+        { text: 'Giám sát chặt chẽ việc tuân thủ và đáp ứng các yêu cầu chất lượng, tiến độ và kỹ thuật của nhà cung cấp.' },
+        { text: 'Thực hiện kiểm thử các phần mềm độc lập, khách quan: Kiểm thử chức năng, kiểm thử hiệu năng, cấu trúc...' }
+      ]
+    },
+    {
+      id: 'quan-ly-du-an-cntt',
+      title: 'Tư vấn quản lý dự án CNTT',
+      shortTitle: 'Quản lý dự án',
+      summary: 'Quản trị đồng bộ chất lượng, tiến độ thực địa và kiểm soát nghiêm ngặt các rủi ro vận hành lắp đặt.',
+      icon: 'Briefcase',
+      tag: 'Quản trị rủi ro',
+      colorTheme: 'amber',
+      items: [
+        { text: 'Quản lý chất lượng công tác khảo sát thực tế chuyên môn.' },
+        { text: 'Quản lý chất lượng hồ sơ thiết kế thi công công nghệ.' },
+        { text: 'Quản lý giám sát chất lượng trong quá trình thi công xây dựng ứng dụng.' },
+        { text: 'Quản lý an toàn lao động, phòng chống cháy nổ tối ưu tại các hạng mục phòng máy chủ/Server trung tâm.' }
+      ]
+    }
+  ];
 
   useEffect(() => {
+    fetch('/api/services')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          setServices(data);
+          setActiveTab(data[0].id);
+        } else {
+          setServices(fallbackServices);
+          setActiveTab('khao-sat-cntt');
+        }
+      })
+      .catch(err => {
+        console.error('Lỗi khi tải dịch vụ:', err);
+        setServices(fallbackServices);
+        setActiveTab('khao-sat-cntt');
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (loading || services.length === 0) return;
     let active = true;
     const updateConnector = () => {
       if (!active) return;
@@ -75,116 +210,18 @@ export default function Services({ setActivePage }: ServicesProps) {
       clearTimeout(t4);
       window.removeEventListener('resize', updateConnector);
     };
-  }, [activeTab]);
+  }, [activeTab, loading, services]);
 
-  // Exact 7 services from user requirements with precise details
-  const servicesList = [
-    {
-      id: 'khao-sat-cntt',
-      title: 'Tư vấn khảo sát dự án Công nghệ thông tin',
-      shortTitle: 'Tư vấn khảo sát',
-      summary: 'Khảo sát và đánh giá thực tế một cách độc lập, chi tiết, tạo cơ sở dữ liệu xác thực cho toàn bộ các bước triển khai kỹ thuật tiếp theo.',
-      icon: Search,
-      tag: 'Chuẩn bị đầu tư',
-      colorTheme: 'blue',
-      items: [
-        { text: 'Khảo sát đánh giá hiện trạng và các kế hoạch ứng dụng công nghệ thông tin phục vụ các hoạt động của tổ chức.' },
-        { text: 'Khảo sát số liệu hiện trạng hồ sơ của Đơn vị phục vụ cho việc lập dự án đầu tư/ đề cương dự toán chi tiết.' },
-        { text: 'Lập Nhiệm vụ khảo sát pháp lý chuẩn chỉnh (nếu có yêu cầu từ phía Chủ đầu tư).' },
-        { text: 'Xây dựng Báo cáo kết quả khảo sát bảo đảm khoa học, chuẩn xác theo quy định hiện hành.' }
-      ]
-    },
-    {
-      id: 'lap-du-an-khao-thi',
-      title: 'Tư vấn lập dự án / báo cáo nghiên cứu khả thi / thiết kế thi công / đề cương dự toán chi tiết',
-      shortTitle: 'Lập báo cáo khả thi',
-      summary: 'Đồng hành xây dựng các hồ sơ quy hoạch, dự thảo giải pháp công nghệ kỹ lưỡng tạo bệ phóng an toàn nâng cao hiệu suất thầu.',
-      icon: Layers,
-      tag: 'Lập & Hoạch định',
-      colorTheme: 'sky',
-      items: [
-        { text: 'Đánh giá hiện trạng hạ tầng và chứng minh, luận chứng sự cần thiết phải tiến hành đầu tư.' },
-        { text: 'Xác định rõ ràng mục tiêu, quy mô và phạm vi đầu tư tối ưu nhất cho phía Chủ đầu tư.' },
-        { text: 'Phân tích kỹ lưỡng các phương án công nghệ và lựa chọn giải pháp kỹ thuật phù hợp nhất.' },
-        { text: 'Phân tích hiệu quả đầu tư dự án (hiệu quả tài chính, hiệu quả kinh tế - xã hội, hiệu quả nghiệp vụ).' },
-        { text: 'Lập Thiết kế sơ bộ ban đầu trực quan, đồng bộ và đạt chuẩn kiểm duyệt.' },
-        { text: 'Lập Tổng mức đầu tư dự toán tài chính chuẩn xác theo đơn giá thị trường.' }
-      ]
-    },
-    {
-      id: 'thiet-ke-tong-du-toan',
-      title: 'Tư vấn lập Thiết kế thi công và Tổng dự toán',
-      shortTitle: 'Thiết kế thi công',
-      summary: 'Nghiên cứu tài liệu khảo sát, khảo sát bổ sung và chuẩn hóa chi tiết từng bản vẽ thi công kèm dự tính kinh tế chuẩn tắc.',
-      icon: Calculator,
-      tag: 'Kỹ thuật chuyên sâu',
-      colorTheme: 'emerald',
-      items: [
-        { text: 'Nghiên cứu kỹ lưỡng các tài liệu pháp lý đã có của dự án trong giai đoạn chuẩn bị đầu tư.' },
-        { text: 'Nghiên cứu Thiết kế sơ bộ của dự án đã được phê duyệt làm cơ sở định hướng thiết kế.' },
-        { text: 'Tiến hành khảo sát đo kiểm bổ sung thực tế tại hiện trường để đảm bảo độ chính xác tuyệt đối.' },
-        { text: 'Lập Thiết kế thi công bám sát chính xác theo Thiết kế sơ bộ đã được cấp có thẩm quyền phê duyệt.' },
-        { text: 'Nghiên cứu các nội dung chi phí liên quan đến Thiết kế thi công, từ đó xác định chuẩn xác Tổng dự toán của Dự án.' },
-        { text: 'Hoàn thiện hồ sơ Thiết kế thi công và tổng dự toán của Dự án chuẩn chỉ đủ năng lực trình duyệt.' }
-      ]
-    },
-    {
-      id: 'de-cuong-du-toan-chi-tiet',
-      title: 'Tư vấn lập Đề cương và dự toán chi tiết',
-      shortTitle: 'Lập Đề cương chi tiết',
-      summary: 'Hiệu chỉnh nội dung chi tiêu ứng dụng CNTT đảm bảo thiết thực, chuẩn mực, tiết kiệm ngân sách và đủ thuyết minh định mức.',
-      icon: ClipboardList,
-      tag: 'Tối ưu ngân sách',
-      colorTheme: 'blue',
-      items: [
-        { text: 'Bảo đảm phù hợp hoàn toàn với yêu cầu triển khai hoạt động ứng dụng công nghệ thông tin đã được phê duyệt.' },
-        { text: 'Bảo đảm tuân thủ các quy chuẩn, tiêu chuẩn kỹ thuật công nghệ thông tin áp dụng đối với nội dung chi nêu trong đề cương.' },
-        { text: 'Bảo đảm thuyết minh của đề cương và dự toán chi tiết rõ ràng, minh bạch, làm rõ được các số liệu biểu mẫu tính toán.' }
-      ]
-    },
-    {
-      id: 'tham-tra-du-an',
-      title: 'Tư vấn Thẩm tra độc lập',
-      shortTitle: 'Phản biện & Thẩm tra',
-      summary: 'Hội đồng chuyên môn phản biện độc lập độc vị rủi ro dự toán, quy chuẩn chất lượng, kết cấu hệ thống trước cấp có thẩm quyền phê duyệt.',
-      icon: ShieldCheck,
-      tag: 'Bảo chứng pháp lý',
-      colorTheme: 'indigo',
-      items: [
-        { text: 'Thẩm tra Báo cáo nghiên cứu khả thi dự án CNTT (bóc tách tính hợp lý của công nghệ, kiến trúc và giải pháp đề xuất).' },
-        { text: 'Thẩm tra Thiết kế thi công và tổng dự toán (rà soát tính chính xác của khối lượng, định mức kinh tế kỹ thuật áp dụng).' }
-      ]
-    },
-    {
-      id: 'giam-sat-kiem-thu',
-      title: 'Tư vấn giám sát / kiểm thử các dự án CNTT',
-      shortTitle: 'Giám sát & Kiểm thử',
-      summary: 'Bảo chứng chất lượng thi công, hỗ trợ tháo gỡ điểm nghẽn và kiểm định phần mềm một cách hoàn toàn khách quan, minh bạch.',
-      icon: Eye,
-      tag: 'Kiểm soát chất lượng',
-      colorTheme: 'rose',
-      items: [
-        { text: 'Hỗ trợ chủ đầu tư quản lý dự án CNTT toàn diện trong suốt quá trình triển khai thầu thực địa.' },
-        { text: 'Giám sát chặt chẽ việc tuân thủ và đáp ứng các yêu cầu chất lượng, tiến độ và kỹ thuật của nhà cung cấp.' },
-        { text: 'Thực hiện kiểm thử các phần mềm độc lập, khách quan: Kiểm thử chức năng, kiểm thử hiệu năng, cấu trúc...' }
-      ]
-    },
-    {
-      id: 'quan-ly-du-an-cntt',
-      title: 'Tư vấn quản lý dự án CNTT',
-      shortTitle: 'Quản lý dự án',
-      summary: 'Quản trị đồng bộ chất lượng, tiến độ thực địa và kiểm soát nghiêm ngặt các rủi ro vận hành lắp đặt.',
-      icon: Briefcase,
-      tag: 'Quản trị rủi ro',
-      colorTheme: 'amber',
-      items: [
-        { text: 'Quản lý chất lượng công tác khảo sát thực tế chuyên môn.' },
-        { text: 'Quản lý chất lượng hồ sơ thiết kế thi công công nghệ.' },
-        { text: 'Quản lý giám sát chất lượng trong quá trình thi công xây dựng ứng dụng.' },
-        { text: 'Quản lý an toàn lao động, phòng chống cháy nổ tối ưu tại các hạng mục phòng máy chủ/Server trung tâm.' }
-      ]
-    }
-  ];
+  if (loading) {
+    return (
+      <div className="relative pt-10 pb-16 md:pt-12 md:pb-20 bg-[#FDFDFD] min-h-screen font-sans flex items-center justify-center">
+        <div className="flex flex-col items-center gap-3">
+          <div className="animate-spin rounded-full h-10 w-10 border-2 border-blue-600 border-t-transparent"></div>
+          <span className="text-sm font-medium text-slate-500 font-sans">Đang tải danh sách dịch vụ...</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative pt-10 pb-16 md:pt-12 md:pb-20 bg-[#FDFDFD] min-h-screen font-sans overflow-hidden flex flex-col justify-between" id="services-view">
@@ -239,8 +276,8 @@ export default function Services({ setActivePage }: ServicesProps) {
               Danh mục nhóm dịch vụ
             </div>
             
-            {servicesList.map((service, idx) => {
-              const ServiceIcon = service.icon;
+            {services.map((service, idx) => {
+              const ServiceIcon = (LucideIcons as any)[service.icon] || LucideIcons.Layers;
               const isActive = activeTab === service.id;
               
               return (
@@ -307,7 +344,7 @@ export default function Services({ setActivePage }: ServicesProps) {
           {/* RIGHT PANEL: Loaded content styled super premium with alternating/staggered block layouts */}
           <div className="lg:col-span-8 flex flex-col justify-between" id="services-viewer-frame">
             <AnimatePresence mode="wait">
-              {servicesList.map((service, idx) => {
+              {services.map((service, idx) => {
                 if (service.id !== activeTab) return null;
                 
                 // Color mapping logic for premium bespoke feel per service
@@ -363,7 +400,7 @@ export default function Services({ setActivePage }: ServicesProps) {
                         </h4>
                         
                         <div className="grid grid-cols-1 gap-1">
-                          {service.items.map((item, itemIdx) => (
+                          {service.items.map((item: any, itemIdx: number) => (
                             <div 
                               key={itemIdx}
                               className="flex items-start gap-3 py-2 transition-all duration-300 text-left"

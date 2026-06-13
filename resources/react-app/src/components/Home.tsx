@@ -16,7 +16,7 @@ import {
   Clock,
   Cpu
 } from 'lucide-react';
-import { ActivePage, NewsItem } from '../types';
+import { ActivePage, NewsItem, PartnerItem } from '../types';
 import { motion, AnimatePresence } from 'motion/react';
 import { PROJECTS_DATA, PARTNERS_DATA } from '../data';
 
@@ -71,6 +71,7 @@ interface HomeProjectItem {
   value: string;
   packageValue: string | null;
   features: { text: string; icon: string }[];
+  image_path?: string;
 }
 
 const HOME_PROJECTS: HomeProjectItem[] = [
@@ -153,6 +154,8 @@ export default function Home({ setActivePage, setSelectedNewsId }: HomeProps) {
   const [bannerUrl, setBannerUrl] = useState<string>('/uploads/banners/default-banner.png');
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(0);
   const [dynamicNews, setDynamicNews] = useState<NewsItem[]>([]);
+  const [partners, setPartners] = useState<PartnerItem[]>([]);
+  const [projects, setProjects] = useState<HomeProjectItem[]>(HOME_PROJECTS);
 
   useEffect(() => {
     // Fetch Banner
@@ -175,6 +178,48 @@ export default function Home({ setActivePage, setSelectedNewsId }: HomeProps) {
       })
       .catch(() => {
         // fallback
+      });
+
+    // Fetch Partners
+    fetch('/api/partners')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          setPartners(data);
+        } else {
+          setPartners(PARTNERS_DATA);
+        }
+      })
+      .catch(() => {
+        setPartners(PARTNERS_DATA);
+      });
+
+    // Fetch Projects
+    fetch('/api/projects')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          const mappedProjects = data.slice(0, 4).map((p: any) => ({
+            id: p.id,
+            category: p.category,
+            client: p.client,
+            verticalLabel: getCategoryLabel(p.category).toUpperCase(),
+            horizontalLabel: getCategoryLabel(p.category).toUpperCase(),
+            verticalTitle: p.title.length > 30 ? p.title.substring(0, 30) + '...' : p.title,
+            horizontalTitle: p.title,
+            scope: p.scope,
+            value: p.value || 'Liên hệ',
+            packageValue: p.packageValue || null,
+            features: (p.details || []).slice(0, 3).map((d: string) => ({ text: d, icon: 'CheckCircle2' })),
+            image_path: p.image_path
+          }));
+          setProjects(mappedProjects);
+        } else {
+          setProjects(HOME_PROJECTS);
+        }
+      })
+      .catch(() => {
+        setProjects(HOME_PROJECTS);
       });
   }, []);
 
@@ -401,8 +446,8 @@ export default function Home({ setActivePage, setSelectedNewsId }: HomeProps) {
             id="homepage-featured-projects-grid"
             onMouseLeave={() => setHoveredIndex(0)}
           >
-            {HOME_PROJECTS.map((project, index) => {
-              const imgUrl = projectImages[project.id] || 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=800';
+            {projects.map((project, index) => {
+              const imgUrl = (project as any).image_path || projectImages[project.id] || 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=800';
               const isExpanded = hoveredIndex === index;
               
               const widthClass = isExpanded
@@ -501,7 +546,7 @@ export default function Home({ setActivePage, setSelectedNewsId }: HomeProps) {
                     </h3>
 
                     {/* Scope description */}
-                    <p className="text-xs md:text-sm text-slate-350 font-medium leading-relaxed max-w-2xl mb-4">
+                    <p className="text-xs md:text-sm text-white text-slate-350 font-medium leading-relaxed max-w-2xl mb-4">
                       {project.scope}
                     </p>
 
@@ -567,7 +612,7 @@ export default function Home({ setActivePage, setSelectedNewsId }: HomeProps) {
         <div className="flex overflow-hidden whitespace-nowrap py-8">
           <div className="flex animate-scroll-left-very-slow hover:[animation-play-state:paused] cursor-grab active:cursor-grabbing">
             {/* Double the list to make the loop seamless */}
-            {[...PARTNERS_DATA, ...PARTNERS_DATA, ...PARTNERS_DATA].map((partner, index) => {
+            {[...partners, ...partners, ...partners].map((partner, index) => {
               return (
                 <div
                   key={index}
@@ -655,123 +700,12 @@ export default function Home({ setActivePage, setSelectedNewsId }: HomeProps) {
                     </div>
                   ))
                 ) : (
-                  <>
-                    {/* News Card 1 */}
-                    <div className="bg-white rounded-xl border border-slate-100 overflow-hidden shadow-3xs hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col h-full group">
-                      <div className="h-44 overflow-hidden relative bg-slate-100">
-                        <img 
-                          src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=600" 
-                          alt="Kiểm định số" 
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                        />
-                      </div>
-                      <div className="p-4 flex-grow flex flex-col justify-between space-y-4">
-                        <div className="space-y-2">
-                          <div className="flex items-center gap-1.5 text-[10px] text-slate-400 font-bold font-sans">
-                            <Calendar className="h-3.5 w-3.5" />
-                            <span>10/06/2026</span>
-                          </div>
-                          <h4 className="text-sm font-bold text-slate-800 line-clamp-2 group-hover:text-blue-600 transition-colors">
-                            ITC hỗ trợ Cục Đăng kiểm Việt Nam tối ưu hóa quy trình kiểm định số
-                          </h4>
-                          <p className="text-xs text-slate-500 line-clamp-3 leading-relaxed font-semibold font-sans">
-                            Giám sát chất lượng và kiểm thử độc lập nền tảng tích hợp dịch vụ hành chính công liên kết Cơ sở dữ liệu Quốc gia.
-                          </p>
-                        </div>
-                        <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-blue-600 mt-auto">
-                          <span>Tìm hiểu ngay</span>
-                          <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* News Card 2 */}
-                    <div className="bg-white rounded-xl border border-slate-100 overflow-hidden shadow-3xs hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col h-full group">
-                      <div className="h-44 overflow-hidden relative bg-slate-100">
-                        <img 
-                          src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=600" 
-                          alt="Định mức CNTT" 
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                        />
-                      </div>
-                      <div className="p-4 flex-grow flex flex-col justify-between space-y-4">
-                        <div className="space-y-2">
-                          <div className="flex items-center gap-1.5 text-[10px] text-slate-400 font-bold font-sans">
-                            <Calendar className="h-3.5 w-3.5" />
-                            <span>05/06/2026</span>
-                          </div>
-                          <h4 className="text-sm font-bold text-slate-800 line-clamp-2 group-hover:text-blue-600 transition-colors">
-                            Định mức kinh tế kỹ thuật trong lập dự toán CNTT theo Nghị định 73
-                          </h4>
-                          <p className="text-xs text-slate-500 line-clamp-3 leading-relaxed font-semibold font-sans">
-                            Phân tích quy trình thẩm tra dự toán chi tiết giúp tối ưu hóa ngân sách và tránh rủi ro tài khóa cho chủ đầu tư.
-                          </p>
-                        </div>
-                        <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-blue-600 mt-auto">
-                          <span>Tìm hiểu ngay</span>
-                          <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* News Card 3 */}
-                    <div className="bg-white rounded-xl border border-slate-100 overflow-hidden shadow-3xs hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col h-full group">
-                      <div className="h-44 overflow-hidden relative bg-slate-100">
-                        <img 
-                          src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=600" 
-                          alt="Phòng Server" 
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                        />
-                      </div>
-                      <div className="p-4 flex-grow flex flex-col justify-between space-y-4">
-                        <div className="space-y-2">
-                          <div className="flex items-center gap-1.5 text-[10px] text-slate-400 font-bold font-sans">
-                            <Calendar className="h-3.5 w-3.5" />
-                            <span>28/05/2026</span>
-                          </div>
-                          <h4 className="text-sm font-bold text-slate-800 line-clamp-2 group-hover:text-blue-600 transition-colors">
-                            Quy chuẩn an toàn thông tin TIA-942 cho Trung tâm dữ liệu hiện đại
-                          </h4>
-                          <p className="text-xs text-slate-500 line-clamp-3 leading-relaxed font-semibold font-sans">
-                            Quy trình khảo sát, thiết kế và giám sát lắp đặt hạ tầng mạng máy chủ đạt tiêu chuẩn bảo mật dữ liệu cấp cao.
-                          </p>
-                        </div>
-                        <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-blue-600 mt-auto">
-                          <span>Tìm hiểu ngay</span>
-                          <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* News Card 4 */}
-                    <div className="bg-white rounded-xl border border-slate-100 overflow-hidden shadow-3xs hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col h-full group">
-                      <div className="h-44 overflow-hidden relative bg-slate-100">
-                        <img 
-                          src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=600" 
-                          alt="Đội ngũ kỹ thuật" 
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                        />
-                      </div>
-                      <div className="p-4 flex-grow flex flex-col justify-between space-y-4">
-                        <div className="space-y-2">
-                          <div className="flex items-center gap-1.5 text-[10px] text-slate-400 font-bold font-sans">
-                            <Calendar className="h-3.5 w-3.5" />
-                            <span>20/05/2026</span>
-                          </div>
-                          <h4 className="text-sm font-bold text-slate-800 line-clamp-2 group-hover:text-blue-600 transition-colors">
-                            ITC tổ chức khóa tập huấn nâng cao năng lực giám sát CNTT cho đối tác
-                          </h4>
-                          <p className="text-xs text-slate-500 line-clamp-3 leading-relaxed font-semibold font-sans">
-                            Chương trình đào tạo chuyên sâu về quy trình kiểm thử hệ thống và đánh giá rủi ro an toàn thông tin theo chuẩn quốc tế.
-                          </p>
-                        </div>
-                        <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-blue-600 mt-auto">
-                          <span>Tìm hiểu ngay</span>
-                          <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
-                        </div>
-                      </div>
-                    </div>
-                  </>
+                  <div className="col-span-1 md:col-span-2 lg:col-span-4 flex items-center justify-center py-20 bg-white rounded-xl border border-slate-100 shadow-3xs">
+                    <span className="text-sm font-semibold text-slate-500 flex items-center gap-3">
+                      <span className="w-5 h-5 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></span>
+                      Đang tải tin tức...
+                    </span>
+                  </div>
                 )}
               </div>
             </div>

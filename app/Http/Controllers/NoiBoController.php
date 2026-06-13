@@ -391,4 +391,525 @@ class NoiBoController extends Controller
             ], 500);
         }
     }
+
+    // Project Admin Management
+    public function projectsIndex()
+    {
+        $projectsList = DB::table('projects')->orderByDesc('id')->get();
+        return view('noi-bo.projects', compact('projectsList'));
+    }
+
+    public function projectsCreate()
+    {
+        return view('noi-bo.projects-create');
+    }
+
+    public function projectsStore(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'client' => 'required|string|max:255',
+            'category' => 'required|string|max:100',
+            'scope' => 'required|string',
+            'value' => 'nullable|string|max:255',
+            'package_value' => 'nullable|string|max:255',
+            'details' => 'nullable|string',
+            'project_image' => 'required|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'is_visible' => 'nullable|in:0,1',
+        ]);
+
+        if ($request->hasFile('project_image')) {
+            $file = $request->file('project_image');
+            $filename = 'project-' . time() . '-' . uniqid() . '.' . $file->getClientOriginalExtension();
+            
+            $uploadPath = public_path('upload/Projects');
+            if (!file_exists($uploadPath)) {
+                mkdir($uploadPath, 0755, true);
+            }
+
+            $file->move($uploadPath, $filename);
+            $imagePath = '/upload/Projects/' . $filename;
+
+            DB::table('projects')->insert([
+                'title' => $request->title,
+                'client' => $request->client,
+                'category' => $request->category,
+                'scope' => $request->scope,
+                'value' => $request->value,
+                'package_value' => $request->package_value,
+                'details' => $request->details,
+                'image_path' => $imagePath,
+                'is_visible' => $request->has('is_visible') ? (bool)$request->is_visible : true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            return redirect('/admin/projects')->with('success', 'Đăng dự án thành công!');
+        }
+
+        return back()->withErrors(['project_image' => 'Vui lòng tải lên ảnh đại diện dự án.'])->withInput();
+    }
+
+    public function projectsEdit($id)
+    {
+        $project = DB::table('projects')->where('id', $id)->first();
+        if (!$project) {
+            abort(404, 'Dự án không tồn tại.');
+        }
+        return view('noi-bo.projects-edit', compact('project'));
+    }
+
+    public function projectsUpdate(Request $request, $id)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'client' => 'required|string|max:255',
+            'category' => 'required|string|max:100',
+            'scope' => 'required|string',
+            'value' => 'nullable|string|max:255',
+            'package_value' => 'nullable|string|max:255',
+            'details' => 'nullable|string',
+            'project_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'is_visible' => 'nullable|in:0,1',
+        ]);
+
+        $project = DB::table('projects')->where('id', $id)->first();
+        if (!$project) {
+            return redirect('/admin/projects')->withErrors(['error' => 'Dự án không tồn tại.']);
+        }
+
+        $imagePath = $project->image_path;
+
+        if ($request->hasFile('project_image')) {
+            // Delete old file
+            $oldFilepath = public_path($project->image_path);
+            if (file_exists($oldFilepath) && is_file($oldFilepath)) {
+                unlink($oldFilepath);
+            }
+
+            // Upload new file
+            $file = $request->file('project_image');
+            $filename = 'project-' . time() . '-' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $uploadPath = public_path('upload/Projects');
+            if (!file_exists($uploadPath)) {
+                mkdir($uploadPath, 0755, true);
+            }
+            $file->move($uploadPath, $filename);
+            $imagePath = '/upload/Projects/' . $filename;
+        }
+
+        DB::table('projects')->where('id', $id)->update([
+            'title' => $request->title,
+            'client' => $request->client,
+            'category' => $request->category,
+            'scope' => $request->scope,
+            'value' => $request->value,
+            'package_value' => $request->package_value,
+            'details' => $request->details,
+            'image_path' => $imagePath,
+            'is_visible' => $request->has('is_visible') ? (bool)$request->is_visible : true,
+            'updated_at' => now(),
+        ]);
+
+        return redirect('/admin/projects')->with('success', 'Cập nhật dự án thành công!');
+    }
+
+    public function projectsToggleStatus(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer',
+        ]);
+
+        $project = DB::table('projects')->where('id', $request->id)->first();
+        if ($project) {
+            $newStatus = !$project->is_visible;
+            DB::table('projects')->where('id', $request->id)->update([
+                'is_visible' => $newStatus,
+                'updated_at' => now(),
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'is_visible' => $newStatus,
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Dự án không tồn tại.',
+        ], 404);
+    }
+
+    public function projectsDelete(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer',
+        ]);
+
+        $project = DB::table('projects')->where('id', $request->id)->first();
+        if ($project) {
+            $filepath = public_path($project->image_path);
+            if (file_exists($filepath) && is_file($filepath)) {
+                unlink($filepath);
+            }
+            DB::table('projects')->where('id', $request->id)->delete();
+            return redirect('/admin/projects')->with('success', 'Đã xóa dự án thành công!');
+        }
+
+        return redirect('/admin/projects')->withErrors(['error' => 'Không tìm thấy dự án để xóa.']);
+    }
+
+    public function apiProjectsIndex()
+    {
+        $projectsList = DB::table('projects')->where('is_visible', true)->orderByDesc('id')->get();
+        
+        $mappedProjects = $projectsList->map(function ($project) {
+            $detailsArray = [];
+            if (!empty($project->details)) {
+                $detailsArray = array_values(array_filter(array_map('trim', explode("\n", $project->details))));
+            }
+            
+            return [
+                'id' => (string)$project->id,
+                'title' => $project->title,
+                'client' => $project->client,
+                'category' => $project->category,
+                'scope' => $project->scope,
+                'value' => $project->value,
+                'packageValue' => $project->package_value,
+                'details' => $detailsArray,
+                'image_path' => $project->image_path,
+            ];
+        });
+
+        return response()->json($mappedProjects);
+    }
+
+    // Partner Admin Management
+    public function partnersIndex()
+    {
+        $partnersList = DB::table('partners')->orderByDesc('id')->get();
+        return view('noi-bo.partners', compact('partnersList'));
+    }
+
+    public function partnersCreate()
+    {
+        return view('noi-bo.partners-create');
+    }
+
+    public function partnersStore(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'group' => 'required|string|max:100',
+            'partner_logo' => 'required|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'is_visible' => 'nullable|in:0,1',
+        ]);
+
+        if ($request->hasFile('partner_logo')) {
+            $file = $request->file('partner_logo');
+            $filename = 'partner-' . time() . '-' . uniqid() . '.' . $file->getClientOriginalExtension();
+            
+            $uploadPath = public_path('upload/Partners');
+            if (!file_exists($uploadPath)) {
+                mkdir($uploadPath, 0755, true);
+            }
+
+            $file->move($uploadPath, $filename);
+            $logoPath = '/upload/Partners/' . $filename;
+
+            DB::table('partners')->insert([
+                'name' => $request->name,
+                'group' => $request->group,
+                'logo_path' => $logoPath,
+                'is_visible' => $request->has('is_visible') ? (bool)$request->is_visible : true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            return redirect('/admin/partners')->with('success', 'Thêm đối tác thành công!');
+        }
+
+        return back()->withErrors(['partner_logo' => 'Vui lòng tải lên logo đối tác.'])->withInput();
+    }
+
+    public function partnersEdit($id)
+    {
+        $partner = DB::table('partners')->where('id', $id)->first();
+        if (!$partner) {
+            abort(404, 'Đối tác không tồn tại.');
+        }
+        return view('noi-bo.partners-edit', compact('partner'));
+    }
+
+    public function partnersUpdate(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'group' => 'required|string|max:100',
+            'partner_logo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'is_visible' => 'nullable|in:0,1',
+        ]);
+
+        $partner = DB::table('partners')->where('id', $id)->first();
+        if (!$partner) {
+            return redirect('/admin/partners')->withErrors(['error' => 'Đối tác không tồn tại.']);
+        }
+
+        $logoPath = $partner->logo_path;
+
+        if ($request->hasFile('partner_logo')) {
+            // Delete old file
+            $oldFilepath = public_path($partner->logo_path);
+            if (file_exists($oldFilepath) && is_file($oldFilepath)) {
+                unlink($oldFilepath);
+            }
+
+            // Upload new file
+            $file = $request->file('partner_logo');
+            $filename = 'partner-' . time() . '-' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $uploadPath = public_path('upload/Partners');
+            if (!file_exists($uploadPath)) {
+                mkdir($uploadPath, 0755, true);
+            }
+            $file->move($uploadPath, $filename);
+            $logoPath = '/upload/Partners/' . $filename;
+        }
+
+        DB::table('partners')->where('id', $id)->update([
+            'name' => $request->name,
+            'group' => $request->group,
+            'logo_path' => $logoPath,
+            'is_visible' => $request->has('is_visible') ? (bool)$request->is_visible : true,
+            'updated_at' => now(),
+        ]);
+
+        return redirect('/admin/partners')->with('success', 'Cập nhật đối tác thành công!');
+    }
+
+    public function partnersToggleStatus(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer',
+        ]);
+
+        $partner = DB::table('partners')->where('id', $request->id)->first();
+        if ($partner) {
+            $newStatus = !$partner->is_visible;
+            DB::table('partners')->where('id', $request->id)->update([
+                'is_visible' => $newStatus,
+                'updated_at' => now(),
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'is_visible' => $newStatus,
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Đối tác không tồn tại.',
+        ], 404);
+    }
+
+    public function partnersDelete(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer',
+        ]);
+
+        $partner = DB::table('partners')->where('id', $request->id)->first();
+        if ($partner) {
+            $filepath = public_path($partner->logo_path);
+            if (file_exists($filepath) && is_file($filepath)) {
+                unlink($filepath);
+            }
+            DB::table('partners')->where('id', $request->id)->delete();
+            return redirect('/admin/partners')->with('success', 'Đã xóa đối tác thành công!');
+        }
+
+        return redirect('/admin/partners')->withErrors(['error' => 'Không tìm thấy đối tác để xóa.']);
+    }
+
+    public function apiPartnersIndex()
+    {
+        $partnersList = DB::table('partners')->where('is_visible', true)->orderByDesc('id')->get();
+        
+        $mappedPartners = $partnersList->map(function ($partner) {
+            return [
+                'name' => $partner->name,
+                'group' => $partner->group,
+                'logo' => $partner->logo_path,
+            ];
+        });
+
+        return response()->json($mappedPartners);
+    }
+
+    // Service Admin Management
+    public function servicesIndex()
+    {
+        $servicesList = DB::table('services')->orderBy('sort_order')->orderBy('id')->get();
+        return view('noi-bo.services', compact('servicesList'));
+    }
+
+    public function servicesCreate()
+    {
+        return view('noi-bo.services-create');
+    }
+
+    public function servicesStore(Request $request)
+    {
+        $request->validate([
+            'slug' => 'required|string|max:255|unique:services,slug',
+            'title' => 'required|string|max:255',
+            'short_title' => 'required|string|max:255',
+            'summary' => 'required|string',
+            'icon' => 'required|string|max:100',
+            'tag' => 'required|string|max:100',
+            'color_theme' => 'required|string|max:100',
+            'items' => 'required|string',
+            'sort_order' => 'required|integer',
+            'is_visible' => 'nullable|in:0,1',
+        ]);
+
+        DB::table('services')->insert([
+            'slug' => $request->slug,
+            'title' => $request->title,
+            'short_title' => $request->short_title,
+            'summary' => $request->summary,
+            'icon' => $request->icon,
+            'tag' => $request->tag,
+            'color_theme' => $request->color_theme,
+            'items' => $request->items,
+            'sort_order' => $request->sort_order,
+            'is_visible' => $request->has('is_visible') ? (bool)$request->is_visible : true,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        return redirect('/admin/services')->with('success', 'Thêm dịch vụ thành công!');
+    }
+
+    public function servicesEdit($id)
+    {
+        $service = DB::table('services')->where('id', $id)->first();
+        if (!$service) {
+            abort(404, 'Dịch vụ không tồn tại.');
+        }
+        return view('noi-bo.services-edit', compact('service'));
+    }
+
+    public function servicesUpdate(Request $request, $id)
+    {
+        $request->validate([
+            'slug' => 'required|string|max:255|unique:services,slug,' . $id,
+            'title' => 'required|string|max:255',
+            'short_title' => 'required|string|max:255',
+            'summary' => 'required|string',
+            'icon' => 'required|string|max:100',
+            'tag' => 'required|string|max:100',
+            'color_theme' => 'required|string|max:100',
+            'items' => 'required|string',
+            'sort_order' => 'required|integer',
+            'is_visible' => 'nullable|in:0,1',
+        ]);
+
+        $service = DB::table('services')->where('id', $id)->first();
+        if (!$service) {
+            return redirect('/admin/services')->withErrors(['error' => 'Dịch vụ không tồn tại.']);
+        }
+
+        DB::table('services')->where('id', $id)->update([
+            'slug' => $request->slug,
+            'title' => $request->title,
+            'short_title' => $request->short_title,
+            'summary' => $request->summary,
+            'icon' => $request->icon,
+            'tag' => $request->tag,
+            'color_theme' => $request->color_theme,
+            'items' => $request->items,
+            'sort_order' => $request->sort_order,
+            'is_visible' => $request->has('is_visible') ? (bool)$request->is_visible : true,
+            'updated_at' => now(),
+        ]);
+
+        return redirect('/admin/services')->with('success', 'Cập nhật dịch vụ thành công!');
+    }
+
+    public function servicesToggleStatus(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer',
+        ]);
+
+        $service = DB::table('services')->where('id', $request->id)->first();
+        if ($service) {
+            $newStatus = !$service->is_visible;
+            DB::table('services')->where('id', $request->id)->update([
+                'is_visible' => $newStatus,
+                'updated_at' => now(),
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'is_visible' => $newStatus,
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Dịch vụ không tồn tại.',
+        ], 404);
+    }
+
+    public function servicesDelete(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer',
+        ]);
+
+        $service = DB::table('services')->where('id', $request->id)->first();
+        if ($service) {
+            DB::table('services')->where('id', $request->id)->delete();
+            return redirect('/admin/services')->with('success', 'Đã xóa dịch vụ thành công!');
+        }
+
+        return redirect('/admin/services')->withErrors(['error' => 'Không tìm thấy dịch vụ để xóa.']);
+    }
+
+    public function apiServicesIndex()
+    {
+        $servicesList = DB::table('services')
+            ->where('is_visible', true)
+            ->orderBy('sort_order')
+            ->orderBy('id')
+            ->get();
+
+        $mappedServices = $servicesList->map(function ($service) {
+            $itemsArray = [];
+            if (!empty($service->items)) {
+                $lines = array_values(array_filter(array_map('trim', explode("\n", $service->items))));
+                foreach ($lines as $line) {
+                    $itemsArray[] = ['text' => $line];
+                }
+            }
+
+            return [
+                'id' => $service->slug,
+                'title' => $service->title,
+                'shortTitle' => $service->short_title,
+                'summary' => $service->summary,
+                'icon' => $service->icon,
+                'tag' => $service->tag,
+                'colorTheme' => $service->color_theme,
+                'items' => $itemsArray,
+            ];
+        });
+
+        return response()->json($mappedServices);
+    }
 }
+
+
