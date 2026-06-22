@@ -5,6 +5,7 @@ import Footer from './components/Footer';
 import Home from './components/Home';
 import Services from './components/Services';
 import Projects from './components/Projects';
+import Gallery from './components/Gallery';
 import Contact from './components/Contact';
 import News from './components/News';
 import NewsDetail from './components/NewsDetail';
@@ -43,6 +44,8 @@ export default function App() {
         return <Services setActivePage={setActivePage} />;
       case 'projects':
         return <Projects />;
+      case 'gallery':
+        return <Gallery />;
       case 'news':
         return <News setActivePage={setActivePage} setSelectedNewsId={setSelectedNewsId} />;
       case 'news-detail':

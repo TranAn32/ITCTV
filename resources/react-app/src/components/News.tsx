@@ -200,9 +200,9 @@ export default function News({ setActivePage, setSelectedNewsId }: NewsProps) {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-12 border-b border-slate-200 pb-8">
           <div className="space-y-2">
             <span className="text-xs font-bold uppercase tracking-widest text-blue-600 font-sans block">ITC Press</span>
-            <h2 className="font-display text-3xl font-extrabold text-[#0F172A] tracking-tight">
+            <h1 className="font-display text-4xl sm:text-4xl font-extrabold text-[#0F172A] tracking-tight uppercase">
               TIN TỨC HOẠT ĐỘNG
-            </h2>
+            </h1>
             <p className="text-sm text-slate-500">Cập nhật những hoạt động, bài viết tư vấn mới nhất từ các chuyên gia ITC</p>
           </div>
 

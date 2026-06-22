@@ -144,7 +144,7 @@
             <h2>Chỉnh sửa dịch vụ</h2>
             <p class="subtitle font-sans">Thay đổi thông tin dịch vụ cốt lõi bên dưới và nhấn lưu để cập nhật.</p>
 
-            <form method="POST" action="/admin/services/{{ $service->id }}/edit" id="serviceForm">
+            <form method="POST" action="/admin/services/{{ $service->id }}/edit" id="serviceForm" enctype="multipart/form-data">
                 @csrf
 
                 <div class="form-group">
@@ -215,6 +215,19 @@
                             <option value="1" {{ old('is_visible', $service->is_visible) == '1' ? 'selected' : '' }}>Hiện dịch vụ</option>
                             <option value="0" {{ old('is_visible', $service->is_visible) == '0' ? 'selected' : '' }}>Ẩn dịch vụ</option>
                         </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="service_image">Ảnh đại diện dịch vụ (Tải lên để thay đổi)</label>
+                        @if(!empty($service->image_path))
+                            <div style="margin-bottom: 12px; display: flex; align-items: center; gap: 16px;">
+                                <img src="{{ $service->image_path }}" alt="Current Image" style="max-width: 120px; max-height: 80px; border-radius: 8px; border: 1px solid #cbd5e1; object-fit: cover;">
+                                <label style="font-weight: normal; font-size: 13px; color: #ef4444; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; margin-bottom: 0;">
+                                    <input type="checkbox" name="delete_image" value="1" style="cursor: pointer;"> Xóa ảnh hiện tại
+                                </label>
+                            </div>
+                        @endif
+                        <input type="file" name="service_image" id="service_image" class="form-control" accept="image/*">
                     </div>
                 </div>
 

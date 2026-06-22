@@ -6,6 +6,7 @@ export interface ServiceItem {
   benefits: string[];
   techApplied: string[];
   steps: { title: string; desc: string }[];
+  image_path?: string;
 }
 
 export interface PartnerItem {
@@ -47,4 +48,11 @@ export interface NewsItem {
   updated_at: string;
 }
 
-export type ActivePage = 'home' | 'services' | 'projects' | 'news' | 'news-detail' | 'contact';
+export interface GalleryItem {
+  id: number;
+  image_path: string;
+  caption: string | null;
+  created_at: string;
+}
+
+export type ActivePage = 'home' | 'services' | 'projects' | 'gallery' | 'news' | 'news-detail' | 'contact';

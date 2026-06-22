@@ -144,7 +144,7 @@
             <h2>Thêm dịch vụ mới</h2>
             <p class="subtitle font-sans">Nhập đầy đủ thông tin bên dưới để hiển thị dịch vụ cốt lõi mới trên website.</p>
 
-            <form method="POST" action="/admin/services" id="serviceForm">
+            <form method="POST" action="/admin/services" id="serviceForm" enctype="multipart/form-data">
                 @csrf
 
                 <div class="form-group">
@@ -215,6 +215,11 @@
                             <option value="1" {{ old('is_visible', '1') == '1' ? 'selected' : '' }}>Hiện dịch vụ</option>
                             <option value="0" {{ old('is_visible') == '0' ? 'selected' : '' }}>Ẩn dịch vụ</option>
                         </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="service_image">Ảnh đại diện dịch vụ (Có thể để trống)</label>
+                        <input type="file" name="service_image" id="service_image" class="form-control" accept="image/*">
                     </div>
                 </div>
 

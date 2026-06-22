@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, Compass, PhoneCall } from 'lucide-react';
+import { Menu, X, Compass, PhoneCall, Home, Wrench, FolderKanban, Images, Newspaper, Phone } from 'lucide-react';
 import { ActivePage } from '../types';
 import { motion, AnimatePresence } from 'motion/react';
 import ItcLogo from './ItcLogo';
@@ -22,11 +22,12 @@ export default function Header({ activePage, setActivePage }: HeaderProps) {
   }, []);
 
   const menuItems = [
-    { id: 'home', label: 'Trang chủ' },
-    { id: 'services', label: 'Dịch vụ' },
-    { id: 'projects', label: 'Dự án & Đối tác' },
-    { id: 'news', label: 'Tin tức' },
-    { id: 'contact', label: 'Liên hệ' }
+    { id: 'home', label: 'Trang chủ', icon: Home },
+    { id: 'services', label: 'Dịch vụ', icon: Wrench },
+    { id: 'projects', label: 'Dự án & Đối tác', icon: FolderKanban },
+    { id: 'gallery', label: 'Hình ảnh', icon: Images },
+    { id: 'news', label: 'Tin tức', icon: Newspaper },
+    { id: 'contact', label: 'Liên hệ', icon: Phone }
   ] as const;
 
   const isDarkHeader = activePage === 'home' && !isScrolled;
@@ -67,6 +68,7 @@ export default function Header({ activePage, setActivePage }: HeaderProps) {
         <nav className="hidden md:flex items-center gap-1" id="hdr-nav">
           {menuItems.map((item) => {
             const isActive = activePage === item.id || (item.id === 'news' && activePage === 'news-detail');
+            const Icon = item.icon;
             return (
               <button
                 key={item.id}
@@ -75,7 +77,7 @@ export default function Header({ activePage, setActivePage }: HeaderProps) {
                   setActivePage(item.id);
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
-                className={`relative px-4 py-2.5 text-sm font-semibold transition-colors duration-200 outline-none rounded-full cursor-pointer ${
+                className={`relative px-4 py-2.5 text-sm font-semibold transition-colors duration-200 outline-none rounded-full cursor-pointer flex items-center gap-1.5 ${
                   isActive 
                     ? isDarkHeader 
                       ? 'text-sky-400 font-extrabold' 
@@ -96,6 +98,11 @@ export default function Header({ activePage, setActivePage }: HeaderProps) {
                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
                   />
                 )}
+                <Icon className={`relative z-10 h-4 w-4 ${
+                  isActive
+                    ? isDarkHeader ? 'text-sky-400' : 'text-brand-blue'
+                    : isDarkHeader ? 'text-slate-400' : 'text-slate-400'
+                }`} />
                 <span className="relative z-10">{item.label}</span>
               </button>
             );
@@ -156,6 +163,7 @@ export default function Header({ activePage, setActivePage }: HeaderProps) {
             <div className="space-y-1.5">
               {menuItems.map((item) => {
                 const isActive = activePage === item.id || (item.id === 'news' && activePage === 'news-detail');
+                const Icon = item.icon;
                 return (
                   <button
                     key={item.id}
@@ -175,7 +183,14 @@ export default function Header({ activePage, setActivePage }: HeaderProps) {
                           : 'text-slate-650 hover:bg-slate-50 hover:text-slate-900'
                     }`}
                   >
-                    <span>{item.label}</span>
+                    <span className="flex items-center gap-2.5">
+                      <Icon className={`h-4.5 w-4.5 ${
+                        isActive
+                          ? isDarkHeader ? 'text-sky-400' : 'text-brand-blue'
+                          : isDarkHeader ? 'text-slate-500' : 'text-slate-400'
+                      }`} />
+                      <span>{item.label}</span>
+                    </span>
                     {isActive && <div className={isDarkHeader ? 'h-2 w-2 rounded-full bg-sky-400' : 'h-2 w-2 rounded-full bg-brand-sky'} />}
                   </button>
                 );

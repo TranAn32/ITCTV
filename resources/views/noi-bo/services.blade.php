@@ -539,10 +539,19 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <span class="service-title-cell">{{ $item->title }}</span>
-                                    <div class="service-meta-cell font-sans">
-                                        <span><strong>Slug:</strong> {{ $item->slug }}</span>
-                                        <span style="margin-left: 10px;"><strong>Tên ngắn:</strong> {{ $item->short_title }}</span>
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        @if($item->image_path)
+                                            <img src="{{ $item->image_path }}" alt="Service Image" style="width: 48px; height: 36px; border-radius: 4px; object-fit: cover; border: 1px solid #e2e8f0; flex-shrink: 0;">
+                                        @else
+                                            <div style="width: 48px; height: 36px; border-radius: 4px; background: #f1f5f9; display: flex; align-items: center; justify-content: center; border: 1px dashed #cbd5e1; font-size: 10px; color: #94a3b8; flex-shrink: 0;" title="Chưa có ảnh">No Image</div>
+                                        @endif
+                                        <div>
+                                            <span class="service-title-cell">{{ $item->title }}</span>
+                                            <div class="service-meta-cell font-sans">
+                                                <span><strong>Slug:</strong> {{ $item->slug }}</span>
+                                                <span style="margin-left: 10px;"><strong>Tên ngắn:</strong> {{ $item->short_title }}</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </td>
                                 <td>
@@ -572,6 +581,7 @@
                                                 data-color="{{ $item->color_theme }}"
                                                 data-summary="{{ $item->summary }}"
                                                 data-items="{{ $item->items }}"
+                                                data-image="{{ $item->image_path }}"
                                                 title="Xem chi tiết">
                                             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -644,6 +654,10 @@
                     <strong>Nhãn phân loại (Tag):</strong>
                     <span id="modalTag"></span>
                 </div>
+            </div>
+
+            <div id="modalImageContainer" style="margin-bottom: 20px; display: none;">
+                <img id="modalImage" src="" alt="Service Image" style="width: 100%; max-height: 250px; object-fit: cover; border-radius: 8px; border: 1px solid #e2e8f0;">
             </div>
 
             <div class="modal-service-summary font-sans" id="modalSummary"></div>
@@ -785,6 +799,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const color = this.getAttribute('data-color');
             const summary = this.getAttribute('data-summary');
             const itemsText = this.getAttribute('data-items');
+            const image = this.getAttribute('data-image');
 
             document.getElementById('modalTitle').innerText = title;
             document.getElementById('modalSlug').innerText = slug;
@@ -792,6 +807,17 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('modalTheme').innerText = `${icon} / Tông màu ${color}`;
             document.getElementById('modalTag').innerText = tag;
             document.getElementById('modalSummary').innerText = summary;
+
+            // Handle image display
+            const imgContainer = document.getElementById('modalImageContainer');
+            const imgEl = document.getElementById('modalImage');
+            if (image) {
+                imgEl.src = image;
+                imgContainer.style.display = 'block';
+            } else {
+                imgContainer.style.display = 'none';
+                imgEl.src = '';
+            }
 
             // Render items list
             const listContainer = document.getElementById('modalItems');

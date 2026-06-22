@@ -16,7 +16,10 @@ import {
   Check,
   Award,
   BookOpen,
-  ArrowUpRight
+  ArrowUpRight,
+  Globe,
+  Cpu,
+  TrendingUp
 } from 'lucide-react';
 import * as LucideIcons from 'lucide-react';
 import { ActivePage } from '../types';
@@ -42,6 +45,7 @@ export default function Services({ setActivePage }: ServicesProps) {
       icon: 'Search',
       tag: 'Chuẩn bị đầu tư',
       colorTheme: 'blue',
+      image_path: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=800',
       items: [
         { text: 'Khảo sát đánh giá hiện trạng và các kế hoạch ứng dụng công nghệ thông tin phục vụ các hoạt động của tổ chức.' },
         { text: 'Khảo sát số liệu hiện trạng hồ sơ của Đơn vị phục vụ cho việc lập dự án đầu tư/ đề cương dự toán chi tiết.' },
@@ -57,6 +61,7 @@ export default function Services({ setActivePage }: ServicesProps) {
       icon: 'Layers',
       tag: 'Lập & Hoạch định',
       colorTheme: 'sky',
+      image_path: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?q=80&w=800',
       items: [
         { text: 'Đánh giá hiện trạng hạ tầng và chứng minh, luận chứng sự cần thiết phải tiến hành đầu tư.' },
         { text: 'Xác định rõ ràng mục tiêu, quy mô và phạm vi đầu tư tối ưu nhất cho phía Chủ đầu tư.' },
@@ -74,6 +79,7 @@ export default function Services({ setActivePage }: ServicesProps) {
       icon: 'Calculator',
       tag: 'Kỹ thuật chuyên sâu',
       colorTheme: 'emerald',
+      image_path: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800',
       items: [
         { text: 'Nghiên cứu kỹ lưỡng các tài liệu pháp lý đã có của dự án trong giai đoạn chuẩn bị đầu tư.' },
         { text: 'Nghiên cứu Thiết kế sơ bộ của dự án đã được phê duyệt làm cơ sở định hướng thiết kế.' },
@@ -91,6 +97,7 @@ export default function Services({ setActivePage }: ServicesProps) {
       icon: 'ClipboardList',
       tag: 'Tối ưu ngân sách',
       colorTheme: 'blue',
+      image_path: 'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?q=80&w=800',
       items: [
         { text: 'Bảo đảm phù hợp hoàn toàn với yêu cầu triển khai hoạt động ứng dụng công nghệ thông tin đã được phê duyệt.' },
         { text: 'Bảo đảm tuân thủ các quy chuẩn, tiêu chuẩn kỹ thuật công nghệ thông tin áp dụng đối với nội dung chi nêu trong đề cương.' },
@@ -105,6 +112,7 @@ export default function Services({ setActivePage }: ServicesProps) {
       icon: 'ShieldCheck',
       tag: 'Bảo chứng pháp lý',
       colorTheme: 'indigo',
+      image_path: 'https://images.unsplash.com/photo-1450133064473-71024230f91b?q=80&w=800',
       items: [
         { text: 'Thẩm tra Báo cáo nghiên cứu khả thi dự án CNTT (bóc tách tính hợp lý của công nghệ, kiến trúc và giải pháp đề xuất).' },
         { text: 'Thẩm tra Thiết kế thi công và tổng dự toán (rà soát tính chính xác của khối lượng, định mức kinh tế kỹ thuật áp dụng).' }
@@ -118,6 +126,7 @@ export default function Services({ setActivePage }: ServicesProps) {
       icon: 'Eye',
       tag: 'Kiểm soát chất lượng',
       colorTheme: 'rose',
+      image_path: 'https://images.unsplash.com/photo-1551808525-51a94da548ce?q=80&w=800',
       items: [
         { text: 'Hỗ trợ chủ đầu tư quản lý dự án CNTT toàn diện trong suốt quá trình triển khai thầu thực địa.' },
         { text: 'Giám sát chặt chẽ việc tuân thủ và đáp ứng các yêu cầu chất lượng, tiến độ và kỹ thuật của nhà cung cấp.' },
@@ -132,6 +141,7 @@ export default function Services({ setActivePage }: ServicesProps) {
       icon: 'Briefcase',
       tag: 'Quản trị rủi ro',
       colorTheme: 'amber',
+      image_path: 'https://images.unsplash.com/photo-1531403009284-440f080d1e12?q=80&w=800',
       items: [
         { text: 'Quản lý chất lượng công tác khảo sát thực tế chuyên môn.' },
         { text: 'Quản lý chất lượng hồ sơ thiết kế thi công công nghệ.' },
@@ -238,12 +248,50 @@ export default function Services({ setActivePage }: ServicesProps) {
             <Sparkles className="h-3.5 w-3.5 text-blue-600 animate-pulse" />
             <span>Năng lực độc lập &amp; Am hiểu quy chuẩn thầu</span>
           </span>
-          <h1 className="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 leading-tight">
+          <h1 className="font-display text-4xl sm:text-4xl font-extrabold tracking-tight text-[#0F172A] uppercase leading-tight">
             DỊCH VỤ CỐT LÕI
           </h1>
           <p className="text-sm text-slate-500 max-w-3xl leading-relaxed font-medium">
             ITC hân hạnh mang tới gói tư vấn thiết lập hồ sơ độc lập, bảo vệ tối đa lợi ích kinh tế &amp; tính tương thích hạ tầng của Chủ đầu tư qua sơ đồ dịch vụ xen kẽ hiện đại.
           </p>
+        </div>
+
+        {/* Dynamic top bento banner grid summarizing core features */}
+        <div className="bg-gradient-to-r from-blue-800 to-blue-600 rounded-2xl p-6 shadow-md shadow-blue-600/10 text-white" id="services-top-banner">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-4 lg:divide-x divide-white/20">
+            {/* Item 1 */}
+            <div className="flex items-center gap-4 px-4 py-2 sm:py-0">
+              <Globe className="h-9 w-9 text-blue-200 shrink-0" />
+              <div className="space-y-0.5">
+                <div className="text-xs sm:text-sm font-bold uppercase tracking-wider text-white leading-tight">Tư vấn chiến lược</div>
+                <div className="text-xs sm:text-sm font-bold uppercase tracking-wider text-white leading-tight">Chuyển đổi số</div>
+              </div>
+            </div>
+            {/* Item 2 */}
+            <div className="flex items-center gap-4 px-4 py-2 sm:py-0">
+              <Cpu className="h-9 w-9 text-blue-200 shrink-0" />
+              <div className="space-y-0.5">
+                <div className="text-xs sm:text-sm font-bold uppercase tracking-wider text-white leading-tight">Giải pháp CNTT</div>
+                <div className="text-xs sm:text-sm font-bold uppercase tracking-wider text-white leading-tight">Toàn diện</div>
+              </div>
+            </div>
+            {/* Item 3 */}
+            <div className="flex items-center gap-4 px-4 py-2 sm:py-0">
+              <ShieldCheck className="h-9 w-9 text-blue-200 shrink-0" />
+              <div className="space-y-0.5">
+                <div className="text-xs sm:text-sm font-bold uppercase tracking-wider text-white leading-tight">An toàn - Bảo mật</div>
+                <div className="text-xs sm:text-sm font-bold uppercase tracking-wider text-white leading-tight">Thông tin</div>
+              </div>
+            </div>
+            {/* Item 4 */}
+            <div className="flex items-center gap-4 px-4 py-2 sm:py-0">
+              <TrendingUp className="h-9 w-9 text-blue-200 shrink-0" />
+              <div className="space-y-0.5">
+                <div className="text-xs sm:text-sm font-bold uppercase tracking-wider text-white leading-tight">Hiệu quả - Bền vững</div>
+                <div className="text-xs sm:text-sm font-bold uppercase tracking-wider text-white leading-tight">Đồng hành phát triển</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* 
@@ -372,6 +420,17 @@ export default function Services({ setActivePage }: ServicesProps) {
 
                     <div className="space-y-6 relative z-10">
                       
+                      {/* Active Service Image banner */}
+                      {service.image_path && (
+                        <div className="w-full h-48 sm:h-60 rounded-lg overflow-hidden relative mb-6 border border-slate-100 shadow-[0_4px_12px_rgba(0,0,0,0.03)] flex-shrink-0">
+                          <img 
+                            src={service.image_path} 
+                            alt={service.title} 
+                            className="w-full h-full object-cover transition-transform duration-700 hover:scale-[1.02]"
+                          />
+                        </div>
+                      )}
+                      
                       {/* Top Header Row */}
                       <div className="space-y-3">
                         <div className="flex items-center gap-2.5">
@@ -450,38 +509,7 @@ export default function Services({ setActivePage }: ServicesProps) {
 
         </div>
 
-        {/* Dynamic bottom bento badge grid summarizing quality metrics */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4" id="services-bottom-bento-metrics">
-          <div className="bg-white rounded-lg p-4 border border-slate-200/60 shadow-sm flex items-center gap-3">
-            <div className="p-2.5 bg-blue-50 text-blue-700 rounded">
-              <ClipboardCheck className="h-5 w-5" />
-            </div>
-            <div>
-              <h4 className="text-xs sm:text-sm font-bold text-slate-800">Cam Kết Chất Lượng</h4>
-              <p className="text-[10px] text-slate-450">Bám sát 100% Nghị định số 73/2019/NĐ-CP</p>
-            </div>
-          </div>
 
-          <div className="bg-white rounded-lg p-4 border border-slate-200/60 shadow-sm flex items-center gap-3">
-            <div className="p-2.5 bg-sky-50 text-sky-600 rounded">
-              <ShieldCheck className="h-5 w-5" />
-            </div>
-            <div>
-              <h4 className="text-xs sm:text-sm font-bold text-slate-800">Tối Ưu Ngân Sách</h4>
-              <p className="text-[10px] text-slate-450">Thẩm tra bóc tách dự toán kỹ lưỡng, tiết kiệm</p>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg p-4 border border-slate-200/60 shadow-sm flex items-center gap-3">
-            <div className="p-2.5 bg-emerald-50 text-emerald-700 rounded">
-              <Zap className="h-5 w-5 animate-pulse" />
-            </div>
-            <div>
-              <h4 className="text-xs sm:text-sm font-bold text-slate-800">Tốc Độ Phản Hồi</h4>
-              <p className="text-[10px] text-slate-450">Bàn giao hồ sơ sơ bộ trong vòng 48h làm việc</p>
-            </div>
-          </div>
-        </div>
 
       </div>
     </div>

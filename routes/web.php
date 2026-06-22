@@ -8,6 +8,7 @@ Route::get('/', function () { return view('public.home'); });
 Route::get('/about', function () { return redirect('/'); });
 Route::get('/services', function () { return redirect('/'); });
 Route::get('/projects', function () { return redirect('/'); });
+Route::get('/gallery', function () { return redirect('/'); });
 Route::get('/clients', function () { return redirect('/'); });
 Route::get('/contact', function () { return redirect('/'); });
 
@@ -24,6 +25,7 @@ Route::get('/api/news/{id}', [NoiBoController::class, 'apiNewsDetail']);
 Route::get('/api/projects', [NoiBoController::class, 'apiProjectsIndex']);
 Route::get('/api/partners', [NoiBoController::class, 'apiPartnersIndex']);
 Route::get('/api/services', [NoiBoController::class, 'apiServicesIndex']);
+Route::get('/api/gallery', [NoiBoController::class, 'apiGalleryIndex']);
 Route::post('/api/contact', [NoiBoController::class, 'apiContactStore']);
 
 // Admin Portal Routes
@@ -76,5 +78,14 @@ Route::prefix('admin')->group(function () {
         Route::post('/services/{id}/edit', [NoiBoController::class, 'servicesUpdate']);
         Route::post('/services/toggle-status', [NoiBoController::class, 'servicesToggleStatus']);
         Route::post('/services/delete', [NoiBoController::class, 'servicesDelete']);
+
+        // Gallery Management Routes
+        Route::get('/gallery', [NoiBoController::class, 'galleryIndex']);
+        Route::get('/gallery/create', [NoiBoController::class, 'galleryCreate']);
+        Route::post('/gallery', [NoiBoController::class, 'galleryStore']);
+        Route::get('/gallery/{id}/edit', [NoiBoController::class, 'galleryEdit']);
+        Route::post('/gallery/{id}/edit', [NoiBoController::class, 'galleryUpdate']);
+        Route::post('/gallery/toggle-status', [NoiBoController::class, 'galleryToggleStatus']);
+        Route::post('/gallery/delete', [NoiBoController::class, 'galleryDelete']);
     });
 });

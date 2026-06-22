@@ -14,7 +14,10 @@ import {
   Briefcase,
   Lock,
   Clock,
-  Cpu
+  Cpu,
+  Target,
+  Lightbulb,
+  Handshake
 } from 'lucide-react';
 import { ActivePage, NewsItem, PartnerItem } from '../types';
 import { motion, AnimatePresence } from 'motion/react';
@@ -40,24 +43,54 @@ const getCategoryLabel = (category: string) => {
 
 const getIconComponent = (iconName: string) => {
   switch (iconName) {
-    case 'Shield':
-      return Shield;
-    case 'Lock':
-      return Lock;
+    case 'Search':
+      return Search;
     case 'Layers':
       return Layers;
-    case 'Clock':
-      return Clock;
-    case 'Cpu':
-      return Cpu;
+    case 'Shield':
+    case 'ShieldCheck':
+      return Shield;
     case 'Briefcase':
       return Briefcase;
+    case 'Cpu':
+      return Cpu;
+    case 'Lock':
+      return Lock;
+    case 'Clock':
+      return Clock;
     case 'Award':
       return Award;
     default:
-      return CheckCircle2;
+      return Layers;
   }
 };
+
+const fallbackHomeServices = [
+  {
+    id: 'khao-sat-cntt',
+    title: 'Tư vấn Khảo sát & Đề cương CNTT',
+    summary: 'Thẩm duyệt chi tiết hiện trạng số, thiết lập đề cương khảo sát khoa học theo quy chế ban hành của Bộ Thông tin & Truyền thông.',
+    icon: 'Search',
+    colorTheme: 'blue',
+    image_path: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=800'
+  },
+  {
+    id: 'lap-du-an-khao-thi',
+    title: 'Thiết kế cơ sở & Thẩm tra Dự toán',
+    summary: 'Xác lập tổng mức đầu tư, kiểm định chặt chẽ bảng báo giá vật tư và định mức nhân công chuẩn xác, phòng ngừa lãng phí tài khóa.',
+    icon: 'Layers',
+    colorTheme: 'sky',
+    image_path: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?q=80&w=800'
+  },
+  {
+    id: 'giam-sat-kiem-thu',
+    title: 'Giám sát độc lập & Kiểm thử phần mềm',
+    summary: 'Đo kiểm độc lập, rà soát lỗ hổng bảo mật và giám sát thực thi của nhà thầu phát triển, tạo dựng niềm tin tuyệt đối trước kiểm toán.',
+    icon: 'Shield',
+    colorTheme: 'indigo',
+    image_path: 'https://images.unsplash.com/photo-1551808525-51a94da548ce?q=80&w=800'
+  }
+];
 
 interface HomeProjectItem {
   id: string;
@@ -145,6 +178,35 @@ const HOME_PROJECTS: HomeProjectItem[] = [
   }
 ];
 
+interface SloganItem {
+  title: string;
+  desc: string;
+  icon: React.ComponentType<any>;
+}
+
+const SLOGANS_DATA: SloganItem[] = [
+  {
+    title: 'TẬN TÂM',
+    desc: 'Đặt lợi ích của khách hàng làm trọng tâm trong mọi sản phẩm và dịch vụ',
+    icon: Target
+  },
+  {
+    title: 'SÁNG TẠO',
+    desc: 'Liên tục đổi mới, ứng dụng công nghệ tiên tiến để tạo ra giá trị khác biệt',
+    icon: Lightbulb
+  },
+  {
+    title: 'CHUYÊN NGHIỆP',
+    desc: 'Đội ngũ chuyên gia giàu kinh nghiệm, triển khai dự án với chất lượng và hiệu quả cao',
+    icon: Shield
+  },
+  {
+    title: 'ĐỒNG HÀNH',
+    desc: 'Luôn đồng hành cùng khách hàng trong hành trình chuyển đổi số bền vững',
+    icon: Handshake
+  }
+];
+
 interface HomeProps {
   setActivePage: (page: ActivePage) => void;
   setSelectedNewsId: (id: number) => void;
@@ -156,6 +218,7 @@ export default function Home({ setActivePage, setSelectedNewsId }: HomeProps) {
   const [dynamicNews, setDynamicNews] = useState<NewsItem[]>([]);
   const [partners, setPartners] = useState<PartnerItem[]>([]);
   const [projects, setProjects] = useState<HomeProjectItem[]>(HOME_PROJECTS);
+  const [homeServices, setHomeServices] = useState<any[]>(fallbackHomeServices);
 
   useEffect(() => {
     // Fetch Banner
@@ -221,13 +284,35 @@ export default function Home({ setActivePage, setSelectedNewsId }: HomeProps) {
       .catch(() => {
         setProjects(HOME_PROJECTS);
       });
+
+    // Fetch Services
+    fetch('/api/services')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          const mapped = data.slice(0, 3).map((item: any, idx: number) => ({
+            id: item.id,
+            title: item.title,
+            summary: item.summary,
+            icon: item.icon,
+            colorTheme: item.colorTheme,
+            image_path: item.image_path || fallbackHomeServices[idx]?.image_path || fallbackHomeServices[0].image_path
+          }));
+          setHomeServices(mapped);
+        } else {
+          setHomeServices(fallbackHomeServices);
+        }
+      })
+      .catch(() => {
+        setHomeServices(fallbackHomeServices);
+      });
   }, []);
 
   return (
     <div className="bg-[#F8FAFC] min-h-screen text-slate-900 font-sans" id="home-view">
       
       {/* 1. FULL-WIDTH HERO BANNER - Immersive with dynamic image */}
-      <section className="relative overflow-hidden bg-[#0B0F19]" id="hero-section">
+      <section className="relative overflow-hidden bg-[#0B0F19] min-h-[70vh] md:min-h-[75vh] lg:min-h-[80vh] xl:min-h-[82vh] flex items-center" id="hero-section">
         
         {/* Full-width banner image with Ken Burns effect */}
         <div className="absolute inset-0 z-0">
@@ -248,11 +333,11 @@ export default function Home({ setActivePage, setSelectedNewsId }: HomeProps) {
         <div className="absolute top-[-15%] left-[-10%] h-[40rem] w-[40rem] rounded-full bg-blue-600/10 blur-[130px] pointer-events-none z-[1]" />
         <div className="absolute bottom-[-10%] right-[-5%] h-[30rem] w-[30rem] rounded-full bg-sky-500/8 blur-[110px] pointer-events-none z-[1]" />
 
-        <div className="relative z-10 mx-auto max-w-[1600px] px-4 sm:px-6 md:px-12 lg:px-16 xl:px-20 2xl:px-24 pt-16 pb-16 md:pt-20 md:pb-24 lg:pt-24 lg:pb-28">
-          <div className="max-w-2xl">
+        <div className="relative z-10 mx-auto max-w-[1600px] px-4 sm:px-6 md:px-12 lg:px-16 xl:px-20 2xl:px-24 py-12 md:py-16 lg:py-20 w-full">
+          <div className="max-w-3xl">
             
             <motion.div 
-              className="space-y-6"
+              className="space-y-4"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
@@ -277,11 +362,47 @@ export default function Home({ setActivePage, setSelectedNewsId }: HomeProps) {
                 </span>
               </h1>
               
-              <p className="text-sm sm:text-base text-slate-300 max-w-xl leading-relaxed">
-                Tổ chức tư vấn ủy thác CNTT độc lập hàng đầu Việt Nam. Chúng tôi đồng hành rà duyệt kỹ thuật khoa học, thẩm tra dự toán định mức chi tiết, bảo vệ dòng tài khóa và an tâm bảo mật tối đa cho các đại dự án Quốc gia.
-              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 my-5 select-none max-w-xl md:max-w-3xl">
+                {SLOGANS_DATA.map((slogan, index) => {
+                  const Icon = slogan.icon;
+                  // 2D diagonal staircase translations for a 2-column layout
+                  const staggerClasses = [
+                    'translate-x-0',
+                    'md:translate-x-4',
+                    'md:translate-x-8',
+                    'md:translate-x-12'
+                  ];
+                  return (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.5, delay: 0.2 + index * 0.1, ease: "easeOut" }}
+                      className={`flex items-start gap-3 p-3 rounded-xl bg-slate-900/40 backdrop-blur-md border border-white/5 shadow-[0_4px_20px_rgba(0,0,0,0.2)] hover:bg-slate-800/50 hover:border-blue-500/30 hover:shadow-blue-500/5 hover:-translate-y-0.5 transition-all duration-300 ${staggerClasses[index] || ''}`}
+                    >
+                      {/* Hexagon Icon Wrapper */}
+                      <div className="relative flex items-center justify-center w-11 h-11 shrink-0 text-sky-400">
+                        <svg className="absolute inset-0 w-full h-full text-blue-500/20 group-hover:text-blue-400/40 transition-colors" viewBox="0 0 100 100" fill="currentColor">
+                          <polygon points="50,5 89,27.5 89,72.5 50,95 11,72.5 11,27.5" stroke="currentColor" strokeWidth="2" fill="rgba(59, 130, 246, 0.08)" />
+                        </svg>
+                        <Icon className="h-4.5 w-4.5 relative z-10 text-sky-400" />
+                      </div>
+                      
+                      {/* Text content */}
+                      <div className="space-y-0.5">
+                        <h4 className="text-sky-400 font-extrabold text-xs sm:text-sm tracking-wider uppercase">
+                          {slogan.title}
+                        </h4>
+                        <p className="text-slate-200 text-[11px] sm:text-xs leading-relaxed font-sans font-medium">
+                          {slogan.desc}
+                        </p>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
               
-              <div className="flex flex-wrap items-center gap-4 pt-4">
+              <div className="flex flex-wrap items-center gap-4 pt-2">
                 <button
                   onClick={() => { setActivePage('services'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                   className="group flex items-center justify-center gap-2 rounded-xl bg-blue-600 hover:bg-blue-550 px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-blue-600/30 hover:shadow-blue-500/40 hover:-translate-y-0.5 transition-all cursor-pointer"
@@ -330,94 +451,85 @@ export default function Home({ setActivePage, setSelectedNewsId }: HomeProps) {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8" id="three-services-columns">
-            
-            {/* Column 1: Khảo sát & Quy hoạch */}
-            <motion.div 
-              className="rounded-xl border border-slate-200/80 bg-white p-8 hover:border-blue-600/30 transition-all flex flex-col justify-between group cursor-pointer shadow-3xs hover:shadow-md hover:-translate-y-1 duration-300"
-              onClick={() => { setActivePage('services'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              id="home-service-1"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-            >
-              <div className="space-y-6">
-                <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600 border border-blue-100">
-                  <Search className="h-5 w-5" />
-                </div>
-                <div className="space-y-2">
-                  <h3 className="font-display text-xl font-bold text-[#0F172A] group-hover:text-blue-600 transition-colors">
-                    Tư vấn Khảo sát &amp; Đề cương CNTT
-                  </h3>
-                  <p className="text-xs sm:text-sm text-slate-550 leading-relaxed font-semibold">
-                    Thẩm duyệt chi tiết hiện trạng số, thiết lập đề cương khảo sát khoa học theo quy chế ban hành của Bộ Thông tin & Truyền thông.
-                  </p>
-                </div>
-              </div>
-              <div className="mt-8 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-blue-600">
-                <span>Khám phá nhiệm vụ</span>
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </div>
-            </motion.div>
+            {homeServices.map((service, index) => {
+              const ServiceIcon = getIconComponent(service.icon);
+              
+              const themeColor = 
+                service.colorTheme === 'blue' ? 'text-blue-600 bg-blue-50 border-blue-100 hover:text-blue-700' :
+                service.colorTheme === 'sky' ? 'text-sky-600 bg-sky-50 border-sky-100 hover:text-sky-700' :
+                service.colorTheme === 'emerald' ? 'text-emerald-600 bg-emerald-50 border-emerald-100 hover:text-emerald-700' :
+                service.colorTheme === 'indigo' ? 'text-indigo-600 bg-indigo-50 border-indigo-100 hover:text-indigo-700' :
+                service.colorTheme === 'rose' ? 'text-rose-600 bg-rose-50 border-rose-100 hover:text-rose-700' :
+                'text-amber-600 bg-amber-50 border-amber-100 hover:text-amber-700';
 
-            {/* Column 2: Thiết kế & Khái toán */}
-            <motion.div 
-              className="rounded-xl border border-slate-200/80 bg-white p-8 hover:border-blue-500/30 transition-all flex flex-col justify-between group cursor-pointer shadow-3xs hover:shadow-md hover:-translate-y-1 duration-300"
-              onClick={() => { setActivePage('services'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              id="home-service-2"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              <div className="space-y-6">
-                <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-sky-50 text-sky-600 border border-sky-100">
-                  <Layers className="h-5 w-5" />
-                </div>
-                <div className="space-y-2">
-                  <h3 className="font-display text-xl font-bold text-[#0F172A] group-hover:text-sky-600 transition-colors">
-                    Thiết kế cơ sở &amp; Thẩm tra Dự toán
-                  </h3>
-                  <p className="text-xs sm:text-sm text-slate-550 leading-relaxed font-semibold">
-                    Xác lập tổng mức đầu tư, kiểm định chặt chẽ bảng báo giá vật tư và định mức nhân công chuẩn xác, phòng ngừa lãng phí tài khóa.
-                  </p>
-                </div>
-              </div>
-              <div className="mt-8 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-sky-600">
-                <span>Khám phá quy chuẩn</span>
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </div>
-            </motion.div>
+              const linkColor = 
+                service.colorTheme === 'blue' ? 'text-blue-600' :
+                service.colorTheme === 'sky' ? 'text-sky-600' :
+                service.colorTheme === 'emerald' ? 'text-emerald-600' :
+                service.colorTheme === 'indigo' ? 'text-indigo-600' :
+                service.colorTheme === 'rose' ? 'text-rose-600' :
+                'text-amber-600';
 
-            {/* Column 3: Giám sát & Kiểm thử */}
-            <motion.div 
-              className="rounded-xl border border-slate-200/80 bg-white p-8 hover:border-brand-navy/30 transition-all flex flex-col justify-between group cursor-pointer shadow-3xs hover:shadow-md hover:-translate-y-1 duration-300"
-              onClick={() => { setActivePage('services'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              id="home-service-3"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-            >
-              <div className="space-y-6">
-                <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 border border-indigo-100">
-                  <Shield className="h-5 w-5" />
-                </div>
-                <div className="space-y-2">
-                  <h3 className="font-display text-xl font-bold text-[#0F172A] group-hover:text-indigo-600 transition-colors">
-                    Giám sát độc lập &amp; Kiểm thử phần mềm
-                  </h3>
-                  <p className="text-xs sm:text-sm text-slate-550 leading-relaxed font-semibold">
-                    Đo kiểm độc lập, rà soát lỗ hổng bảo mật và giám sát thực thi của nhà thầu phát triển, tạo dựng niềm tin tuyệt đối trước kiểm toán.
-                  </p>
-                </div>
-              </div>
-              <div className="mt-8 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-indigo-600">
-                <span>Khám phá kiểm chuẩn</span>
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </div>
-            </motion.div>
+              const hoverBorderColor = 
+                service.colorTheme === 'blue' ? 'hover:border-blue-600/30' :
+                service.colorTheme === 'sky' ? 'hover:border-sky-500/30' :
+                service.colorTheme === 'emerald' ? 'hover:border-emerald-500/30' :
+                service.colorTheme === 'indigo' ? 'hover:border-indigo-550/30' :
+                service.colorTheme === 'rose' ? 'hover:border-rose-500/30' :
+                'hover:border-amber-500/30';
 
+              return (
+                <motion.div 
+                  key={service.id}
+                  className={`rounded-xl border border-slate-200/80 bg-white overflow-hidden ${hoverBorderColor} transition-all flex flex-col justify-between group cursor-pointer shadow-3xs hover:shadow-md hover:-translate-y-1 duration-300`}
+                  onClick={() => { setActivePage('services'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                  id={`home-service-${index + 1}`}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: (index + 1) * 0.1 }}
+                >
+                  <div className="flex flex-col h-full justify-between">
+                    {/* Service Image above information */}
+                    {service.image_path && (
+                      <div className="w-full h-48 overflow-hidden relative bg-slate-100 flex-shrink-0">
+                        <img 
+                          src={service.image_path} 
+                          alt={service.title} 
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
+                      </div>
+                    )}
+                    
+                    <div className="p-8 flex-grow flex flex-col justify-between space-y-6">
+                      <div className="space-y-4">
+                        <div className="space-y-2">
+                          <h3 className="font-display text-xl font-bold text-[#0F172A] group-hover:text-blue-600 transition-colors">
+                            {service.title}
+                          </h3>
+                          <p className="text-xs sm:text-sm text-slate-550 leading-relaxed font-semibold">
+                            {service.summary}
+                          </p>
+                        </div>
+                      </div>
+                      
+                      <div className={`pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold ${linkColor}`}>
+                        <div className="flex items-center gap-2">
+                          <ServiceIcon className="h-4 w-4 shrink-0" />
+                          <span>
+                            {index === 0 ? 'Khám phá nhiệm vụ' : 
+                             index === 1 ? 'Khám phá quy chuẩn' : 
+                             index === 2 ? 'Khám phá kiểm chuẩn' : 
+                             'Khám phá dịch vụ'}
+                          </span>
+                        </div>
+                        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
 
         </div>
@@ -601,11 +713,11 @@ export default function Home({ setActivePage, setSelectedNewsId }: HomeProps) {
         <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
         <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
 
-        <div className="text-center mb-8">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-blue-600 font-sans block mb-1">ITC Network</span>
-          <h3 className="font-display text-xl font-bold text-slate-800">
+        <div className="text-center mb-8 space-y-3">
+          <span className="text-xs font-bold uppercase tracking-widest text-blue-600 font-sans block">ITC Network</span>
+          <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-[#0F172A] tracking-tight font-semibold">
             MẠNG LƯỚI KHÁCH HÀNG &amp; ĐỐI TÁC
-          </h3>
+          </h2>
         </div>
 
         {/* Sliding horizontal track - slowed down to animate-scroll-left-very-slow */}
@@ -647,16 +759,16 @@ export default function Home({ setActivePage, setSelectedNewsId }: HomeProps) {
             
             {/* News Grid (spans full-width: lg:col-span-12) */}
             <div className="lg:col-span-12 flex flex-col justify-between">
-              <div className="text-center mb-4">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-blue-600 font-sans block mb-1">ITC News</span>
-                <h3 className="font-display text-xl font-bold text-slate-800">
+              <div className="text-center mb-10 space-y-3">
+                <span className="text-xs font-bold uppercase tracking-widest text-blue-600 font-sans block">ITC News</span>
+                <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-[#0F172A] tracking-tight font-semibold">
                   TIN TỨC &amp; SỰ KIỆN
-                </h3>
+                </h2>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {dynamicNews.length > 0 ? (
-                  dynamicNews.slice(0, 4).map((item) => (
+                  dynamicNews.slice(0, 3).map((item) => (
                     <div 
                       key={item.id}
                       onClick={() => {
@@ -664,19 +776,19 @@ export default function Home({ setActivePage, setSelectedNewsId }: HomeProps) {
                         setActivePage('news-detail');
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                       }}
-                      className="bg-white rounded-xl border border-slate-100 overflow-hidden shadow-3xs hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col h-full group cursor-pointer"
+                      className="bg-white rounded-xl border border-slate-200/80 hover:border-blue-600/30 overflow-hidden shadow-3xs hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col h-full group cursor-pointer"
                     >
-                      <div className="h-44 overflow-hidden relative bg-slate-100">
+                      <div className="w-full h-48 overflow-hidden relative bg-slate-100 flex-shrink-0">
                         <img 
                           src={item.image_path} 
                           alt={item.title} 
                           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                         />
                       </div>
-                      <div className="p-4 flex-grow flex flex-col justify-between space-y-4">
-                        <div className="space-y-2">
-                          <div className="flex items-center gap-1.5 text-[10px] text-slate-400 font-bold font-sans">
-                            <Calendar className="h-3.5 w-3.5" />
+                      <div className="p-8 flex-grow flex flex-col justify-between space-y-6">
+                        <div className="space-y-4">
+                          <div className="flex items-center gap-1.5 text-xs text-slate-400 font-bold font-sans">
+                            <Calendar className="h-4 w-4 text-blue-600 shrink-0" />
                             <span>
                               {new Date(item.created_at).toLocaleDateString('vi-VN', {
                                 day: '2-digit',
@@ -685,22 +797,24 @@ export default function Home({ setActivePage, setSelectedNewsId }: HomeProps) {
                               })}
                             </span>
                           </div>
-                          <h4 className="text-sm font-bold text-slate-800 line-clamp-2 group-hover:text-blue-600 transition-colors leading-snug">
-                            {item.title}
-                          </h4>
-                          <p className="text-xs text-slate-500 line-clamp-3 leading-relaxed font-semibold font-sans">
-                            {item.summary}
-                          </p>
+                          <div className="space-y-2">
+                            <h3 className="font-display text-xl font-bold text-[#0F172A] group-hover:text-blue-600 transition-colors line-clamp-2 leading-snug">
+                              {item.title}
+                            </h3>
+                            <p className="text-xs sm:text-sm text-slate-555 line-clamp-3 leading-relaxed font-semibold font-sans">
+                              {item.summary}
+                            </p>
+                          </div>
                         </div>
-                        <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-blue-600 mt-auto">
+                        <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-blue-600 mt-auto">
                           <span>Tìm hiểu ngay</span>
-                          <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+                          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                         </div>
                       </div>
                     </div>
                   ))
                 ) : (
-                  <div className="col-span-1 md:col-span-2 lg:col-span-4 flex items-center justify-center py-20 bg-white rounded-xl border border-slate-100 shadow-3xs">
+                  <div className="col-span-1 md:col-span-3 flex items-center justify-center py-20 bg-white rounded-xl border border-slate-100 shadow-3xs">
                     <span className="text-sm font-semibold text-slate-500 flex items-center gap-3">
                       <span className="w-5 h-5 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></span>
                       Đang tải tin tức...
@@ -728,7 +842,7 @@ export default function Home({ setActivePage, setSelectedNewsId }: HomeProps) {
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
           >
-            <span className="text-xs font-sans font-bold tracking-widest text-slate-500 uppercase">&bull; TRIẾT LÝ HÀNH ĐỘNG CỦA ITC</span>
+            <span className="text-xs font-sans font-bold text-[#0F172A] tracking-widest text-slate-500 uppercase"> TRIẾT LÝ HÀNH ĐỘNG CỦA ITC</span>
             <h3 className="font-display text-2xl sm:text-3xl font-extrabold text-[#0F172A] leading-snug">
               "Nhận thức từ tâm — Nâng tầm tư vấn — Vững bước thành công"
             </h3>

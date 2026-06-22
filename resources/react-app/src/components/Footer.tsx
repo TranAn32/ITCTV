@@ -1,4 +1,4 @@
-import { 
+﻿import { 
   Landmark, 
   Mail, 
   PhoneCall, 
@@ -114,10 +114,7 @@ export default function Footer({ setActivePage }: FooterProps) {
                   <FileText className="h-4.5 w-4.5 shrink-0 text-sky-400" />
                   <span>Mã số thuế: <strong className="font-sans text-white tracking-wider font-bold">0108165977</strong></span>
                 </div>
-                <div className="flex items-center gap-2.5">
-                  <DollarSign className="h-4.5 w-4.5 shrink-0 text-sky-400" />
-                  <span className="leading-snug">Vốn điều lệ: <strong className="text-white font-bold">10 tỷ đồng</strong> <span className="text-slate-400 text-[11px] sm:text-xs font-normal">(Bằng chữ: Mười tỷ đồng)</span></span>
-                </div>
+               
               </div>
             </div>
           </div>
@@ -153,6 +150,15 @@ export default function Footer({ setActivePage }: FooterProps) {
                 >
                   <ChevronRight className="h-3.5 w-3.5 text-slate-500 group-hover:text-sky-400 group-hover:translate-x-0.5 transition-transform" />
                   <span>Dự án thực tế</span>
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => handleLinkClick('gallery')} 
+                  className="text-slate-300 hover:text-white flex items-center gap-1 transition-all group cursor-pointer"
+                >
+                  <ChevronRight className="h-3.5 w-3.5 text-slate-500 group-hover:text-sky-400 group-hover:translate-x-0.5 transition-transform" />
+                  <span>Hình ảnh công ty</span>
                 </button>
               </li>
               <li>
