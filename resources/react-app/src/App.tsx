@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { ActivePage } from './types';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './components/Home';
@@ -11,10 +10,10 @@ import News from './components/News';
 import NewsDetail from './components/NewsDetail';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowUp } from 'lucide-react';
+import { useHistoryNavigation } from './hooks/useHistoryNavigation';
 
 export default function App() {
-  const [activePage, setActivePage] = useState<ActivePage>('home');
-  const [selectedNewsId, setSelectedNewsId] = useState<number | null>(null);
+  const { activePage, setActivePage, selectedNewsId, setSelectedNewsId } = useHistoryNavigation();
   const [showScrollTop, setShowScrollTop] = useState(false);
 
   // Monitor scroll height to conditionally reveal back-to-top button

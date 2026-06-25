@@ -4,13 +4,16 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NoiBoController;
 
 // Public Website Routes - React SPA
+// All public routes serve the same Blade view; the React app handles routing via History API
 Route::get('/', function () { return view('public.home'); });
-Route::get('/about', function () { return redirect('/'); });
-Route::get('/services', function () { return redirect('/'); });
-Route::get('/projects', function () { return redirect('/'); });
-Route::get('/gallery', function () { return redirect('/'); });
-Route::get('/clients', function () { return redirect('/'); });
-Route::get('/contact', function () { return redirect('/'); });
+Route::get('/about', function () { return view('public.home'); });
+Route::get('/services', function () { return view('public.home'); });
+Route::get('/projects', function () { return view('public.home'); });
+Route::get('/gallery', function () { return view('public.home'); });
+Route::get('/clients', function () { return view('public.home'); });
+Route::get('/news', function () { return view('public.home'); });
+Route::get('/news/{id}', function () { return view('public.home'); })->where('id', '[0-9]+');
+Route::get('/contact', function () { return view('public.home'); });
 
 // Public API
 Route::get('/api/banner', [NoiBoController::class, 'apiBanner']);
