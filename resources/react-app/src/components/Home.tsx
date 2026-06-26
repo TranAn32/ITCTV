@@ -22,6 +22,7 @@ import {
 import { ActivePage, NewsItem, PartnerItem } from '../types';
 import { motion, AnimatePresence } from 'motion/react';
 import { PROJECTS_DATA, PARTNERS_DATA } from '../data';
+import { fetchWithSWR, getCachedData } from '../utils/apiCache';
 
 const projectImages: Record<string, string> = {
   'project-gtvt-tthc': 'https://images.unsplash.com/photo-1531403009284-440f080d1e12?q=80&w=800', 
@@ -213,99 +214,92 @@ interface HomeProps {
 }
 
 export default function Home({ setActivePage, setSelectedNewsId }: HomeProps) {
-  const [bannerUrl, setBannerUrl] = useState<string>('/uploads/banners/default-banner.png');
+  // Helper mapping functions
+  const mapProjectsData = (data: any) => {
+    if (Array.isArray(data) && data.length > 0) {
+      return data.slice(0, 4).map((p: any) => ({
+        id: p.id,
+        category: p.category,
+        client: p.client,
+        verticalLabel: getCategoryLabel(p.category).toUpperCase(),
+        horizontalLabel: getCategoryLabel(p.category).toUpperCase(),
+        verticalTitle: p.title.length > 30 ? p.title.substring(0, 30) + '...' : p.title,
+        horizontalTitle: p.title,
+        scope: p.scope,
+        value: p.value || 'Liên hệ',
+        packageValue: p.packageValue || null,
+        features: (p.details || []).slice(0, 3).map((d: string) => ({ text: d, icon: 'CheckCircle2' })),
+        image_path: p.image_path
+      }));
+    }
+    return HOME_PROJECTS;
+  };
+
+  const mapServicesData = (data: any) => {
+    if (Array.isArray(data) && data.length > 0) {
+      return data.slice(0, 3).map((item: any, idx: number) => ({
+        id: item.id,
+        title: item.title,
+        summary: item.summary,
+        icon: item.icon,
+        colorTheme: item.colorTheme,
+        image_path: item.image_path || fallbackHomeServices[idx]?.image_path || fallbackHomeServices[0].image_path
+      }));
+    }
+    return fallbackHomeServices;
+  };
+
+  const mapPartnersData = (data: any) => {
+    if (Array.isArray(data) && data.length > 0) {
+      return data;
+    }
+    return PARTNERS_DATA;
+  };
+
+  // State initialization with cached data (for 0ms delay)
+  const cachedBanner = getCachedData('/api/banner');
+  const [bannerUrl, setBannerUrl] = useState<string>(cachedBanner?.image_url || '/uploads/banners/default-banner.png');
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(0);
-  const [dynamicNews, setDynamicNews] = useState<NewsItem[]>([]);
-  const [partners, setPartners] = useState<PartnerItem[]>([]);
-  const [projects, setProjects] = useState<HomeProjectItem[]>(HOME_PROJECTS);
-  const [homeServices, setHomeServices] = useState<any[]>(fallbackHomeServices);
+  
+  const cachedNews = getCachedData('/api/news');
+  const [dynamicNews, setDynamicNews] = useState<NewsItem[]>(cachedNews || []);
+  
+  const cachedPartners = getCachedData('/api/partners');
+  const [partners, setPartners] = useState<PartnerItem[]>(mapPartnersData(cachedPartners));
+  
+  const cachedProjects = getCachedData('/api/projects');
+  const [projects, setProjects] = useState<HomeProjectItem[]>(mapProjectsData(cachedProjects));
+  
+  const cachedServices = getCachedData('/api/services');
+  const [homeServices, setHomeServices] = useState<any[]>(mapServicesData(cachedServices));
 
   useEffect(() => {
-    // Fetch Banner
-    fetch('/api/banner')
-      .then(res => res.json())
-      .then(data => {
-        if (data.image_url) {
-          setBannerUrl(data.image_url);
-        }
-      })
-      .catch(() => {
-        // fallback to default
-      });
+    // Revalidate Banner in background
+    fetchWithSWR('/api/banner', (data) => {
+      if (data?.image_url) {
+        setBannerUrl(data.image_url);
+      }
+    }).catch(() => {});
 
-    // Fetch News
-    fetch('/api/news')
-      .then(res => res.json())
-      .then(data => {
-        setDynamicNews(data || []);
-      })
-      .catch(() => {
-        // fallback
-      });
+    // Revalidate News in background
+    fetchWithSWR('/api/news', (data) => {
+      setDynamicNews(data || []);
+    }).catch(() => {});
 
-    // Fetch Partners
-    fetch('/api/partners')
-      .then(res => res.json())
-      .then(data => {
-        if (Array.isArray(data) && data.length > 0) {
-          setPartners(data);
-        } else {
-          setPartners(PARTNERS_DATA);
-        }
-      })
-      .catch(() => {
-        setPartners(PARTNERS_DATA);
-      });
+    // Revalidate Partners in background
+    fetchWithSWR('/api/partners', (data) => {
+      setPartners(mapPartnersData(data));
+    }).catch(() => {});
 
-    // Fetch Projects
-    fetch('/api/projects')
-      .then(res => res.json())
-      .then(data => {
-        if (Array.isArray(data) && data.length > 0) {
-          const mappedProjects = data.slice(0, 4).map((p: any) => ({
-            id: p.id,
-            category: p.category,
-            client: p.client,
-            verticalLabel: getCategoryLabel(p.category).toUpperCase(),
-            horizontalLabel: getCategoryLabel(p.category).toUpperCase(),
-            verticalTitle: p.title.length > 30 ? p.title.substring(0, 30) + '...' : p.title,
-            horizontalTitle: p.title,
-            scope: p.scope,
-            value: p.value || 'Liên hệ',
-            packageValue: p.packageValue || null,
-            features: (p.details || []).slice(0, 3).map((d: string) => ({ text: d, icon: 'CheckCircle2' })),
-            image_path: p.image_path
-          }));
-          setProjects(mappedProjects);
-        } else {
-          setProjects(HOME_PROJECTS);
-        }
-      })
-      .catch(() => {
-        setProjects(HOME_PROJECTS);
-      });
+    // Revalidate Projects in background
+    fetchWithSWR('/api/projects', (data) => {
+      setProjects(mapProjectsData(data));
+    }).catch(() => {});
 
-    // Fetch Services
-    fetch('/api/services')
-      .then(res => res.json())
-      .then(data => {
-        if (Array.isArray(data) && data.length > 0) {
-          const mapped = data.slice(0, 3).map((item: any, idx: number) => ({
-            id: item.id,
-            title: item.title,
-            summary: item.summary,
-            icon: item.icon,
-            colorTheme: item.colorTheme,
-            image_path: item.image_path || fallbackHomeServices[idx]?.image_path || fallbackHomeServices[0].image_path
-          }));
-          setHomeServices(mapped);
-        } else {
-          setHomeServices(fallbackHomeServices);
-        }
-      })
-      .catch(() => {
-        setHomeServices(fallbackHomeServices);
-      });
+    // Revalidate Services in background
+    fetchWithSWR('/api/services', (data) => {
+      setHomeServices(mapServicesData(data));
+    }).catch(() => {});
   }, []);
 
   return (

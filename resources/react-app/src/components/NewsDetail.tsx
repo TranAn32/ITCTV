@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { ActivePage, NewsItem } from '../types';
 import { motion } from 'motion/react';
+import { fetchWithSWR, getCachedData } from '../utils/apiCache';
 
 interface NewsDetailProps {
   newsId: number;
@@ -18,34 +19,47 @@ interface NewsDetailProps {
 }
 
 export default function NewsDetail({ newsId, setActivePage, setSelectedNewsId }: NewsDetailProps) {
-  const [article, setArticle] = useState<NewsItem | null>(null);
-  const [relatedNews, setRelatedNews] = useState<NewsItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  // Attempt to find from cached endpoints for instant render
+  const cachedDetail = getCachedData<NewsItem>(`/api/news/${newsId}`);
+  const cachedAllNews = getCachedData<NewsItem[]>('/api/news');
+  const initialArticle = cachedDetail || (cachedAllNews ? cachedAllNews.find(item => item.id === newsId) : null);
+  
+  const initialRelated = cachedAllNews
+    ? cachedAllNews.filter(item => item.id !== newsId).slice(0, 4)
+    : [];
+
+  const [article, setArticle] = useState<NewsItem | null>(initialArticle);
+  const [relatedNews, setRelatedNews] = useState<NewsItem[]>(initialRelated);
+  const [loading, setLoading] = useState(!initialArticle);
 
   useEffect(() => {
-    setLoading(true);
-    // Fetch article details
-    fetch(`/api/news/${newsId}`)
-      .then(res => {
-        if (!res.ok) throw new Error('Không tìm thấy bài viết');
-        return res.json();
-      })
-      .then(data => {
-        setArticle(data);
-        
-        // Fetch other news for "related news" section
-        return fetch('/api/news');
-      })
-      .then(res => res.json())
-      .then(allNews => {
-        const filtered = (allNews || []).filter((item: NewsItem) => item.id !== newsId);
-        setRelatedNews(filtered.slice(0, 4));
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error('Lỗi tải chi tiết bài viết:', err);
-        setLoading(false);
-      });
+    // Sync state with cache synchronously when newsId changes
+    const freshDetail = getCachedData<NewsItem>(`/api/news/${newsId}`);
+    const freshAllNews = getCachedData<NewsItem[]>('/api/news');
+    const foundArticle = freshDetail || (freshAllNews ? freshAllNews.find(item => item.id === newsId) : null);
+    
+    setArticle(foundArticle);
+    setRelatedNews(freshAllNews ? freshAllNews.filter(item => item.id !== newsId).slice(0, 4) : []);
+    setLoading(!foundArticle);
+
+    // Revalidate article details in background
+    const detailPromise = fetchWithSWR<NewsItem>(`/api/news/${newsId}`, (data) => {
+      setArticle(data);
+    }).catch(err => {
+      console.error('Lỗi tải chi tiết bài viết:', err);
+    });
+
+    // Revalidate related news in background
+    const relatedPromise = fetchWithSWR<NewsItem[]>('/api/news', (allNews) => {
+      const filtered = (allNews || []).filter((item: NewsItem) => item.id !== newsId);
+      setRelatedNews(filtered.slice(0, 4));
+    }).catch(err => {
+      console.error('Lỗi tải tin liên quan:', err);
+    });
+
+    Promise.all([detailPromise, relatedPromise]).finally(() => {
+      setLoading(false);
+    });
   }, [newsId]);
 
   const handleBack = () => {

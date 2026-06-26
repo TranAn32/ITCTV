@@ -24,16 +24,20 @@ import {
 import * as LucideIcons from 'lucide-react';
 import { ActivePage } from '../types';
 import { motion, AnimatePresence } from 'motion/react';
+import { fetchWithSWR, getCachedData } from '../utils/apiCache';
 
 interface ServicesProps {
   setActivePage: (page: ActivePage) => void;
 }
 
 export default function Services({ setActivePage }: ServicesProps) {
-  const [activeTab, setActiveTab] = useState<string>('khao-sat-cntt');
+  const cachedServices = getCachedData<any[]>('/api/services');
+  const [activeTab, setActiveTab] = useState<string>(
+    cachedServices && cachedServices.length > 0 ? cachedServices[0].id : 'khao-sat-cntt'
+  );
   const [connectorPath, setConnectorPath] = useState<{ x1: number; y1: number; x2: number; y2: number } | null>(null);
-  const [services, setServices] = useState<any[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [services, setServices] = useState<any[]>(cachedServices || []);
+  const [loading, setLoading] = useState<boolean>(!cachedServices);
 
   // Exact 7 services from user requirements with precise details as fallback
   const fallbackServices = [
@@ -152,21 +156,22 @@ export default function Services({ setActivePage }: ServicesProps) {
   ];
 
   useEffect(() => {
-    fetch('/api/services')
-      .then(res => res.json())
-      .then(data => {
-        if (Array.isArray(data) && data.length > 0) {
-          setServices(data);
-          setActiveTab(data[0].id);
-        } else {
-          setServices(fallbackServices);
-          setActiveTab('khao-sat-cntt');
-        }
-      })
+    fetchWithSWR('/api/services', (data) => {
+      if (Array.isArray(data) && data.length > 0) {
+        setServices(data);
+        setActiveTab(prev => {
+          if (prev === 'khao-sat-cntt' && !data.some(d => d.id === 'khao-sat-cntt')) {
+            return data[0].id;
+          }
+          return prev;
+        });
+      } else {
+        setServices(fallbackServices);
+      }
+    })
       .catch(err => {
         console.error('Lỗi khi tải dịch vụ:', err);
-        setServices(fallbackServices);
-        setActiveTab('khao-sat-cntt');
+        setServices(prev => prev.length > 0 ? prev : fallbackServices);
       })
       .finally(() => {
         setLoading(false);

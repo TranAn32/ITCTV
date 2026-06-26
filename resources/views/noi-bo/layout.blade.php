@@ -122,10 +122,157 @@
             position: relative;
             background: #f8fafc;
         }
+
+        /* --- Responsive Sidebar & Global Admin Styling --- */
+        .mobile-header {
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            height: 56px;
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 0 16px;
+            width: 100%;
+            flex-shrink: 0;
+            z-index: 999;
+            box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+        }
+        .btn-menu-toggle {
+            background: none;
+            border: none;
+            color: #475569;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s;
+        }
+        .btn-menu-toggle:hover {
+            background-color: #f1f5f9;
+        }
+        .btn-menu-toggle svg {
+            width: 24px;
+            height: 24px;
+        }
+        .mobile-header-brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: #0f172a;
+        }
+        .mobile-header-title {
+            font-size: 15px;
+            font-weight: 800;
+            letter-spacing: -0.3px;
+        }
+        .mobile-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.4);
+            z-index: 998;
+            backdrop-filter: blur(1.5px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .mobile-overlay.open {
+            display: block;
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            .mobile-header {
+                display: flex;
+            }
+            .global-nav {
+                position: fixed;
+                left: -260px;
+                top: 0;
+                bottom: 0;
+                height: 100%;
+                transition: left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+                box-shadow: 4px 0 24px rgba(15, 23, 42, 0.12);
+            }
+            .global-nav.open {
+                left: 0;
+            }
+
+            /* Automatically scale containers on all admin subpages */
+            .projects-container,
+            .banner-container,
+            .settings-container,
+            .news-container,
+            .gallery-container,
+            .partner-container,
+            .service-container {
+                margin: 16px auto !important;
+                padding: 0 12px !important;
+            }
+
+            /* Responsive padding for page cards */
+            .project-card,
+            .banner-card,
+            .news-card,
+            .gallery-card,
+            .partner-card,
+            .service-card,
+            .settings-card {
+                padding: 20px 16px !important;
+                border-radius: 12px !important;
+            }
+
+            /* Stack header elements vertically on mobile */
+            .project-card-header,
+            .news-card-header,
+            .banner-card-header,
+            .gallery-card-header,
+            .partner-card-header,
+            .service-card-header,
+            .settings-card-header {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 12px !important;
+            }
+
+            /* Force standard grid layouts to stack vertically */
+            .form-grid, .grid, .upload-grid, .stats-grid {
+                grid-template-columns: 1fr !important;
+                gap: 12px !important;
+            }
+
+            /* Table wrapper borders reset */
+            .project-table-wrapper,
+            .news-table-wrapper,
+            .gallery-table-wrapper,
+            .partner-table-wrapper,
+            .service-table-wrapper {
+                margin-top: 12px;
+            }
+        }
     </style>
     @yield('styles')
 </head>
 <body>
+
+<div class="mobile-header">
+    <button class="btn-menu-toggle" id="menuToggleBtn" aria-label="Toggle Menu">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+    </button>
+    <a href="/admin/banner" class="mobile-header-brand">
+        <span class="mobile-header-title">Quản trị ITC</span>
+    </a>
+    <div style="width: 40px;"></div>
+</div>
+
+<div class="mobile-overlay" id="menuOverlay"></div>
 
 <div class="global-nav">
     <a href="/admin/banner" class="global-nav-brand">
@@ -224,6 +371,33 @@
 <div class="global-main">
     @yield('content')
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const menuToggleBtn = document.getElementById('menuToggleBtn');
+    const menuOverlay = document.getElementById('menuOverlay');
+    const sidebar = document.querySelector('.global-nav');
+    
+    if (menuToggleBtn && menuOverlay && sidebar) {
+        function toggleMenu() {
+            sidebar.classList.toggle('open');
+            menuOverlay.classList.toggle('open');
+        }
+        
+        menuToggleBtn.addEventListener('click', toggleMenu);
+        menuOverlay.addEventListener('click', toggleMenu);
+        
+        // Auto-close sidebar on link navigation clicks (mobile responsive)
+        const navLinks = sidebar.querySelectorAll('.global-nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                sidebar.classList.remove('open');
+                menuOverlay.classList.remove('open');
+            });
+        });
+    }
+});
+</script>
 
 @yield('scripts')
 </body>

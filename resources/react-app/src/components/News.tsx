@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { ActivePage, NewsItem } from '../types';
 import { motion, AnimatePresence } from 'motion/react';
+import { fetchWithSWR, getCachedData } from '../utils/apiCache';
 
 interface NewsProps {
   setActivePage: (page: ActivePage) => void;
@@ -17,20 +18,20 @@ interface NewsProps {
 }
 
 export default function News({ setActivePage, setSelectedNewsId }: NewsProps) {
-  const [news, setNews] = useState<NewsItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  const cachedNews = getCachedData<NewsItem[]>('/api/news');
+  const [news, setNews] = useState<NewsItem[]>(cachedNews || []);
+  const [loading, setLoading] = useState(!cachedNews);
   const [searchQuery, setSearchQuery] = useState('');
   const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
-    fetch('/api/news')
-      .then(res => res.json())
-      .then(data => {
-        setNews(data || []);
-        setLoading(false);
-      })
+    fetchWithSWR<NewsItem[]>('/api/news', (data) => {
+      setNews(data || []);
+    })
       .catch(err => {
         console.error('Lỗi khi tải tin tức:', err);
+      })
+      .finally(() => {
         setLoading(false);
       });
   }, []);

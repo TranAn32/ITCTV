@@ -11,10 +11,16 @@ import NewsDetail from './components/NewsDetail';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowUp } from 'lucide-react';
 import { useHistoryNavigation } from './hooks/useHistoryNavigation';
+import { prefetchAllData } from './utils/apiCache';
 
 export default function App() {
   const { activePage, setActivePage, selectedNewsId, setSelectedNewsId } = useHistoryNavigation();
   const [showScrollTop, setShowScrollTop] = useState(false);
+
+  // Prefetch all critical API data on startup
+  useEffect(() => {
+    prefetchAllData().catch(err => console.warn('Prefetch error:', err));
+  }, []);
 
   // Monitor scroll height to conditionally reveal back-to-top button
   useEffect(() => {

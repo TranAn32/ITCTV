@@ -13,43 +13,41 @@ import {
   Handshake
 } from 'lucide-react';
 import { PROJECTS_DATA, PARTNERS_DATA } from '../data';
+import { fetchWithSWR, getCachedData } from '../utils/apiCache';
 import { ProjectItem, PartnerItem } from '../types';
 import { motion } from 'motion/react';
 
 export default function Projects() {
+  const cachedProjects = getCachedData<ProjectItem[]>('/api/projects');
+  const cachedPartners = getCachedData<PartnerItem[]>('/api/partners');
+
   const [filterCategory, setFilterCategory] = useState<string>('all');
-  const [projects, setProjects] = useState<ProjectItem[]>([]);
-  const [partners, setPartners] = useState<PartnerItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [projects, setProjects] = useState<ProjectItem[]>(cachedProjects || []);
+  const [partners, setPartners] = useState<PartnerItem[]>(cachedPartners || []);
+  const [loading, setLoading] = useState(!cachedProjects || !cachedPartners);
 
   useEffect(() => {
-    const fetchProjects = fetch('/api/projects')
-      .then(res => res.json())
-      .then(data => {
-        if (Array.isArray(data) && data.length > 0) {
-          setProjects(data);
-        } else {
-          setProjects(PROJECTS_DATA);
-        }
-      })
-      .catch(err => {
-        console.error('Lỗi khi tải dự án:', err);
+    const fetchProjects = fetchWithSWR<ProjectItem[]>('/api/projects', (data) => {
+      if (Array.isArray(data) && data.length > 0) {
+        setProjects(data);
+      } else {
         setProjects(PROJECTS_DATA);
-      });
+      }
+    }).catch(err => {
+      console.error('Lỗi khi tải dự án:', err);
+      setProjects(prev => prev.length > 0 ? prev : PROJECTS_DATA);
+    });
 
-    const fetchPartners = fetch('/api/partners')
-      .then(res => res.json())
-      .then(data => {
-        if (Array.isArray(data) && data.length > 0) {
-          setPartners(data);
-        } else {
-          setPartners(PARTNERS_DATA);
-        }
-      })
-      .catch(err => {
-        console.error('Lỗi khi tải đối tác:', err);
+    const fetchPartners = fetchWithSWR<PartnerItem[]>('/api/partners', (data) => {
+      if (Array.isArray(data) && data.length > 0) {
+        setPartners(data);
+      } else {
         setPartners(PARTNERS_DATA);
-      });
+      }
+    }).catch(err => {
+      console.error('Lỗi khi tải đối tác:', err);
+      setPartners(prev => prev.length > 0 ? prev : PARTNERS_DATA);
+    });
 
     Promise.all([fetchProjects, fetchPartners]).finally(() => {
       setLoading(false);

@@ -10,6 +10,7 @@ import {
   Info
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { fetchWithSWR, getCachedData } from '../utils/apiCache';
 
 interface GalleryImage {
   id: number;
@@ -47,20 +48,19 @@ const FALLBACK_IMAGES: GalleryImage[] = [
 ];
 
 export default function Gallery() {
-  const [dbImages, setDbImages] = useState<GalleryImage[]>([]);
-  const [loading, setLoading] = useState(true);
+  const cachedGallery = getCachedData<GalleryImage[]>('/api/gallery');
+  const [dbImages, setDbImages] = useState<GalleryImage[]>(cachedGallery || []);
+  const [loading, setLoading] = useState(!cachedGallery);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [slideIndex, setSlideIndex] = useState(0);
   const [isSlideHovered, setIsSlideHovered] = useState(false);
 
   useEffect(() => {
-    fetch('/api/gallery')
-      .then(res => res.json())
-      .then(data => {
-        if (Array.isArray(data)) {
-          setDbImages(data);
-        }
-      })
+    fetchWithSWR<GalleryImage[]>('/api/gallery', (data) => {
+      if (Array.isArray(data)) {
+        setDbImages(data);
+      }
+    })
       .catch(err => {
         console.error('Lỗi khi tải hình ảnh từ database:', err);
       })
