@@ -67,7 +67,7 @@ export default function App() {
       case 'contact':
         return <Contact />;
       case 'recruitment':
-        return <Recruitment />;
+        return <Recruitment setActivePage={setActivePage} />;
       default:
         return <Home setActivePage={setActivePage} setSelectedNewsId={setSelectedNewsId} />;
     }

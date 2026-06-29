@@ -357,7 +357,7 @@ export default function Home({ setActivePage, setSelectedNewsId }: HomeProps) {
         <div className="absolute top-[-15%] left-[-10%] h-[40rem] w-[40rem] rounded-full bg-blue-600/10 blur-[130px] pointer-events-none z-[1]" />
         <div className="absolute bottom-[-10%] right-[-5%] h-[30rem] w-[30rem] rounded-full bg-sky-500/8 blur-[110px] pointer-events-none z-[1]" />
 
-        <div className="relative z-10 mx-auto max-w-[1600px] px-4 sm:px-6 md:px-12 lg:px-16 xl:px-20 2xl:px-24 py-12 md:py-16 lg:py-20 w-full">
+        <div className="relative z-10 mx-auto max-w-[1600px] px-4 sm:px-6 md:px-12 lg:px-16 xl:px-20 2xl:px-24 pt-6 pb-12 md:pt-8 md:pb-16 lg:pt-10 lg:pb-20 w-full">
           <div className="max-w-3xl">
             
             <motion.div 
@@ -656,7 +656,7 @@ export default function Home({ setActivePage, setSelectedNewsId }: HomeProps) {
               return (
                 <motion.div
                   key={project.id}
-                  className={`relative h-[480px] rounded-lg overflow-hidden shadow-[0_10px_30px_rgba(203,213,225,0.08)] border border-transparent cursor-pointer flex flex-col justify-end bg-slate-950 transition-all duration-700 ease-out ${widthClass}`}
+                  className={`relative h-[480px] rounded-lg overflow-hidden shadow-[0_10px_30px_rgba(203,213,225,0.08)] cursor-pointer flex flex-col justify-end bg-slate-950 transition-all duration-700 ease-out ${widthClass}`}
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -934,7 +934,7 @@ export default function Home({ setActivePage, setSelectedNewsId }: HomeProps) {
               "Nhận thức từ tâm — Nâng tầm tư vấn — Vững bước thành công"
             </h3>
             <p className="text-xs sm:text-sm text-slate-500 leading-relaxed font-semibold font-sans">
-              Ký thác niềm tin từ Bộ Giao thông Vận tải, Cục Đăng kiểm, và các top-tier ngân hàng lớn. ITC sẵn sàng thực thi độc lập nhiệm vụ giám sát khắt khe, minh bạch chất lượng và bảo hộ dòng đầu tư.
+              Được đặt niềm tin từ Bộ Nội vụ, Bộ Giao thông Vận tải, Bộ Khoa học và công nghệ, cùng các Sở ban ngành. ITC sẵn sàng thực thi độc lập nhiệm vụ tư vấn minh bạch chất lượng và bảo đảm an toàn pháp lý.
             </p>
             <div className="pt-4">
               <button
