@@ -59,14 +59,7 @@ export default function Contact() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5">
                   
                   {/* Địa chỉ trụ sở - Spans full width */}
-                  <div className="sm:col-span-2 space-y-1">
-                    <span className="text-xs font-bold text-slate-400 uppercase tracking-widest block">
-                      ĐỊA CHỈ TRỤ SỞ
-                    </span>
-                    <p className="text-sm sm:text-base font-bold text-slate-800 leading-relaxed">
-                      Nhà số 10 ngõ 337, phố Định Công, Phường Định Công, Quận Hoàng Mai, TP Hà Nội
-                    </p>
-                  </div>
+                  
 
                   {/* Đại diện pháp luật */}
                   <div className="space-y-1">
@@ -109,11 +102,31 @@ export default function Contact() {
                       rel="noreferrer"
                       className="text-sm sm:text-base font-bold text-blue-600 hover:text-blue-750 transition-colors underline block truncate"
                     >
-                      http://itctv.vn/
+                      https://itctv.vn
                     </a>
                   </div>
+                  
 
                 </div>
+                <div className="sm:col-span-2 space-y-1">
+                    <span className="text-xs font-bold text-slate-400 uppercase tracking-widest block">
+                      ĐỊA CHỈ TRỤ SỞ
+                    </span>
+                    <p className="text-sm sm:text-base font-bold text-slate-800 leading-relaxed">
+                      Nhà số 10 ngõ 337, phố Định Công, Phường Định Công, Quận Hoàng Mai, TP Hà Nội
+                    </p>
+                  </div>
+                <div className="bg-white rounded-lg overflow-hidden border border-slate-100 shadow-[0_15px_50px_rgba(203,213,225,0.12)] h-[250px] sm:h-[300px] lg:flex-1" id="corporate-map-card">
+              <iframe
+                title="Bản đồ vị trí ITC"
+                src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1862.6508637779298!2d105.82970862903267!3d20.980538931848525!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ac5f3097b025%3A0x78bb03ffe7c94aea!2zMTAgTmcuIDMzNyBQLiDEkOG7i25oIEPDtG5nLCDEkOG7i25oIEPDtG5nIEjhuqEsIMSQ4buLbmggQ8O0bmcsIEjDoCBO4buZaSwgVmlldG5hbQ!5e0!3m2!1sen!2sus!4v1781280401314!5m2!1sen!2sus"
+                width="100%"
+                height="100%"
+                className="border-none w-full h-full min-h-[220px]"
+                allowFullScreen
+                loading="lazy"
+              />
+            </div>
               </div>
             </div>
 
@@ -152,17 +165,7 @@ export default function Contact() {
             </div>
 
             {/* Google Map Card */}
-            <div className="bg-white rounded-lg overflow-hidden border border-slate-100 shadow-[0_15px_50px_rgba(203,213,225,0.12)] h-[250px] sm:h-[300px] lg:flex-1" id="corporate-map-card">
-              <iframe
-                title="Bản đồ vị trí ITC"
-                src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1862.6508637779298!2d105.82970862903267!3d20.980538931848525!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ac5f3097b025%3A0x78bb03ffe7c94aea!2zMTAgTmcuIDMzNyBQLiDEkOG7i25oIEPDtG5nLCDEkOG7i25oIEPDtG5nIEjhuqEsIMSQ4buLbmggQ8O0bmcsIEjDoCBO4buZaSwgVmlldG5hbQ!5e0!3m2!1sen!2sus!4v1781280401314!5m2!1sen!2sus"
-                width="100%"
-                height="100%"
-                className="border-none w-full h-full min-h-[220px]"
-                allowFullScreen
-                loading="lazy"
-              />
-            </div>
+            
 
           </div>
 

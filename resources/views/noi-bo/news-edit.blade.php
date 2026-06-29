@@ -218,6 +218,11 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="created_at">Ngày tạo bài viết (Không bắt buộc)</label>
+                    <input type="date" name="created_at" id="created_at" class="form-control" value="{{ old('created_at', $news->created_at ? \Carbon\Carbon::parse($news->created_at)->format('Y-m-d') : '') }}">
+                </div>
+
+                <div class="form-group">
                     <label>Ảnh đại diện hiện tại</label>
                     <div class="current-image-wrapper">
                         <img src="{{ $news->image_path }}" alt="{{ $news->title }}">

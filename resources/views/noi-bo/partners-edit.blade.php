@@ -61,14 +61,14 @@
     }
     .form-row {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr;
         gap: 16px;
         margin-bottom: 20px;
     }
     @media (max-width: 640px) {
         .form-row {
             grid-template-columns: 1fr;
-            gap: 0;
+            gap: 12px;
         }
     }
     .current-image-wrapper {
@@ -213,10 +213,17 @@
                     <div class="form-group">
                         <label for="group">Nhóm phân loại đối tác</label>
                         <select name="group" id="group" class="form-control" required>
-                            <option value="gov" {{ old('group', $partner->group) == 'gov' ? 'selected' : '' }}>Cơ quan Bộ Ngành (gov)</option>
-                            <option value="finance" {{ old('group', $partner->group) == 'finance' ? 'selected' : '' }}>Tài chính & Giáo dục (finance)</option>
-                            <option value="media" {{ old('group', $partner->group) == 'media' ? 'selected' : '' }}>Truyền thông & Công nghệ (media)</option>
+                            <option value="gov" {{ old('group', $partner->group) == 'gov' ? 'selected' : '' }}>Cơ quan Bộ Ngành</option>
+                            <option value="finance" {{ old('group', $partner->group) == 'finance' ? 'selected' : '' }}>Cơ quan Trung ương</option>
+                            <option value="media" {{ old('group', $partner->group) == 'media' ? 'selected' : '' }}>Tổ chức chính trị</option>
+                            <option value="press" {{ old('group', $partner->group) == 'press' ? 'selected' : '' }}>Cơ quan ngôn luận, báo chí</option>
+                            <option value="department" {{ old('group', $partner->group) == 'department' ? 'selected' : '' }}>Sở ban ngành</option>
                         </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sort_order">Thứ tự hiển thị</label>
+                        <input type="number" name="sort_order" id="sort_order" class="form-control" placeholder="Ví dụ: 0, 1, 2..." value="{{ old('sort_order', $partner->sort_order) }}">
                     </div>
 
                     <div class="form-group">

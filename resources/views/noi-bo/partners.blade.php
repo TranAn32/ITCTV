@@ -343,8 +343,10 @@
                 <div class="status-filters">
                     <button class="filter-btn active" data-group="all">Tất cả nhóm</button>
                     <button class="filter-btn" data-group="gov">Bộ ngành</button>
-                    <button class="filter-btn" data-group="finance">Tài chính - GD</button>
-                    <button class="filter-btn" data-group="media">Truyền thông - CN</button>
+                    <button class="filter-btn" data-group="finance">Cơ quan Trung ương</button>
+                    <button class="filter-btn" data-group="media">Tổ chức chính trị</button>
+                    <button class="filter-btn" data-group="press">Ngôn luận & Báo chí</button>
+                    <button class="filter-btn" data-group="department">Sở ban ngành</button>
                 </div>
             </div>
 
@@ -356,6 +358,7 @@
                             <th style="width: 150px;">Logo</th>
                             <th>Tên đối tác</th>
                             <th style="width: 200px;">Nhóm phân loại</th>
+                            <th style="width: 100px; text-align: center;">Thứ tự</th>
                             <th style="width: 150px; text-align: center;">Trạng thái</th>
                             <th style="width: 130px; text-align: center;">Hành động</th>
                         </tr>
@@ -377,13 +380,20 @@
                                         @if($item->group == 'gov')
                                             Cơ quan Bộ Ngành
                                         @elseif($item->group == 'finance')
-                                            Tài chính & Giáo dục
+                                            Cơ quan Trung ương
                                         @elseif($item->group == 'media')
-                                            Truyền thông & Công nghệ
+                                            Tổ chức chính trị
+                                        @elseif($item->group == 'press')
+                                            Cơ quan ngôn luận, báo chí
+                                        @elseif($item->group == 'department')
+                                            Sở ban ngành
                                         @else
                                             Khác
                                         @endif
                                     </span>
+                                </td>
+                                <td style="text-align: center;">
+                                    <input type="number" class="partner-order-input form-control" data-id="{{ $item->id }}" value="{{ $item->sort_order }}" style="width: 70px; display: inline-block; text-align: center; padding: 6px;">
                                 </td>
                                 <td style="text-align: center;">
                                     <div class="status-badge" style="justify-content: center;">
@@ -419,7 +429,7 @@
                             </tr>
                         @empty
                             <tr id="emptyRow">
-                                <td colspan="5" style="text-align: center; color: #64748b; padding: 30px;">
+                                <td colspan="6" style="text-align: center; color: #64748b; padding: 30px;">
                                     Chưa có đối tác nào được cập nhật.
                                 </td>
                             </tr>
@@ -540,6 +550,44 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.checked = !this.checked;
                 statusText.innerText = this.checked ? 'Hiện' : 'Ẩn';
                 statusText.className = 'status-text ' + (this.checked ? 'visible' : 'hidden');
+            });
+        });
+    });
+    // 3. AJAX Sort Order update for partners
+    const orderInputs = document.querySelectorAll('.partner-order-input');
+    orderInputs.forEach(input => {
+        input.addEventListener('change', function() {
+            const partnerId = this.getAttribute('data-id');
+            const sortOrder = parseInt(this.value) || 0;
+            
+            this.style.borderColor = '#38bdf8'; // sky blue outline for visual feedback
+            
+            fetch('/admin/partners/update-order', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ id: partnerId, sort_order: sortOrder })
+            })
+            .then(res => {
+                if (!res.ok) throw new Error('Yêu cầu thất bại');
+                return res.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    this.style.borderColor = '#10b981'; // green for success
+                    setTimeout(() => {
+                        this.style.borderColor = ''; // clear outline
+                    }, 1000);
+                } else {
+                    this.style.borderColor = '#ef4444'; // red for error
+                    alert('Lỗi: ' + (data.message || 'Không thể cập nhật thứ tự'));
+                }
+            })
+            .catch(err => {
+                this.style.borderColor = '#ef4444';
+                alert('Có lỗi xảy ra khi kết nối máy chủ.');
             });
         });
     });

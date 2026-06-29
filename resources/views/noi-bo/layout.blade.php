@@ -210,7 +210,8 @@
             .news-container,
             .gallery-container,
             .partner-container,
-            .service-container {
+            .service-container,
+            .recruit-container {
                 margin: 16px auto !important;
                 padding: 0 12px !important;
             }
@@ -222,6 +223,7 @@
             .gallery-card,
             .partner-card,
             .service-card,
+            .recruit-card,
             .settings-card {
                 padding: 20px 16px !important;
                 border-radius: 12px !important;
@@ -234,6 +236,7 @@
             .gallery-card-header,
             .partner-card-header,
             .service-card-header,
+            .recruit-card-header,
             .settings-card-header {
                 flex-direction: column !important;
                 align-items: flex-start !important;
@@ -251,7 +254,8 @@
             .news-table-wrapper,
             .gallery-table-wrapper,
             .partner-table-wrapper,
-            .service-table-wrapper {
+            .service-table-wrapper,
+            .recruit-table-wrapper {
                 margin-top: 12px;
             }
         }
@@ -334,6 +338,10 @@
         <a href="/admin/news" class="global-nav-link {{ request()->is('admin/news') ? 'active' : '' }}">
             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" /></svg>
             Quản lý Tin tức
+        </a>
+        <a href="/admin/recruitments" class="global-nav-link {{ request()->is('admin/recruitments') || request()->is('admin/recruitments/*') ? 'active' : '' }}">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+            Quản lý Tuyển dụng
         </a>
         <a href="/admin/projects" class="global-nav-link {{ request()->is('admin/projects') || request()->is('admin/projects/*') ? 'active' : '' }}">
             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>

@@ -55,4 +55,20 @@ export interface GalleryItem {
   created_at: string;
 }
 
-export type ActivePage = 'home' | 'services' | 'projects' | 'gallery' | 'news' | 'news-detail' | 'contact';
+export interface RecruitmentItem {
+  id: number;
+  title: string;
+  department: string | null;
+  location: string | null;
+  employment_type: string;
+  salary_range: string | null;
+  experience: string | null;
+  deadline: string | null;
+  description: string;
+  requirements: string | null;
+  benefits: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export type ActivePage = 'home' | 'services' | 'projects' | 'gallery' | 'news' | 'news-detail' | 'recruitment' | 'contact';

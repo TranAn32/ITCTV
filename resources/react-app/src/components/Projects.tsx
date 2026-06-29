@@ -10,7 +10,9 @@ import {
   Sparkles,
   Award,
   ChevronRight,
-  Handshake
+  Handshake,
+  Newspaper,
+  Building2
 } from 'lucide-react';
 import { PROJECTS_DATA, PARTNERS_DATA } from '../data';
 import { fetchWithSWR, getCachedData } from '../utils/apiCache';
@@ -71,6 +73,12 @@ export default function Projects() {
         return Landmark;
       case 'finance':
         return Database;
+      case 'media':
+        return Cpu;
+      case 'press':
+        return Newspaper;
+      case 'department':
+        return Building2;
       default:
         return Cpu;
     }
@@ -81,9 +89,15 @@ export default function Projects() {
       case 'gov':
         return 'Cơ quan Bộ Ngành';
       case 'finance':
-        return 'Tài chính & Giáo dục';
+        return 'Cơ quan Trung ương';
+      case 'media':
+        return 'Tổ chức chính trị';
+      case 'press':
+        return 'Cơ quan ngôn luận, báo chí';
+      case 'department':
+        return 'Sở ban ngành';
       default:
-        return 'Truyền thông & Công nghệ';
+        return 'Đối tác';
     }
   };
 
@@ -134,7 +148,7 @@ export default function Projects() {
         <div className="max-w-3xl mb-5 space-y-5 text-left animate-fade-in" id="projects-page-header">
           <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-[#2563eb] font-sans bg-blue-50/80 border border-blue-100/50 rounded px-2 py-1.5">
             <Sparkles className="h-3.5 w-3.5 text-blue-600 animate-pulse" />
-            <span>Liên Minh Đối Tác & Dấu Ấn Dự Án</span>
+            <span>Dấu ấn dự án</span>
           </span>
           <h1 className="font-display text-4xl sm:text-4xl font-extrabold text-[#0F172A] tracking-tight">
             DỰ ÁN TIÊU BIỂU
@@ -148,11 +162,7 @@ export default function Projects() {
           
           {/* Subtle natural categories bar */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
-            <div className="space-y-1">
-              <p className="text-lg font-bold text-slate-800">
-                Các dự án thực thi tiêu biểu
-              </p>
-            </div>
+            
 
             {/* Filter buttons without harsh frames */}
             <div className="flex flex-wrap gap-2">
@@ -277,14 +287,12 @@ export default function Projects() {
           
           <div className="max-w-2xl text-left space-y-2">
             <span className="text-xs font-bold uppercase tracking-widest text-[#2563eb] font-sans bg-blue-50/80 px-3.5 py-1 rounded border border-blue-100/50">
-              Mạng lưới Network
+              Khách hàng tiêu biểu
             </span>
             <h2 className="mt-5 font-display text-2xl sm:text-3xl font-extrabold text-[#0F172A] tracking-tight">
               ĐỐI TÁC - KHÁCH HÀNG
             </h2>
-            <p className="text-sm text-slate-500 font-medium">
-              Đối tác uỷ thác và tiếp nhận rà soát hồ sơ từ các cơ quan đầu bộ, giáo dục và tổ chức kỹ nghệ liên thông.
-            </p>
+            
           </div>
 
           {/* Spacious partners layout using plain white cards and soft color transitions */}

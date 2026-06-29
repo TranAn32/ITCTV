@@ -20,32 +20,7 @@ interface GalleryImage {
 }
 
 // Default high quality fallback images if database is empty or has few images
-const FALLBACK_IMAGES: GalleryImage[] = [
-  {
-    id: -1,
-    image_path: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80',
-    caption: 'Hệ thống trung tâm dữ liệu hiện đại, vận hành an toàn và tin cậy.',
-    created_at: new Date().toISOString()
-  },
-  {
-    id: -2,
-    image_path: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80',
-    caption: 'Hội thảo tư vấn giải pháp chuyển đổi số và phát triển phần mềm cho đối tác.',
-    created_at: new Date().toISOString()
-  },
-  {
-    id: -3,
-    image_path: 'https://images.unsplash.com/photo-1600132806370-bf17e65e942f?auto=format&fit=crop&w=1200&q=80',
-    caption: 'Giám sát kỹ thuật hạ tầng mạng viễn thông và thiết bị CNTT thực địa.',
-    created_at: new Date().toISOString()
-  },
-  {
-    id: -4,
-    image_path: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=1200&q=80',
-    caption: 'Đo kiểm chất lượng và đánh giá bảo mật phần mềm chuyên nghiệp.',
-    created_at: new Date().toISOString()
-  }
-];
+const FALLBACK_IMAGES: GalleryImage[] = [];
 
 export default function Gallery() {
   const cachedGallery = getCachedData<GalleryImage[]>('/api/gallery');
@@ -68,7 +43,7 @@ export default function Gallery() {
   }, []);
 
   // Merge database images with fallback images to ensure a full layout
-  const images = dbImages.length > 0 ? [...dbImages, ...FALLBACK_IMAGES] : FALLBACK_IMAGES;
+  const images = dbImages.length > 0 ? dbImages : [];
 
   // Autoplay slideshow
   useEffect(() => {
@@ -201,8 +176,15 @@ export default function Gallery() {
         )}
 
         {/* 2. GALLERY GRID - Large alternating layout with permanently visible soft captions */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 auto-rows-[240px] sm:auto-rows-[280px]" id="gallery-simple-grid">
-          {images.map((image, idx) => {
+        {images.length === 0 ? (
+          <div className="text-center py-20 bg-white border border-slate-100 rounded-none shadow-2xs">
+            <Camera className="h-12 w-12 text-slate-300 mx-auto mb-4" />
+            <h3 className="text-lg font-bold text-slate-650 mb-2">Chưa có hình ảnh nào</h3>
+            <p className="text-sm text-slate-400 font-semibold">Thư viện hình ảnh sẽ được cập nhật sớm nhất.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 auto-rows-[240px] sm:auto-rows-[280px]" id="gallery-simple-grid">
+            {images.map((image, idx) => {
             // Helper for alternating layout
             const cardSpans = [
               'col-span-1 row-span-1',          // normal
@@ -246,8 +228,9 @@ export default function Gallery() {
                 )}
               </div>
             );
-          })}
-        </div>
+            })}
+          </div>
+        )}
 
       </div>
 

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, Compass, PhoneCall, Home, Wrench, FolderKanban, Images, Newspaper, Phone } from 'lucide-react';
+import { Menu, X, Compass, PhoneCall, Home, Wrench, FolderKanban, Images, Newspaper, Phone, Briefcase } from 'lucide-react';
 import { ActivePage } from '../types';
 import { motion, AnimatePresence } from 'motion/react';
 import ItcLogo from './ItcLogo';
@@ -27,6 +27,7 @@ export default function Header({ activePage, setActivePage }: HeaderProps) {
     { id: 'projects', label: 'Dự án & Đối tác', icon: FolderKanban },
     { id: 'gallery', label: 'Hình ảnh', icon: Images },
     { id: 'news', label: 'Tin tức', icon: Newspaper },
+    { id: 'recruitment', label: 'Tuyển dụng', icon: Briefcase },
     { id: 'contact', label: 'Liên hệ', icon: Phone }
   ] as const;
 

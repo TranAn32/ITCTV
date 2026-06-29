@@ -7,6 +7,7 @@ import Projects from './components/Projects';
 import Gallery from './components/Gallery';
 import Contact from './components/Contact';
 import News from './components/News';
+import Recruitment from './components/Recruitment';
 import NewsDetail from './components/NewsDetail';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowUp } from 'lucide-react';
@@ -65,6 +66,8 @@ export default function App() {
         );
       case 'contact':
         return <Contact />;
+      case 'recruitment':
+        return <Recruitment />;
       default:
         return <Home setActivePage={setActivePage} setSelectedNewsId={setSelectedNewsId} />;
     }

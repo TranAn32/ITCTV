@@ -75,12 +75,12 @@ export default function NewsDetail({ newsId, setActivePage, setSelectedNewsId }:
   const formatDate = (dateString: string) => {
     try {
       const date = new Date(dateString);
+      const hasTime = date.getHours() !== 0 || date.getMinutes() !== 0;
       return date.toLocaleDateString('vi-VN', {
         day: '2-digit',
         month: '2-digit',
         year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
+        ...(hasTime ? { hour: '2-digit', minute: '2-digit' } : {})
       });
     } catch {
       return dateString;

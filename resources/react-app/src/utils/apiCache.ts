@@ -87,7 +87,8 @@ export function prefetchAllData(): Promise<any> {
     '/api/partners',
     '/api/projects',
     '/api/services',
-    '/api/gallery'
+    '/api/gallery',
+    '/api/recruitments'
   ];
 
   const prefetchPromises = urls.map(url =>

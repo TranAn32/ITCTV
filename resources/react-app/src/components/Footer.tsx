@@ -80,7 +80,7 @@ export default function Footer({ setActivePage }: FooterProps) {
               </h3>
             </div>
             <p className="text-xs sm:text-sm text-slate-350 font-medium leading-relaxed">
-              Đối tác tư vấn, giám sát &amp; thẩm định độc lập tin cậy bậc nhất của các chủ đầu tư khối cơ quan nhà nước.
+              Đồng hành cùng Chủ đầu tư trong công tác tư vấn chuyển đổi, bảo đảm hiệu quả, minh bạch và tuân thủ quy định.
             </p>
           </div>
         </div>
@@ -88,8 +88,8 @@ export default function Footer({ setActivePage }: FooterProps) {
         {/* 4-Column Professional Grid */}
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-12" id="footer-main-grid">
           
-          {/* Column 1 (span-4): Deep Corporate Information */}
-          <div className="lg:col-span-4 space-y-4" id="footer-col-company-info">
+          {/* Column 1 (span-6): Deep Corporate Information */}
+          <div className="lg:col-span-6 space-y-4" id="footer-col-company-info">
             <h4 className="text-sm sm:text-base font-bold tracking-wider text-[#38BDF8] uppercase font-sans">
               Thông tin pháp lý doanh nghiệp
             </h4>
@@ -102,7 +102,17 @@ export default function Footer({ setActivePage }: FooterProps) {
                   ITC SOLUTIONS AND TECHNOLOGY CONSULTING JOINT STOCK COMPANY
                 </p>
               </div>
-
+              <div className="space-y-2.5">
+                <a 
+                  href="tel:0966184668" 
+                  className="flex items-center gap-2.5 text-sky-400 hover:text-sky-300 transition-colors font-bold group select-all"
+                >
+                  <PhoneCall className="h-4.5 w-4.5 shrink-0 text-sky-400 group-hover:scale-110 transition-transform" />
+                  <span className="font-sans text-xs sm:text-sm tracking-wide">0966184668</span>
+                </a>
+                
+                
+              </div>
               <div className="space-y-2.5 text-xs sm:text-sm text-slate-300 pr-4 font-medium">
                 <div className="flex items-start gap-2.5">
                   <MapPin className="h-4.5 w-4.5 shrink-0 text-sky-400 mt-0.5" />
@@ -114,15 +124,31 @@ export default function Footer({ setActivePage }: FooterProps) {
                   <FileText className="h-4.5 w-4.5 shrink-0 text-sky-400" />
                   <span>Mã số thuế: <strong className="font-sans text-white tracking-wider font-bold">0108165977</strong></span>
                 </div>
-               
+               <a 
+                  href="mailto:tvitc.info@gmail.com" 
+                  className="flex items-center gap-2.5 text-slate-300 hover:text-white transition-colors group select-all font-semibold"
+                >
+                  <Mail className="h-4.5 w-4.5 shrink-0 text-slate-500 group-hover:text-sky-400 transition-colors" />
+                  <span className="font-sans text-xs sm:text-sm">tvitc.info@gmail.com</span>
+                </a>
+
+                <a 
+                  href="http://itctv.vn/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-2.5 text-slate-300 hover:text-sky-400 transition-colors group text-xs sm:text-sm font-semibold"
+                >
+                  <Globe className="h-4.5 w-4.5 shrink-0 text-slate-500 group-hover:text-sky-400 transition-colors" />
+                  <span className="underline">https://itctv.vn</span>
+                </a>
               </div>
             </div>
           </div>
 
-          {/* Column 2 (span-2): Fast Navigation */}
-          <div className="lg:col-span-2 space-y-4" id="footer-col-links">
+          {/* Column 2 (span-3): Fast Navigation */}
+          <div className="lg:col-span-3 space-y-4" id="footer-col-links">
             <h4 className="text-sm sm:text-base font-bold tracking-wider text-[#38BDF8] uppercase font-sans">
-              Đường dẫn nhanh
+              Giới thiệu liên hệ
             </h4>
             <ul className="space-y-2.5 text-xs sm:text-sm font-bold">
               <li>
@@ -176,7 +202,7 @@ export default function Footer({ setActivePage }: FooterProps) {
                   className="text-slate-300 hover:text-white flex items-center gap-1 transition-all group cursor-pointer"
                 >
                   <ChevronRight className="h-3.5 w-3.5 text-slate-500 group-hover:text-sky-400 group-hover:translate-x-0.5 transition-transform" />
-                  <span>Liên hệ thầu</span>
+                  <span>Liên hệ với ITC</span>
                 </button>
               </li>
             </ul>
@@ -185,7 +211,7 @@ export default function Footer({ setActivePage }: FooterProps) {
           {/* Column 3 (span-3): Quick Core Competency Services */}
           <div className="lg:col-span-3 space-y-4" id="footer-col-services-nav">
             <h4 className="text-sm sm:text-base font-bold tracking-wider text-[#38BDF8] uppercase font-sans">
-              Hạng mục thầu chính
+              LĨNH VỰC TƯ VẤN
             </h4>
             <ul className="space-y-2.5 text-xs sm:text-sm font-semibold">
               <li>
@@ -193,7 +219,7 @@ export default function Footer({ setActivePage }: FooterProps) {
                   onClick={() => handleLinkClick('services')} 
                   className="text-slate-300 hover:text-white text-left block leading-relaxed cursor-pointer transition-colors"
                 >
-                  • Tư vấn khảo sát dự án CNTT
+                  • Tư vấn khảo sát giải pháp Chuyển đổi số/CNTT
                 </button>
               </li>
               <li>
@@ -201,7 +227,7 @@ export default function Footer({ setActivePage }: FooterProps) {
                   onClick={() => handleLinkClick('services')} 
                   className="text-slate-300 hover:text-white text-left block leading-relaxed cursor-pointer transition-colors"
                 >
-                  • Thiết kế thi công &amp; Tổng dự toán
+                  • Tư vấn lập dự án chuyển đổi số
                 </button>
               </li>
               <li>
@@ -209,7 +235,7 @@ export default function Footer({ setActivePage }: FooterProps) {
                   onClick={() => handleLinkClick('services')} 
                   className="text-slate-300 hover:text-white text-left block leading-relaxed cursor-pointer transition-colors"
                 >
-                  • Đề cương và dự toán chi tiết
+                  • Tư vấn đấu thầu
                 </button>
               </li>
               <li>
@@ -217,7 +243,7 @@ export default function Footer({ setActivePage }: FooterProps) {
                   onClick={() => handleLinkClick('services')} 
                   className="text-slate-300 hover:text-white text-left block leading-relaxed cursor-pointer transition-colors"
                 >
-                  • Thẩm tra phản biện độc lập
+                  • Tư vấn giám sát
                 </button>
               </li>
               <li>
@@ -225,65 +251,10 @@ export default function Footer({ setActivePage }: FooterProps) {
                   onClick={() => handleLinkClick('services')} 
                   className="text-slate-300 hover:text-white text-left block leading-relaxed cursor-pointer transition-colors"
                 >
-                  • Giám sát &amp; Kiểm thử phần mềm
+                  • Kiểm thử phần mềm
                 </button>
               </li>
             </ul>
-          </div>
-
-          {/* Column 4 (span-3): Official Hot Contacts & Representative */}
-          <div className="lg:col-span-3 space-y-4" id="footer-col-authorized-rep">
-            <h4 className="text-sm sm:text-base font-bold tracking-wider text-[#38BDF8] uppercase font-sans">
-              Đại diện ủy quyền
-            </h4>
-            <div className="space-y-4 text-xs sm:text-sm">
-              
-              {/* Leader Representative Profile */}
-              <div className="rounded-xl bg-slate-900/60 border border-slate-800/50 p-3 flex flex-col space-y-1.5 backdrop-blur-sm shadow-inner" id="rep-card-footer">
-                <div className="flex items-center gap-1.5 text-sky-400 font-bold tracking-wider uppercase text-[10px] sm:text-xs">
-                  <UserCheck className="h-3.5 w-3.5 shrink-0" />
-                  <span>Đại diện pháp luật</span>
-                </div>
-                <div>
-                  <p className="text-white font-bold text-xs sm:text-sm leading-snug">
-                    Đàm Thị Kim Anh
-                  </p>
-                  <p className="text-[10px] sm:text-xs text-slate-400 italic mt-0.5 font-medium">
-                    Tổng Giám đốc doanh nghiệp
-                  </p>
-                </div>
-              </div>
-
-              {/* Direct Touch channels */}
-              <div className="space-y-2.5">
-                <a 
-                  href="tel:0984482789" 
-                  className="flex items-center gap-2.5 text-sky-400 hover:text-sky-300 transition-colors font-bold group select-all"
-                >
-                  <PhoneCall className="h-4.5 w-4.5 shrink-0 text-sky-400 group-hover:scale-110 transition-transform" />
-                  <span className="font-sans text-xs sm:text-sm tracking-wide">0984482789</span>
-                </a>
-                
-                <a 
-                  href="mailto:tvitc.info@gmail.com" 
-                  className="flex items-center gap-2.5 text-slate-300 hover:text-white transition-colors group select-all font-semibold"
-                >
-                  <Mail className="h-4.5 w-4.5 shrink-0 text-slate-500 group-hover:text-sky-400 transition-colors" />
-                  <span className="font-sans text-xs sm:text-sm">tvitc.info@gmail.com</span>
-                </a>
-
-                <a 
-                  href="http://itctv.vn/"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center gap-2.5 text-slate-300 hover:text-sky-400 transition-colors group text-xs sm:text-sm font-semibold"
-                >
-                  <Globe className="h-4.5 w-4.5 shrink-0 text-slate-500 group-hover:text-sky-400 transition-colors" />
-                  <span className="underline">http://itctv.vn/</span>
-                </a>
-              </div>
-
-            </div>
           </div>
 
         </div>
@@ -291,12 +262,19 @@ export default function Footer({ setActivePage }: FooterProps) {
         {/* Bottom Bar: Copyright & Declarations */}
         <div className="mt-12 pt-6 border-t border-slate-800/50 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] sm:text-xs text-slate-400" id="footer-bottom">
           <p className="text-center sm:text-left font-medium">
-            © {currentYear} CÔNG TY CỔ PHẦN GIẢI PHÁP VÀ TƯ VẤN CÔNG NGHỆ ITC. Bảo lưu mọi quyền pháp thầu.
+            © {currentYear} CÔNG TY CỔ PHẦN GIẢI PHÁP VÀ TƯ VẤN CÔNG NGHỆ ITC. Bảo lưu mọi quyền.
           </p>
-          <div className="flex gap-5 font-semibold text-slate-450">
+          <div className="flex items-center gap-5 font-semibold text-slate-450">
             <span className="hover:text-white cursor-help transition-colors">Điều khoản dịch vụ</span>
             <span className="hover:text-white cursor-help transition-colors">Chính sách bảo mật</span>
             <span className="hover:text-white cursor-help transition-colors">ISO 27001</span>
+            <a href="http://online.gov.vn" target="_blank" rel="noreferrer" className="block transition-opacity hover:opacity-80">
+              <img 
+                src="/upload/bo-cong-thuong.png" 
+                alt="Đã thông báo Bộ Công Thương" 
+                className="h-12 w-auto object-contain" 
+              />
+            </a>
           </div>
         </div>
 

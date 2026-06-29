@@ -17,7 +17,12 @@ import {
   Cpu,
   Target,
   Lightbulb,
-  Handshake
+  Handshake,
+  Calculator,
+  ClipboardList,
+  Eye,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 import { ActivePage, NewsItem, PartnerItem } from '../types';
 import { motion, AnimatePresence } from 'motion/react';
@@ -61,37 +66,18 @@ const getIconComponent = (iconName: string) => {
       return Clock;
     case 'Award':
       return Award;
+    case 'Calculator':
+      return Calculator;
+    case 'ClipboardList':
+      return ClipboardList;
+    case 'Eye':
+      return Eye;
     default:
       return Layers;
   }
 };
 
-const fallbackHomeServices = [
-  {
-    id: 'khao-sat-cntt',
-    title: 'Tư vấn Khảo sát & Đề cương CNTT',
-    summary: 'Thẩm duyệt chi tiết hiện trạng số, thiết lập đề cương khảo sát khoa học theo quy chế ban hành của Bộ Thông tin & Truyền thông.',
-    icon: 'Search',
-    colorTheme: 'blue',
-    image_path: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=800'
-  },
-  {
-    id: 'lap-du-an-khao-thi',
-    title: 'Thiết kế cơ sở & Thẩm tra Dự toán',
-    summary: 'Xác lập tổng mức đầu tư, kiểm định chặt chẽ bảng báo giá vật tư và định mức nhân công chuẩn xác, phòng ngừa lãng phí tài khóa.',
-    icon: 'Layers',
-    colorTheme: 'sky',
-    image_path: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?q=80&w=800'
-  },
-  {
-    id: 'giam-sat-kiem-thu',
-    title: 'Giám sát độc lập & Kiểm thử phần mềm',
-    summary: 'Đo kiểm độc lập, rà soát lỗ hổng bảo mật và giám sát thực thi của nhà thầu phát triển, tạo dựng niềm tin tuyệt đối trước kiểm toán.',
-    icon: 'Shield',
-    colorTheme: 'indigo',
-    image_path: 'https://images.unsplash.com/photo-1551808525-51a94da548ce?q=80&w=800'
-  }
-];
+
 
 interface HomeProjectItem {
   id: string;
@@ -237,16 +223,16 @@ export default function Home({ setActivePage, setSelectedNewsId }: HomeProps) {
 
   const mapServicesData = (data: any) => {
     if (Array.isArray(data) && data.length > 0) {
-      return data.slice(0, 3).map((item: any, idx: number) => ({
+      return data.map((item: any) => ({
         id: item.id,
         title: item.title,
         summary: item.summary,
         icon: item.icon,
-        colorTheme: item.colorTheme,
-        image_path: item.image_path || fallbackHomeServices[idx]?.image_path || fallbackHomeServices[0].image_path
+        colorTheme: item.colorTheme || item.color_theme || 'blue',
+        image_path: item.image_path || 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=800'
       }));
     }
-    return fallbackHomeServices;
+    return [];
   };
 
   const mapPartnersData = (data: any) => {
@@ -272,6 +258,50 @@ export default function Home({ setActivePage, setSelectedNewsId }: HomeProps) {
   
   const cachedServices = getCachedData('/api/services');
   const [homeServices, setHomeServices] = useState<any[]>(mapServicesData(cachedServices));
+
+  // Slideshow States for Services
+  const [currentServiceIndex, setCurrentServiceIndex] = useState<number>(0);
+  const [itemsPerView, setItemsPerView] = useState<number>(3);
+  const [isServicesHovered, setIsServicesHovered] = useState<boolean>(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setItemsPerView(1);
+      } else if (window.innerWidth < 1024) {
+        setItemsPerView(2);
+      } else {
+        setItemsPerView(3);
+      }
+    };
+    
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const nextService = () => {
+    setCurrentServiceIndex((prev) => {
+      const maxIndex = Math.max(0, homeServices.length - itemsPerView);
+      return prev >= maxIndex ? 0 : prev + 1;
+    });
+  };
+
+  const prevService = () => {
+    setCurrentServiceIndex((prev) => {
+      const maxIndex = Math.max(0, homeServices.length - itemsPerView);
+      return prev <= 0 ? maxIndex : prev - 1;
+    });
+  };
+
+  // Autoplay Effect
+  useEffect(() => {
+    if (isServicesHovered || homeServices.length === 0) return;
+    const interval = setInterval(() => {
+      nextService();
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [itemsPerView, homeServices.length, isServicesHovered]);
 
   useEffect(() => {
     // Revalidate Banner in background
@@ -444,87 +474,150 @@ export default function Home({ setActivePage, setSelectedNewsId }: HomeProps) {
             </h2>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8" id="three-services-columns">
-            {homeServices.map((service, index) => {
-              const ServiceIcon = getIconComponent(service.icon);
-              
-              const themeColor = 
-                service.colorTheme === 'blue' ? 'text-blue-600 bg-blue-50 border-blue-100 hover:text-blue-700' :
-                service.colorTheme === 'sky' ? 'text-sky-600 bg-sky-50 border-sky-100 hover:text-sky-700' :
-                service.colorTheme === 'emerald' ? 'text-emerald-600 bg-emerald-50 border-emerald-100 hover:text-emerald-700' :
-                service.colorTheme === 'indigo' ? 'text-indigo-600 bg-indigo-50 border-indigo-100 hover:text-indigo-700' :
-                service.colorTheme === 'rose' ? 'text-rose-600 bg-rose-50 border-rose-100 hover:text-rose-700' :
-                'text-amber-600 bg-amber-50 border-amber-100 hover:text-amber-700';
-
-              const linkColor = 
-                service.colorTheme === 'blue' ? 'text-blue-600' :
-                service.colorTheme === 'sky' ? 'text-sky-600' :
-                service.colorTheme === 'emerald' ? 'text-emerald-600' :
-                service.colorTheme === 'indigo' ? 'text-indigo-600' :
-                service.colorTheme === 'rose' ? 'text-rose-600' :
-                'text-amber-600';
-
-              const hoverBorderColor = 
-                service.colorTheme === 'blue' ? 'hover:border-blue-600/30' :
-                service.colorTheme === 'sky' ? 'hover:border-sky-500/30' :
-                service.colorTheme === 'emerald' ? 'hover:border-emerald-500/30' :
-                service.colorTheme === 'indigo' ? 'hover:border-indigo-550/30' :
-                service.colorTheme === 'rose' ? 'hover:border-rose-500/30' :
-                'hover:border-amber-500/30';
-
-              return (
-                <motion.div 
-                  key={service.id}
-                  className={`rounded-xl border border-slate-200/80 bg-white overflow-hidden ${hoverBorderColor} transition-all flex flex-col justify-between group cursor-pointer shadow-3xs hover:shadow-md hover:-translate-y-1 duration-300`}
-                  onClick={() => { setActivePage('services'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-                  id={`home-service-${index + 1}`}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: (index + 1) * 0.1 }}
+          {homeServices.length === 0 ? (
+            <div className="text-center py-12 text-slate-500 font-sans font-medium bg-white rounded-xl border border-slate-100 shadow-3xs">
+              <div className="animate-spin rounded-full h-8 w-8 border-2 border-blue-600 border-t-transparent mx-auto mb-3"></div>
+              <span>Đang tải danh sách dịch vụ từ cơ sở dữ liệu...</span>
+            </div>
+          ) : (
+            <div 
+              className="relative px-2 sm:px-4" 
+              id="services-slideshow-container"
+              onMouseEnter={() => setIsServicesHovered(true)}
+              onMouseLeave={() => setIsServicesHovered(false)}
+            >
+              {/* Navigation buttons */}
+              <div className="absolute top-1/2 -translate-y-1/2 -left-2 md:-left-4 lg:-left-8 z-20">
+                <button
+                  onClick={prevService}
+                  className="flex items-center justify-center w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-white text-slate-800 border border-slate-200 shadow-md hover:bg-blue-600 hover:text-white hover:border-blue-600 active:scale-95 transition-all duration-300 cursor-pointer"
+                  aria-label="Previous service"
                 >
-                  <div className="flex flex-col h-full justify-between">
-                    {/* Service Image above information */}
-                    {service.image_path && (
-                      <div className="w-full h-48 overflow-hidden relative bg-slate-100 flex-shrink-0">
-                        <img 
-                          src={service.image_path} 
-                          alt={service.title} 
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                        />
-                      </div>
-                    )}
+                  <ChevronLeft className="h-5 w-5 lg:h-6 lg:w-6" />
+                </button>
+              </div>
+
+              <div className="absolute top-1/2 -translate-y-1/2 -right-2 md:-right-4 lg:-right-8 z-20">
+                <button
+                  onClick={nextService}
+                  className="flex items-center justify-center w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-white text-slate-800 border border-slate-200 shadow-md hover:bg-blue-600 hover:text-white hover:border-blue-600 active:scale-95 transition-all duration-300 cursor-pointer"
+                  aria-label="Next service"
+                >
+                  <ChevronRight className="h-5 w-5 lg:h-6 lg:w-6" />
+                </button>
+              </div>
+
+              {/* Slider viewable window */}
+              <div className="overflow-hidden py-4 -mx-4 px-4">
+                <div 
+                  className="flex transition-transform duration-500 ease-out"
+                  style={{ 
+                    transform: `translateX(-${currentServiceIndex * (100 / homeServices.length)}%)`,
+                    width: `${(homeServices.length / itemsPerView) * 100}%` 
+                  }}
+                >
+                  {homeServices.map((service, index) => {
+                    const ServiceIcon = getIconComponent(service.icon);
                     
-                    <div className="p-8 flex-grow flex flex-col justify-between space-y-6">
-                      <div className="space-y-4">
-                        <div className="space-y-2">
-                          <h3 className="font-display text-xl font-bold text-[#0F172A] group-hover:text-blue-600 transition-colors">
-                            {service.title}
-                          </h3>
-                          <p className="text-xs sm:text-sm text-slate-550 leading-relaxed font-semibold">
-                            {service.summary}
-                          </p>
-                        </div>
+                    const themeColor = 
+                      service.colorTheme === 'blue' ? 'text-blue-600 bg-blue-50 border-blue-100 hover:text-blue-700' :
+                      service.colorTheme === 'sky' ? 'text-sky-600 bg-sky-50 border-sky-100 hover:text-sky-700' :
+                      service.colorTheme === 'emerald' ? 'text-emerald-600 bg-emerald-50 border-emerald-100 hover:text-emerald-700' :
+                      service.colorTheme === 'indigo' ? 'text-indigo-600 bg-indigo-50 border-indigo-100 hover:text-indigo-700' :
+                      service.colorTheme === 'rose' ? 'text-rose-600 bg-rose-50 border-rose-100 hover:text-rose-700' :
+                      'text-amber-600 bg-amber-50 border-amber-100 hover:text-amber-700';
+
+                    const linkColor = 
+                      service.colorTheme === 'blue' ? 'text-blue-600' :
+                      service.colorTheme === 'sky' ? 'text-sky-600' :
+                      service.colorTheme === 'emerald' ? 'text-emerald-600' :
+                      service.colorTheme === 'indigo' ? 'text-indigo-600' :
+                      service.colorTheme === 'rose' ? 'text-rose-600' :
+                      'text-amber-600';
+
+                    const hoverBorderColor = 
+                      service.colorTheme === 'blue' ? 'hover:border-blue-600/30' :
+                      service.colorTheme === 'sky' ? 'hover:border-sky-500/30' :
+                      service.colorTheme === 'emerald' ? 'hover:border-emerald-500/30' :
+                      service.colorTheme === 'indigo' ? 'hover:border-indigo-550/30' :
+                      service.colorTheme === 'rose' ? 'hover:border-rose-500/30' :
+                      'hover:border-amber-500/30';
+
+                    const itemWidthPercent = 100 / homeServices.length;
+
+                    return (
+                      <div 
+                        key={service.id} 
+                        style={{ width: `${itemWidthPercent}%` }}
+                        className="px-4 shrink-0"
+                      >
+                        <motion.div 
+                          className={`rounded-xl border border-slate-200/80 bg-white overflow-hidden ${hoverBorderColor} transition-all flex flex-col justify-between group cursor-pointer shadow-3xs hover:shadow-md hover:-translate-y-1 duration-300 h-full`}
+                          onClick={() => { setActivePage('services'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                          id={`home-service-${index + 1}`}
+                          initial={{ opacity: 0, y: 30 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 0.5, delay: (index % itemsPerView) * 0.1 }}
+                        >
+                          <div className="flex flex-col h-full justify-between">
+                            {/* Service Image above information */}
+                            {service.image_path && (
+                              <div className="w-full h-48 overflow-hidden relative bg-slate-100 flex-shrink-0">
+                                <img 
+                                  src={service.image_path} 
+                                  alt={service.title} 
+                                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                />
+                              </div>
+                            )}
+                            
+                            <div className="p-8 flex-grow flex flex-col justify-between space-y-6">
+                              <div className="space-y-4">
+                                <div className="space-y-2">
+                                  <h3 className="font-display text-xl font-bold text-[#0F172A] group-hover:text-blue-600 transition-colors line-clamp-2 min-h-[3.5rem] flex items-center">
+                                    {service.title}
+                                  </h3>
+                                  <p className="text-xs sm:text-sm text-slate-555 leading-relaxed font-semibold line-clamp-3 min-h-[4.5rem]">
+                                    {service.summary}
+                                  </p>
+                                </div>
+                              </div>
+                              
+                              <div className={`pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold ${linkColor}`}>
+                                <div className="flex items-center gap-2">
+                                  <ServiceIcon className="h-4 w-4 shrink-0" />
+                                  <span>Tìm hiểu thêm</span>
+                                </div>
+                                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                              </div>
+                            </div>
+                          </div>
+                        </motion.div>
                       </div>
-                      
-                      <div className={`pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold ${linkColor}`}>
-                        <div className="flex items-center gap-2">
-                          <ServiceIcon className="h-4 w-4 shrink-0" />
-                          <span>
-                            {index === 0 ? 'Khám phá nhiệm vụ' : 
-                             index === 1 ? 'Khám phá quy chuẩn' : 
-                             index === 2 ? 'Khám phá kiểm chuẩn' : 
-                             'Khám phá dịch vụ'}
-                          </span>
-                        </div>
-                        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Pagination Indicators (Dots) */}
+              <div className="flex justify-center items-center gap-2 mt-8">
+                {Array.from({ length: Math.max(1, homeServices.length - itemsPerView + 1) }).map((_, idx) => {
+                  const isActive = currentServiceIndex === idx;
+                  return (
+                    <button
+                      key={idx}
+                      onClick={() => setCurrentServiceIndex(idx)}
+                      className={`h-2 transition-all duration-300 rounded-full cursor-pointer ${
+                        isActive ? 'bg-blue-600 w-6' : 'bg-slate-350 w-2 hover:bg-slate-400'
+                      }`}
+                      aria-label={`Go to slide ${idx + 1}`}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+          )}
 
         </div>
       </section>

@@ -9,6 +9,7 @@ const PAGE_TO_PATH: Record<ActivePage, string> = {
   'gallery': '/gallery',
   'news': '/news',
   'news-detail': '/news',  // news-detail will use /news/:id
+  'recruitment': '/recruitment',
   'contact': '/contact',
 };
 
@@ -19,6 +20,7 @@ const PATH_TO_PAGE: Record<string, ActivePage> = {
   '/projects': 'projects',
   '/gallery': 'gallery',
   '/news': 'news',
+  '/recruitment': 'recruitment',
   '/contact': 'contact',
 };
 

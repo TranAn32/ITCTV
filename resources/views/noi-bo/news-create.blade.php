@@ -207,6 +207,11 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="created_at">Ngày tạo bài viết (Không bắt buộc)</label>
+                    <input type="date" name="created_at" id="created_at" class="form-control" value="{{ old('created_at', now()->format('Y-m-d')) }}">
+                </div>
+
+                <div class="form-group">
                     <label>Ảnh đại diện bài viết</label>
                     <div class="upload-zone" id="uploadZone">
                         <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
