@@ -15,7 +15,10 @@ import {
   CheckCircle2,
   Check,
   X,
-  Calendar as CalendarIcon
+  Calendar as CalendarIcon,
+  Building2,
+  Globe,
+  ArrowRight
 } from 'lucide-react';
 import { RecruitmentItem } from '../types';
 import { motion, AnimatePresence } from 'motion/react';
@@ -96,33 +99,151 @@ export default function Recruitment({ setActivePage }: RecruitmentProps) {
   return (
     <div className="bg-[#F8FAFC] min-h-screen text-slate-900 font-sans" id="recruitment-view">
 
-      {/* HERO SECTION */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#0B0F19] via-[#0F1729] to-[#0B0F19] py-20 md:py-28" id="recruitment-hero">
-        {/* Tech Grid */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none" />
-        {/* Glowing Orbs */}
-        <div className="absolute top-[-10%] left-[-5%] h-[30rem] w-[30rem] rounded-full bg-blue-600/8 blur-[120px] pointer-events-none" />
-        <div className="absolute bottom-[-10%] right-[-5%] h-[25rem] w-[25rem] rounded-full bg-sky-500/6 blur-[100px] pointer-events-none" />
+      {/* HERO BANNER */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-blue-50/40 via-white to-slate-50/50 py-14 md:py-20" id="recruitment-hero">
+        <div className="absolute inset-0 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none opacity-40" />
 
-        <div className="relative z-10 mx-auto max-w-[1600px] px-4 sm:px-6 md:px-12 lg:px-16 xl:px-20 2xl:px-24">
-          <motion.div
-            className="max-w-3xl space-y-5"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            <div className="inline-flex items-center gap-2 rounded-full bg-blue-500/15 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-blue-300 border border-blue-400/25 backdrop-blur-sm">
-              <Sparkles className="h-3.5 w-3.5 animate-pulse" />
-              <span>Gia nhập đội ngũ ITC</span>
+        <div className="relative z-10 mx-auto max-w-[1400px] px-4 sm:px-6 md:px-12 lg:px-16">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+            
+            {/* Cột trái: Tiêu đề chính */}
+            <motion.div
+              className="space-y-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <div className="inline-flex items-center gap-1.5 rounded-full bg-blue-600/10 px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-blue-700">
+                <Sparkles className="h-3.5 w-3.5" />
+                <span>We're hiring</span>
+              </div>
+              
+              <h1 className="text-4xl sm:text-5xl lg:text-[3.25rem] font-black text-slate-900 tracking-tight leading-[1.1]">
+                Kiến tạo giá trị,<br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-sky-500">Nâng tầm tương lai</span>
+              </h1>
+              
+              <p className="text-base text-slate-500 leading-relaxed max-w-md">
+                ITC — đơn vị tư vấn chuyển đổi số cho cơ quan nhà nước và doanh nghiệp, thành lập từ 2018.
+              </p>
+
+              {/* Lĩnh vực — dạng inline text nhẹ */}
+              <div className="flex flex-wrap gap-2 pt-1">
+                {["Tư vấn chuyển đổi số", "Đấu thầu", "Quản lý dự án", "Giám sát triển khai", "Kiểm thử"].map((item, idx) => (
+                  <span key={idx} className="text-xs font-medium text-slate-500 bg-slate-100 px-2.5 py-1 rounded-md">
+                    {item}
+                  </span>
+                ))}
+              </div>
+
+              <a href="#jobs-section" className="inline-flex items-center gap-2 bg-blue-600 text-white text-sm font-semibold px-6 py-3 rounded-xl hover:bg-blue-700 transition-colors shadow-lg shadow-blue-600/20">
+                Xem vị trí đang tuyển
+                <ArrowRight className="h-4 w-4" />
+              </a>
+            </motion.div>
+
+            {/* Cột phải: 4 highlight cards so le */}
+            <motion.div
+              className="space-y-3 lg:-ml-8"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.15 }}
+            >
+              {/* Hàng trên */}
+              <div className="grid grid-cols-2 gap-3">
+                {[
+                  { icon: <Building2 className="h-5 w-5" />, title: "Đối tác cấp cao", desc: "Bộ, ngành, UBND tỉnh và các Chủ đầu tư lớn", color: "bg-blue-50 text-blue-600" },
+                  { icon: <Users className="h-5 w-5" />, title: "Chuyên gia dẫn dắt", desc: "Hướng dẫn bởi chuyên gia nhiều năm kinh nghiệm CNTT", color: "bg-indigo-50 text-indigo-600" }
+                ].map((card, idx) => (
+                  <div key={idx} className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100/80">
+                    <div className={`w-10 h-10 rounded-xl ${card.color} flex items-center justify-center mb-3`}>{card.icon}</div>
+                    <h3 className="text-sm font-bold text-slate-900 mb-1">{card.title}</h3>
+                    <p className="text-xs text-slate-500 leading-relaxed">{card.desc}</p>
+                  </div>
+                ))}
+              </div>
+              {/* Hàng dưới — dịch sang phải */}
+              <div className="grid grid-cols-2 gap-3 lg:ml-10">
+                {[
+                  { icon: <MapPin className="h-5 w-5" />, title: "Quy mô toàn quốc", desc: "Dự án chuyển đổi số trên phạm vi cả nước", color: "bg-sky-50 text-sky-600" },
+                  { icon: <Sparkles className="h-5 w-5" />, title: "Linh hoạt & Chủ động", desc: "Làm việc theo đặc thù dự án, đề cao tự chủ", color: "bg-emerald-50 text-emerald-600" }
+                ].map((card, idx) => (
+                  <div key={idx} className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100/80">
+                    <div className={`w-10 h-10 rounded-xl ${card.color} flex items-center justify-center mb-3`}>{card.icon}</div>
+                    <h3 className="text-sm font-bold text-slate-900 mb-1">{card.title}</h3>
+                    <p className="text-xs text-slate-500 leading-relaxed">{card.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* CHIA SẺ TỪ DOANH NGHIỆP */}
+      <section className="py-32 bg-white relative overflow-hidden" id="leadership-message">
+
+        <div className="mx-auto max-w-[1400px] px-4 sm:px-6 md:px-12 lg:px-16">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
+            
+            {/* Cột trái: Khung ảnh 3D lồng nhau, to hơn */}
+            <div className="lg:col-span-5 flex justify-center py-4">
+              <div className="relative w-72 h-72 sm:w-80 sm:h-80 group">
+                
+                {/* Lớp nền xoay */}
+                <div className="absolute inset-0 bg-blue-100/30 rounded-[2.25rem] transform rotate-6 translate-x-4 translate-y-4 transition-all duration-500 group-hover:rotate-10 pointer-events-none" />
+                
+                {/* Lớp nét đứt */}
+                <div className="absolute inset-3 border-2 border-dashed border-blue-300/30 rounded-[2rem] transform -rotate-4 transition-all duration-500 group-hover:-rotate-8 pointer-events-none" />
+
+                {/* Khung chính chứa ảnh */}
+                <div className="absolute inset-5 bg-gradient-to-tr from-blue-600 to-sky-500 rounded-3xl shadow-xl flex items-end justify-center overflow-visible transform rotate-2 hover:rotate-0 hover:-translate-y-1 transition-all duration-500">
+                  <div className="absolute inset-2 border border-white/15 rounded-2xl pointer-events-none" />
+                  
+                  {/* Ảnh lãnh đạo - fallback silhouette nếu không có ảnh */}
+                  <img 
+                    src="/upload/Gallery/gallery-1782098997-6a38ac358d248.jpg" 
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.onerror = null;
+                      target.src = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" fill="none"><rect width="200" height="240" fill="%231e293b"/><circle cx="100" cy="75" r="35" fill="%23334155"/><ellipse cx="100" cy="190" rx="60" ry="50" fill="%23334155"/><text x="100" y="230" text-anchor="middle" fill="%2394a3b8" font-size="11" font-family="sans-serif">ITC Leader</text></svg>');
+                    }}
+                    className="w-full h-[115%] object-cover rounded-2xl translate-y-[-7%] transition-transform duration-500 group-hover:scale-105" 
+                    alt="Ban lãnh đạo ITC" 
+                  />
+                  
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/25 via-transparent to-transparent pointer-events-none rounded-2xl" />
+                </div>
+              </div>
             </div>
-            <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-tight">
-              <span className="block text-slate-100">Cùng ITC kiến tạo</span>
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-blue-400">tương lai công nghệ</span>
-            </h1>
-            <p className="text-sm sm:text-base text-slate-400 leading-relaxed max-w-2xl font-medium">
-              Chúng tôi tin rằng mỗi cá nhân đều mang trong mình một giá trị độc đáo. Hãy để ITC trở thành nơi bạn phát huy tối đa tiềm năng và cùng nhau tạo nên những điều phi thường.
-            </p>
-          </motion.div>
+
+            {/* Right Column: Quote & Details */}
+            <div className="lg:col-span-7 space-y-6">
+              
+              <div className="space-y-2">
+                <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-blue-600 block">Chia sẻ từ doanh nghiệp</span>
+                <h2 className="font-display text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-snug">
+                  Lắng nghe <span className="text-blue-600">Người ITC</span>
+                </h2>
+              </div>
+
+              {/* World-class quote block layout */}
+              <div className="relative pl-6 py-2 border-l-3 border-blue-500 bg-blue-50/15 rounded-r-2xl pr-4">
+                <span className="absolute -top-3 left-1 text-5xl text-blue-200/80 font-serif leading-none select-none">“</span>
+                <p className="text-sm sm:text-base text-slate-700 leading-relaxed font-semibold italic text-justify">
+                  Với phương châm "Đồng hành cùng chuyển đổi số - Kiến tạo giá trị - Nâng tầm tương lai", ITC chính là bệ phóng vững chắc để các tài năng trẻ trực tiếp dấn thân vào các dự án lớn tầm quốc gia, tiếp thu kỹ năng thực chiến và bứt phá giới hạn bản thân.
+                </p>
+              </div>
+
+              {/* Author signature section */}
+              <div>
+                <p className="text-xs sm:text-sm font-bold text-slate-800 uppercase tracking-widest">Ban Điều Hành ITC</p>
+                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Công ty Cổ phần Giải pháp & Tư vấn Công nghệ ITC</p>
+              </div>
+
+            </div>
+          </div>
         </div>
       </section>
 
@@ -438,3 +559,4 @@ export default function Recruitment({ setActivePage }: RecruitmentProps) {
     </div>
   );
 }
+
