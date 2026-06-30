@@ -18,7 +18,9 @@ import {
   Calendar as CalendarIcon,
   Building2,
   Globe,
-  ArrowRight
+  ArrowRight,
+  Mail,
+  Phone
 } from 'lucide-react';
 import { RecruitmentItem } from '../types';
 import { motion, AnimatePresence } from 'motion/react';
@@ -270,7 +272,7 @@ export default function Recruitment({ setActivePage }: RecruitmentProps) {
               </div>
             </div>
           ) : recruitments.length === 0 ? (
-            <div className="text-center py-20 bg-white rounded-2xl border border-slate-200/60 shadow-3xs">
+            <div className="text-center py-20 bg-white rounded-xl border border-slate-200/60 shadow-3xs">
               <Briefcase className="h-12 w-12 text-slate-300 mx-auto mb-4" />
               <h3 className="text-lg font-bold text-slate-600 mb-2">Hiện chưa có vị trí tuyển dụng</h3>
               <p className="text-sm text-slate-400 font-medium">Vui lòng quay lại sau để cập nhật các cơ hội mới nhất.</p>
@@ -284,7 +286,7 @@ export default function Recruitment({ setActivePage }: RecruitmentProps) {
                   <motion.div
                     key={job.id}
                     id={`job-${job.id}`}
-                    className={`rounded-2xl border bg-white overflow-hidden shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col ${
+                    className={`rounded-xl border bg-white overflow-hidden shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col ${
                       expired ? 'border-slate-200/60 opacity-75' : 'border-slate-200/80 hover:border-blue-500/30'
                     }`}
                     initial={{ opacity: 0, y: 30 }}
@@ -322,26 +324,26 @@ export default function Recruitment({ setActivePage }: RecruitmentProps) {
                       {/* Meta Info */}
                       <div className="grid grid-cols-2 gap-2 mb-4">
                         {job.department && (
-                          <div className="flex items-center gap-2 p-2 rounded-xl bg-slate-50 border border-slate-100 text-[11px] sm:text-xs text-slate-600 font-semibold">
+                          <div className="flex items-center gap-2 p-2 rounded-md bg-slate-50 border border-slate-100 text-[11px] sm:text-xs text-slate-650 font-semibold">
                             <Users className="h-4 w-4 text-blue-500 shrink-0" />
                             <span className="truncate" title={job.department}>{job.department}</span>
                           </div>
                         )}
                         {job.location && (
-                          <div className="flex items-center gap-2 p-2 rounded-xl bg-slate-50 border border-slate-100 text-[11px] sm:text-xs text-slate-600 font-semibold">
+                          <div className="flex items-center gap-2 p-2 rounded-md bg-slate-50 border border-slate-100 text-[11px] sm:text-xs text-slate-650 font-semibold">
                             <MapPin className="h-4 w-4 text-blue-500 shrink-0" />
                             <span className="truncate" title={job.location}>{job.location}</span>
                           </div>
                         )}
                         {job.experience && (
-                          <div className="flex items-center gap-2 p-2 rounded-xl bg-slate-50 border border-slate-100 text-[11px] sm:text-xs text-slate-600 font-semibold">
+                          <div className="flex items-center gap-2 p-2 rounded-md bg-slate-50 border border-slate-100 text-[11px] sm:text-xs text-slate-650 font-semibold">
                             <Clock className="h-4 w-4 text-blue-500 shrink-0" />
                             <span className="truncate" title={job.experience}>{job.experience}</span>
                           </div>
                         )}
                         {job.salary_range && (
-                          <div className="flex items-center gap-2 p-2 rounded-xl bg-slate-50 border border-slate-100 text-[11px] sm:text-xs text-slate-600 font-semibold">
-                            <DollarSign className="h-4 w-4 text-emerald-500 shrink-0" />
+                          <div className="flex items-center gap-2 p-2 rounded-md bg-slate-50 border border-slate-100 text-[11px] sm:text-xs text-slate-650 font-semibold">
+                            <DollarSign className="h-4 w-4 text-blue-500 shrink-0" />
                             <span className="truncate" title={formatSalary(job.salary_range)}>{formatSalary(job.salary_range)}</span>
                           </div>
                         )}
@@ -356,7 +358,7 @@ export default function Recruitment({ setActivePage }: RecruitmentProps) {
                       <div className="space-y-3 mt-auto">
                         <button
                           onClick={() => setSelectedJobForModal(job)}
-                          className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-600 hover:bg-slate-50 hover:border-slate-350 hover:text-blue-600 transition-all cursor-pointer shadow-3xs"
+                          className="w-full flex items-center justify-center gap-2 py-2.5 rounded-md border border-slate-200 text-xs font-bold text-slate-600 hover:bg-slate-50 hover:border-slate-350 hover:text-blue-600 transition-all cursor-pointer shadow-3xs"
                         >
                           Xem chi tiết
                         </button>
@@ -406,22 +408,22 @@ export default function Recruitment({ setActivePage }: RecruitmentProps) {
 
             {/* Modal Body Box */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 15 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 15 }}
-              transition={{ type: 'spring', duration: 0.4 }}
-              className="relative bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden border border-slate-150 z-10"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 10 }}
+              transition={{ duration: 0.25 }}
+              className="relative bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden border border-slate-150 z-10"
               id="job-modal-container"
             >
               {/* Header */}
               <div className="p-6 border-b border-slate-100 flex items-start justify-between gap-4">
                 <div className="space-y-1.5">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase bg-blue-50 text-blue-700 px-2.5 py-0.5 rounded-md border border-blue-100/50">
+                    <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase bg-blue-50 text-blue-700 px-2 py-0.5 rounded border border-blue-100/50">
                       {selectedJobForModal.employment_type}
                     </span>
                     {selectedJobForModal.deadline && (
-                      <span className={`inline-flex items-center gap-1 text-[10px] font-bold px-2.5 py-0.5 rounded-md ${
+                      <span className={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded ${
                         isExpired(selectedJobForModal.deadline)
                           ? 'bg-rose-50 text-rose-600 border border-rose-100/50'
                           : 'bg-amber-50 text-amber-700 border border-amber-100/50'
@@ -436,7 +438,7 @@ export default function Recruitment({ setActivePage }: RecruitmentProps) {
                 </div>
                 <button
                   onClick={() => setSelectedJobForModal(null)}
-                  className="p-1.5 rounded-lg border border-slate-200 text-slate-400 hover:text-slate-650 hover:bg-slate-50 transition-colors cursor-pointer"
+                  className="p-1.5 rounded-md border border-slate-200 text-slate-400 hover:text-slate-650 hover:bg-slate-50 transition-colors cursor-pointer"
                   aria-label="Close modal"
                 >
                   <X className="h-5 w-5" />
@@ -446,12 +448,12 @@ export default function Recruitment({ setActivePage }: RecruitmentProps) {
               {/* Scrollable Content */}
               <div className="flex-grow overflow-y-auto p-6 space-y-5 bg-slate-50/20">
                 {/* Meta info grid */}
-                <div className="grid grid-cols-2 gap-3 p-4 rounded-2xl bg-slate-50 border border-slate-100">
+                <div className="grid grid-cols-2 gap-3 p-4 rounded-md bg-slate-50 border border-slate-100">
                   {selectedJobForModal.department && (
                     <div className="flex items-center gap-2.5 text-xs text-slate-650 font-semibold">
                       <Users className="h-4.5 w-4.5 text-blue-500 shrink-0" />
                       <div>
-                        <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Phòng ban</div>
+                        <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Vị trí tuyển dụng</div>
                         <div className="text-slate-800">{selectedJobForModal.department}</div>
                       </div>
                     </div>
@@ -469,17 +471,17 @@ export default function Recruitment({ setActivePage }: RecruitmentProps) {
                     <div className="flex items-center gap-2.5 text-xs text-slate-650 font-semibold">
                       <Clock className="h-4.5 w-4.5 text-blue-500 shrink-0" />
                       <div>
-                        <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Kinh nghiệm</div>
+                        <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Kinh nghiệm yêu cầu</div>
                         <div className="text-slate-800">{selectedJobForModal.experience}</div>
                       </div>
                     </div>
                   )}
                   {selectedJobForModal.salary_range && (
                     <div className="flex items-center gap-2.5 text-xs text-slate-650 font-semibold">
-                      <DollarSign className="h-4.5 w-4.5 text-emerald-500 shrink-0" />
+                      <DollarSign className="h-4.5 w-4.5 text-blue-500 shrink-0" />
                       <div>
                         <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Mức lương</div>
-                        <div className="text-emerald-700">{formatSalary(selectedJobForModal.salary_range)}</div>
+                        <div className="text-blue-700">{formatSalary(selectedJobForModal.salary_range)}</div>
                       </div>
                     </div>
                   )}
@@ -491,7 +493,7 @@ export default function Recruitment({ setActivePage }: RecruitmentProps) {
                     <Target className="h-3.5 w-3.5 text-blue-500" />
                     Mô tả công việc
                   </h4>
-                  <div className="bg-white p-4.5 rounded-2xl border border-slate-100/80 shadow-3xs text-sm text-slate-700 leading-relaxed font-medium whitespace-pre-line">
+                  <div className="bg-white p-4.5 rounded-md border border-slate-100/80 shadow-3xs text-sm text-slate-700 leading-relaxed font-medium whitespace-pre-line">
                     {selectedJobForModal.description}
                   </div>
                 </div>
@@ -503,7 +505,7 @@ export default function Recruitment({ setActivePage }: RecruitmentProps) {
                       <CheckCircle2 className="h-3.5 w-3.5 text-blue-500" />
                       Yêu cầu ứng viên
                     </h4>
-                    <div className="bg-white p-4.5 rounded-2xl border border-slate-100/80 shadow-3xs text-sm text-slate-700 leading-relaxed font-medium whitespace-pre-line">
+                    <div className="bg-white p-4.5 rounded-md border border-slate-100/80 shadow-3xs text-sm text-slate-700 leading-relaxed font-medium whitespace-pre-line">
                       {selectedJobForModal.requirements}
                     </div>
                   </div>
@@ -512,15 +514,49 @@ export default function Recruitment({ setActivePage }: RecruitmentProps) {
                 {/* Benefits */}
                 {selectedJobForModal.benefits && (
                   <div className="space-y-2">
-                    <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-600 flex items-center gap-1.5">
-                      <Award className="h-3.5 w-3.5 text-emerald-500" />
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-blue-600 flex items-center gap-1.5">
+                      <Award className="h-3.5 w-3.5 text-blue-500" />
                       Quyền lợi được hưởng
                     </h4>
-                    <div className="bg-white p-4.5 rounded-2xl border border-slate-100/80 shadow-3xs text-sm text-slate-700 leading-relaxed font-medium whitespace-pre-line">
+                    <div className="bg-white p-4.5 rounded-md border border-slate-100/80 shadow-3xs text-sm text-slate-700 leading-relaxed font-medium whitespace-pre-line">
                       {selectedJobForModal.benefits}
                     </div>
                   </div>
                 )}
+
+                {/* Thông tin liên hệ ứng tuyển — cố định cho tất cả job */}
+                <div className="space-y-2">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-blue-600 flex items-center gap-1.5">
+                    <Phone className="h-3.5 w-3.5 text-blue-500" />
+                    Thông tin liên hệ ứng tuyển
+                  </h4>
+                  <div className="bg-white p-4.5 rounded-md border border-slate-100/80 shadow-3xs">
+                    <div className="flex flex-col gap-3">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded bg-blue-50 flex items-center justify-center shrink-0">
+                          <Mail className="h-4 w-4 text-blue-600" />
+                        </div>
+                        <div>
+                          <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Email nhận CV</div>
+                          <a href="mailto:tvitc.info@gmail.com" className="text-sm font-semibold text-slate-800 hover:text-blue-600 transition-colors">
+                            tvitc.info@gmail.com
+                          </a>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded bg-blue-50 flex items-center justify-center shrink-0">
+                          <Phone className="h-4 w-4 text-blue-600" />
+                        </div>
+                        <div>
+                          <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Điện thoại</div>
+                          <a href="tel:0866578461" className="text-sm font-semibold text-slate-800 hover:text-blue-600 transition-colors">
+                            0866578461
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               {/* Footer */}
@@ -528,29 +564,12 @@ export default function Recruitment({ setActivePage }: RecruitmentProps) {
                 <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider pl-2">
                   Đăng ngày: {formatDate(selectedJobForModal.created_at)}
                 </span>
-                <div className="flex gap-2.5">
-                  <button
-                    onClick={() => setSelectedJobForModal(null)}
-                    className="px-4 py-2.5 rounded-xl border border-slate-200 hover:border-slate-350 bg-white text-xs font-bold text-slate-600 hover:text-slate-800 transition-colors cursor-pointer"
-                  >
-                    Đóng
-                  </button>
-                  <button
-                    onClick={() => {
-                      setSelectedJobForModal(null);
-                      if (setActivePage) {
-                        setActivePage('contact');
-                        setTimeout(() => {
-                          const element = document.getElementById('contact-form-section');
-                          if (element) element.scrollIntoView({ behavior: 'smooth' });
-                        }, 120);
-                      }
-                    }}
-                    className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-550 hover:to-sky-450 text-xs font-bold text-white shadow-md shadow-blue-500/10 hover:shadow-lg transition-all cursor-pointer"
-                  >
-                    Ứng tuyển ngay
-                  </button>
-                </div>
+                <button
+                  onClick={() => setSelectedJobForModal(null)}
+                  className="px-5 py-2.5 rounded border border-slate-200 hover:border-slate-300 bg-white text-xs font-bold text-slate-600 hover:text-slate-800 transition-colors cursor-pointer"
+                >
+                  Đóng
+                </button>
               </div>
             </motion.div>
           </div>
