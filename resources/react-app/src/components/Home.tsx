@@ -264,6 +264,10 @@ export default function Home({ setActivePage, setSelectedNewsId }: HomeProps) {
   const [itemsPerView, setItemsPerView] = useState<number>(3);
   const [isServicesHovered, setIsServicesHovered] = useState<boolean>(false);
 
+  // Slideshow States for News
+  const [currentNewsIndex, setCurrentNewsIndex] = useState<number>(0);
+  const [isNewsHovered, setIsNewsHovered] = useState<boolean>(false);
+
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 768) {
@@ -294,6 +298,20 @@ export default function Home({ setActivePage, setSelectedNewsId }: HomeProps) {
     });
   };
 
+  const nextNews = () => {
+    setCurrentNewsIndex((prev) => {
+      const maxIndex = Math.max(0, dynamicNews.length - itemsPerView);
+      return prev >= maxIndex ? 0 : prev + 1;
+    });
+  };
+
+  const prevNews = () => {
+    setCurrentNewsIndex((prev) => {
+      const maxIndex = Math.max(0, dynamicNews.length - itemsPerView);
+      return prev <= 0 ? maxIndex : prev - 1;
+    });
+  };
+
   // Autoplay Effect
   useEffect(() => {
     if (isServicesHovered || homeServices.length === 0) return;
@@ -302,6 +320,15 @@ export default function Home({ setActivePage, setSelectedNewsId }: HomeProps) {
     }, 5000);
     return () => clearInterval(interval);
   }, [itemsPerView, homeServices.length, isServicesHovered]);
+
+  // Autoplay Effect for News
+  useEffect(() => {
+    if (isNewsHovered || dynamicNews.length <= 3) return;
+    const interval = setInterval(() => {
+      nextNews();
+    }, 6000);
+    return () => clearInterval(interval);
+  }, [itemsPerView, dynamicNews.length, isNewsHovered]);
 
   useEffect(() => {
     // Revalidate Banner in background
@@ -853,62 +880,154 @@ export default function Home({ setActivePage, setSelectedNewsId }: HomeProps) {
                 </h2>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {dynamicNews.length > 0 ? (
-                  dynamicNews.slice(0, 3).map((item) => (
-                    <div 
-                      key={item.id}
-                      onClick={() => {
-                        setSelectedNewsId(item.id);
-                        setActivePage('news-detail');
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                      }}
-                      className="bg-white rounded-xl border border-slate-200/80 hover:border-blue-600/30 overflow-hidden shadow-3xs hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col h-full group cursor-pointer"
-                    >
-                      <div className="w-full h-48 overflow-hidden relative bg-slate-100 flex-shrink-0">
-                        <img 
-                          src={item.image_path} 
-                          alt={item.title} 
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                        />
-                      </div>
-                      <div className="p-8 flex-grow flex flex-col justify-between space-y-6">
-                        <div className="space-y-4">
-                          <div className="flex items-center gap-1.5 text-xs text-slate-400 font-bold font-sans">
-                            <Calendar className="h-4 w-4 text-blue-600 shrink-0" />
-                            <span>
-                              {new Date(item.created_at).toLocaleDateString('vi-VN', {
-                                day: '2-digit',
-                                month: '2-digit',
-                                year: 'numeric'
-                              })}
-                            </span>
+              {dynamicNews.length > 0 ? (
+                dynamicNews.length > 3 ? (
+                  <div 
+                    className="relative px-2 sm:px-4 w-full" 
+                    id="news-slideshow-container"
+                    onMouseEnter={() => setIsNewsHovered(true)}
+                    onMouseLeave={() => setIsNewsHovered(false)}
+                  >
+                    {/* Navigation buttons */}
+                    <div className="absolute top-1/2 -translate-y-1/2 -left-2 md:-left-4 lg:-left-8 z-20">
+                      <button
+                        onClick={prevNews}
+                        className="flex items-center justify-center w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-white text-slate-800 border border-slate-200 shadow-md hover:bg-blue-600 hover:text-white hover:border-blue-600 active:scale-95 transition-all duration-300 cursor-pointer"
+                        aria-label="Previous news"
+                      >
+                        <ChevronLeft className="h-5 w-5 lg:h-6 lg:w-6" />
+                      </button>
+                    </div>
+
+                    <div className="absolute top-1/2 -translate-y-1/2 -right-2 md:-right-4 lg:-right-8 z-20">
+                      <button
+                        onClick={nextNews}
+                        className="flex items-center justify-center w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-white text-slate-800 border border-slate-200 shadow-md hover:bg-blue-600 hover:text-white hover:border-blue-600 active:scale-95 transition-all duration-300 cursor-pointer"
+                        aria-label="Next news"
+                      >
+                        <ChevronRight className="h-5 w-5 lg:h-6 lg:w-6" />
+                      </button>
+                    </div>
+
+                    {/* Slider viewable window */}
+                    <div className="overflow-hidden py-4 -mx-4 px-4">
+                      <div 
+                        className="flex transition-transform duration-500 ease-out"
+                        style={{ 
+                          transform: `translateX(-${currentNewsIndex * (100 / dynamicNews.length)}%)`,
+                          width: `${(dynamicNews.length / itemsPerView) * 100}%` 
+                        }}
+                      >
+                        {dynamicNews.map((item) => (
+                          <div 
+                            key={item.id} 
+                            style={{ width: `${100 / dynamicNews.length}%` }}
+                            className="px-4 shrink-0"
+                          >
+                            <div 
+                              onClick={() => {
+                                setSelectedNewsId(item.id);
+                                setActivePage('news-detail');
+                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                              }}
+                              className="bg-white rounded-xl border border-slate-200/80 hover:border-blue-600/30 overflow-hidden shadow-3xs hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col h-full group cursor-pointer"
+                            >
+                              <div className="w-full h-48 overflow-hidden relative bg-slate-100 flex-shrink-0">
+                                <img 
+                                  src={item.image_path} 
+                                  alt={item.title} 
+                                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                />
+                              </div>
+                              <div className="p-8 flex-grow flex flex-col justify-between space-y-6">
+                                <div className="space-y-4">
+                                  <div className="flex items-center gap-1.5 text-xs text-slate-400 font-bold font-sans">
+                                    <Calendar className="h-4 w-4 text-blue-600 shrink-0" />
+                                    <span>
+                                      {new Date(item.created_at).toLocaleDateString('vi-VN', {
+                                        day: '2-digit',
+                                        month: '2-digit',
+                                        year: 'numeric'
+                                      })}
+                                    </span>
+                                  </div>
+                                  <div className="space-y-2">
+                                    <h3 className="font-display text-xl font-bold text-[#0F172A] group-hover:text-blue-600 transition-colors line-clamp-2 leading-snug">
+                                      {item.title}
+                                    </h3>
+                                    <p className="text-xs sm:text-sm text-slate-555 line-clamp-3 leading-relaxed font-semibold font-sans">
+                                      {item.summary}
+                                    </p>
+                                  </div>
+                                </div>
+                                <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-blue-600 mt-auto">
+                                  <span>Tìm hiểu ngay</span>
+                                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                                </div>
+                              </div>
+                            </div>
                           </div>
-                          <div className="space-y-2">
-                            <h3 className="font-display text-xl font-bold text-[#0F172A] group-hover:text-blue-600 transition-colors line-clamp-2 leading-snug">
-                              {item.title}
-                            </h3>
-                            <p className="text-xs sm:text-sm text-slate-555 line-clamp-3 leading-relaxed font-semibold font-sans">
-                              {item.summary}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-blue-600 mt-auto">
-                          <span>Tìm hiểu ngay</span>
-                          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                        </div>
+                        ))}
                       </div>
                     </div>
-                  ))
-                ) : (
-                  <div className="col-span-1 md:col-span-3 flex items-center justify-center py-20 bg-white rounded-xl border border-slate-100 shadow-3xs">
-                    <span className="text-sm font-semibold text-slate-500 flex items-center gap-3">
-                      <span className="w-5 h-5 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></span>
-                      Đang tải tin tức...
-                    </span>
                   </div>
-                )}
-              </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
+                    {dynamicNews.map((item) => (
+                      <div 
+                        key={item.id}
+                        onClick={() => {
+                          setSelectedNewsId(item.id);
+                          setActivePage('news-detail');
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }}
+                        className="bg-white rounded-xl border border-slate-200/80 hover:border-blue-600/30 overflow-hidden shadow-3xs hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col h-full group cursor-pointer"
+                      >
+                        <div className="w-full h-48 overflow-hidden relative bg-slate-100 flex-shrink-0">
+                          <img 
+                            src={item.image_path} 
+                            alt={item.title} 
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          />
+                        </div>
+                        <div className="p-8 flex-grow flex flex-col justify-between space-y-6">
+                          <div className="space-y-4">
+                            <div className="flex items-center gap-1.5 text-xs text-slate-400 font-bold font-sans">
+                              <Calendar className="h-4 w-4 text-blue-600 shrink-0" />
+                              <span>
+                                {new Date(item.created_at).toLocaleDateString('vi-VN', {
+                                  day: '2-digit',
+                                  month: '2-digit',
+                                  year: 'numeric'
+                                })}
+                              </span>
+                            </div>
+                            <div className="space-y-2">
+                              <h3 className="font-display text-xl font-bold text-[#0F172A] group-hover:text-blue-600 transition-colors line-clamp-2 leading-snug">
+                                {item.title}
+                              </h3>
+                              <p className="text-xs sm:text-sm text-slate-555 line-clamp-3 leading-relaxed font-semibold font-sans">
+                                {item.summary}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-blue-600 mt-auto">
+                            <span>Tìm hiểu ngay</span>
+                            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )
+              ) : (
+                <div className="col-span-1 md:col-span-3 flex items-center justify-center py-20 bg-white rounded-xl border border-slate-100 shadow-3xs w-full">
+                  <span className="text-sm font-semibold text-slate-500 flex items-center gap-3">
+                    <span className="w-5 h-5 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></span>
+                    Đang tải tin tức...
+                  </span>
+                </div>
+              )}
             </div>
 
           </div>
